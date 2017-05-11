@@ -42,7 +42,9 @@ class StringTemplateRendererTest extends AbstractRendererTest
         }
 
         $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp('/^Too few arguments .+? at least 1 expected$/');
+        $this->expectExceptionMessageRegExp(
+            '/^(Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, none given|Too few arguments .+? at least 1 expected)/'
+        );
 
         new StringTemplateRenderer();
     }
