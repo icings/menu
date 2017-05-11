@@ -1,0 +1,49 @@
+{
+    "name": "icings/menu",
+    "type": "cakephp-plugin",
+    "description": "A KnpMenu seasoned menu plugin for CakePHP.",
+    "keywords": ["cakephp", "menu", "knp-menu"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oliver Nowak",
+            "role": "Author",
+            "homepage": "https://nowak-media.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6.0",
+        "cakephp/cakephp": "~3.4",
+        "knplabs/knp-menu": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "cakephp/cakephp-codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icings\\Menu\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Icings\\Menu\\Test\\": "tests",
+            "Icings\\Menu\\Test\\TestApp\\": "tests/TestApp/src",
+            "Knp\\Menu\\Tests\\": "vendor/knplabs/knp-menu/tests/Knp/Menu/Tests"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs",
+            "@stan-src",
+            "@stan-tests",
+            "@test"
+        ],
+        "coverage": "phpunit --coverage-clover=./clover.xml",
+        "cs": "phpcs -p ./src ./tests",
+        "stan-src": "phpstan analyse -l 5 -c ./phpstan.src.neon ./src",
+        "stan-tests": "phpstan analyse -l 5 -c ./phpstan.tests.neon ./tests",
+        "test": "phpunit"
+    }
+}

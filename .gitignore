@@ -1,0 +1,5 @@
+/composer.lock
+/phpunit.xml
+/phpcs.xml
+/tests/TestApp/tmp
+/vendor
