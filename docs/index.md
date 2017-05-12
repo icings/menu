@@ -139,6 +139,10 @@ default values that `MenuHelper::render()` will use, where they can be overwritt
 For more advanced configuration that allows to change the internally used matcher, voters or renderer, please refer to
 the [Advanced usage](#advanced-usage) section.
 
+- `matching` (`string`, defaults to `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)  
+  Defines the mode to use for matching the menu items against the current request in order to determine the active
+  items.
+
 - `templates` (`string[]`)  
   The templates that should be used. Defaults to:
   ```php

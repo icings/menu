@@ -116,9 +116,9 @@ class MenuHelper extends Helper
      *
      * - `matching` (`string`, defaults to
      *   `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)
-     *   The matching mode, one of the `\Icings\Menu\View\Helper\MenuHelper::MATCH_*`
-     *   constants. This is shorthand for passing a constructed matcher object via the `matcher`
-     *   option.
+     *   Defines the mode to use for matching the menu items against the current request in order
+     *   to determine the active items. This is shorthand for passing a constructed matcher object
+     *   via the `matcher` option.
      *
      * - `matcher` (`Icings\Menu\Matcher\MatcherInterface`, defaults to
      *   `Icings\Menu\Matcher\Matcher`)
