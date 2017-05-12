@@ -336,11 +336,11 @@ The generated HTML would look like:
 
 ```html
 <li>
-    <a href="/articles/index">Articles</a>
+    <a href="/articles">Articles</a>
 </li>
 ```
 
-and it would automatically be marked as active in case the current request URL matches `/articles/index`.
+and it would automatically be marked as active in case the current request URL matches `/articles`.
 
 When omitting the `uri` option, the item will not render a link, but a text-label element:
 
@@ -718,7 +718,7 @@ query arguments can match regardless of the query string values that might be pr
 If your example the current request URL is:
 
 ```
-/articles/index?filter=all
+/articles?filter=all
 ```
 
 and the menu has an item defined like this:
@@ -770,7 +770,7 @@ $routes->connect('/:controller/:action');
 and the following request URL:
 
 ```
-/articles/index?filter=all
+/articles?filter=all
 ```
 
 The menu item with the above URL array will match in that situation. It will also match when providing the query values
