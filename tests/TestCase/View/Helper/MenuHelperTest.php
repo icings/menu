@@ -668,7 +668,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `matching` option must be one of the `MenuHelper::MATCH_*` constants, `'invalid'` given.
+     * @expectedExceptionMessage The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `'invalid'` given.
      */
     public function testRenderInvalidMatchingOption()
     {

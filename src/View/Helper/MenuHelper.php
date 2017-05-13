@@ -224,6 +224,8 @@ class MenuHelper extends Helper
      *   `Knp\Menu\ItemInterface` implementation, the name of a menu, nor an array.
      * @throws \InvalidArgumentException In case the `matcher` option is not a
      *  `Icings\Menu\Matcher\MatcherInterface` implementation.
+     * @throws \InvalidArgumentException In case the `matching` option is not one of
+     *  `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant vales.
      * @throws \InvalidArgumentException In case the `voters` option is not an array.
      * @throws \InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
@@ -292,6 +294,15 @@ class MenuHelper extends Helper
 
             if (!isset($options['voters'])) {
                 $voters = $this->_createDefaultVoters($options['matching']);
+                if ($voters === false) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` ' .
+                            'constant values, `%s` given.',
+                            Debugger::exportVar($options['matching'])
+                        )
+                    );
+                }
             } else {
                 if (!is_array($options['voters'])) {
                     throw new \InvalidArgumentException(
@@ -416,7 +427,8 @@ class MenuHelper extends Helper
      * Creates default voters for the given type.
      *
      * @param string $type The type of the voters to create.
-     * @return VoterInterface[] An array holding the created voters.
+     * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
+     *   types.
      */
     protected function _createDefaultVoters($type)
     {
@@ -437,12 +449,7 @@ class MenuHelper extends Helper
                 ];
         }
 
-        throw new \InvalidArgumentException(
-            sprintf(
-                'The `matching` option must be one of the `MenuHelper::MATCH_*` constants, `%s` given.',
-                Debugger::exportVar($type)
-            )
-        );
+        return false;
     }
 
     /**
