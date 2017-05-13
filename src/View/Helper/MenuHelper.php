@@ -157,7 +157,13 @@ class MenuHelper extends Helper
         parent::__construct($View, $config);
 
         $this->_menuConfigurations = new \SplObjectStorage();
-        $this->setMenuFactory(new MenuFactory());
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new PerItemVotersExtension());
+        $factory->addExtension(new RoutingExtension());
+        $factory->addExtension(new TemplaterExtension());
+
+        $this->setMenuFactory($factory);
     }
 
     /**
@@ -195,12 +201,7 @@ class MenuHelper extends Helper
             throw new \InvalidArgumentException('The `$name` argument must not be empty.');
         }
 
-        $factory = $this->getMenuFactory();
-        $factory->addExtension(new PerItemVotersExtension());
-        $factory->addExtension(new RoutingExtension());
-        $factory->addExtension(new TemplaterExtension());
-
-        $menu = $factory->createItem($name, $this->_extractMenuOptions($options));
+        $menu = $this->getMenuFactory()->createItem($name, $this->_extractMenuOptions($options));
         $this->_addMenu($menu, $this->_extractRendererOptions($options));
 
         return $menu;
