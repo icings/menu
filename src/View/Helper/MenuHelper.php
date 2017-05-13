@@ -192,7 +192,7 @@ class MenuHelper extends Helper
     {
         if (!is_string($name)) {
             throw new \InvalidArgumentException(sprintf(
-                'The `$name` argument must be a string, "%s" given.',
+                'The `$name` argument must be a string, `%s` given.',
                 Debugger::getType($name)
             ));
         }
@@ -281,7 +281,7 @@ class MenuHelper extends Helper
                     throw new \InvalidArgumentException(
                         sprintf(
                             'The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` ' .
-                            'implementation, "%s" given.',
+                            'implementation, `%s` given.',
                             Debugger::getType($options['matcher'])
                         )
                     );
@@ -296,7 +296,7 @@ class MenuHelper extends Helper
                 if (!is_array($options['voters'])) {
                     throw new \InvalidArgumentException(
                         sprintf(
-                            'The `voters` option must be an array, "%s" given.',
+                            'The `voters` option must be an array, `%s` given.',
                             Debugger::getType($options['voters'])
                         )
                     );
@@ -315,7 +315,7 @@ class MenuHelper extends Helper
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` ' .
-                        'implementation, "%s" given.',
+                        'implementation, `%s` given.',
                         Debugger::getType($options['renderer'])
                     )
                 );
@@ -439,7 +439,7 @@ class MenuHelper extends Helper
 
         throw new \InvalidArgumentException(
             sprintf(
-                'The `matching` option must be one of the `MenuHelper::MATCH_*` constants, "%s" given.',
+                'The `matching` option must be one of the `MenuHelper::MATCH_*` constants, `%s` given.',
                 Debugger::exportVar($type)
             )
         );

@@ -91,7 +91,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `$name` argument must be a string, "integer" given.
+     * @expectedExceptionMessage The `$name` argument must be a string, `integer` given.
      */
     public function testCreateInvalidNameArgumentType()
     {
@@ -668,7 +668,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `matching` option must be one of the `MenuHelper::MATCH_*` constants, "'invalid'" given.
+     * @expectedExceptionMessage The `matching` option must be one of the `MenuHelper::MATCH_*` constants, `'invalid'` given.
      */
     public function testRenderInvalidMatchingOption()
     {
@@ -738,7 +738,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` implementation, "string" given.
+     * @expectedExceptionMessage The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` implementation, `string` given.
      */
     public function testRenderInvalidMatcherOption()
     {
@@ -807,7 +807,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `voters` option must be an array, "string" given.
+     * @expectedExceptionMessage The `voters` option must be an array, `string` given.
      */
     public function testRenderInvalidVotersOption()
     {
@@ -879,7 +879,7 @@ class MenuHelperTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` implementation, "string" given.
+     * @expectedExceptionMessage The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` implementation, `string` given.
      */
     public function testRenderInvalidRendererOption()
     {
