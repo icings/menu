@@ -225,8 +225,8 @@ class MenuHelper extends Helper
      * @throws \InvalidArgumentException In case the `matcher` option is not a
      *  `Icings\Menu\Matcher\MatcherInterface` implementation.
      * @throws \InvalidArgumentException In case the `voters` option is not an array.
-     * @throws \InvalidArgumentException In case the `renderer` option is neither a
-     *  `Knp\Menu\Renderer\RendererInterface` implementation, nor an array.
+     * @throws \InvalidArgumentException In case the `renderer` option is not a
+     *  `Knp\Menu\Renderer\RendererInterface` implementation.
      *
      * @param ItemInterface|string|array $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
