@@ -12,6 +12,7 @@ use Cake\View\View;
 use Icings\Menu\Matcher\Matcher;
 use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
 use Icings\Menu\Matcher\Voter\UrlVoter;
+use Icings\Menu\MenuFactory;
 use Icings\Menu\MenuFactoryInterface;
 use Icings\Menu\View\Helper\MenuHelper;
 use Knp\Menu\ItemInterface;
@@ -48,6 +49,41 @@ class MenuHelperTest extends TestCase
 
         parent::tearDown();
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    //region create()
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testConstructDefaults()
+    {
+        $helper = new MenuHelper($this->View);
+
+        $factory = $helper->getMenuFactory();
+        $this->assertInstanceOf(MenuFactory::class, $factory);
+
+        $expected = [
+            'matching' => MenuHelper::MATCH_URL,
+            'matcher' => null,
+            'voters' => null,
+            'renderer' => null
+        ];
+        $this->assertEquals($expected, $helper->config());
+    }
+
+    public function testConstructConfiguration()
+    {
+        $config = [
+            'matching' => MenuHelper::MATCH_FUZZY_ROUTE,
+            'matcher' => 'matcher',
+            'voters' => 'voters',
+            'renderer' => 'renderer'
+        ];
+        $helper = new MenuHelper($this->View, $config);
+
+        $this->assertEquals($config, $helper->config());
+    }
+
+    //endregion
 
     // -----------------------------------------------------------------------------------------------------------------
     //region create()
