@@ -699,7 +699,7 @@ $routes->plugin('PluginName', function(RouteBuilder $routes) {
 #### Specifying a prefix:
 
 ```php
-['prefix' => 'PrefixName', 'controller' => 'Articles']
+['prefix' => 'prefix_name', 'controller' => 'Articles']
 ```
 
 From the above routes examples, now only the prefix routes will be matched:
