@@ -270,16 +270,16 @@ In the default setup, the following options are supported:
   via the former.
 
 - `escape` (`boolean`, defaults to `true`)  
-  Defines whether the attributes and the label (link and non-link text) should be escaped.
+  Defines whether the attributes and the label (link and non-link text) should be escaped (passed through `h()`).
 
 - `escapeLabel` (`boolean`, defaults to `true`) 
-  Defines whether the label (link and non-link text) should be escaped.
+  Defines whether the label (link and non-link text) should be escaped (passed through `h()`).
 
 - `label` (`string`, defaults to `null`)  
   Defines the items label. When `null`, the first argument of `addChild()` is being used as the label.
   
-  There might be situations in which you need to specify different values for the items name (identifier) and label, for
-  example when you want to translate the label, and need to retain the possibility to access the item by its name
+  There might be situations in which you need to specify different values for the items name (identifier) and its label,
+  for example when you want to translate the label, and need to retain the possibility to access the item by its name
   without having to use translation functions, in such a case you should use this option to specify the label text.
 
 - `current` (`boolean`, defaults to `null`)  
@@ -311,7 +311,9 @@ of the menu, which serves as an identifier when rendering or obtaining specific 
 takes an array of options that should be applied to the menu, ie. to the top level item.
 
 The `create()` method returns an instance of `KnpMenu\ItemInterface`, so any operations known from KnpMenu that can be
-applied via that interface, can be applied here in the same way.
+applied via that interface, can be applied here too. It should be noted however that not all methods will have the 
+same effect as using their option counterparts, for example unlike the `uri` option, the `setUri()` method will _not_
+work with CakePHP URL arrays!
 
 ```php
 $menu = $this->Menu->create('main', [
@@ -373,7 +375,7 @@ $menu->addChild('Parent', ['uri' => ['controller' => 'Controller', 'action' => '
 $menu['Parent']->addChild('Child', ['uri' => ['controller' => 'Other', 'action' => 'action']]);
 ```
 
-or even using the fluid interface syntax:
+or by using the fluid interface syntax:
 
 ```php
 $menu
@@ -444,7 +446,7 @@ In the default setup, this would generate the following HTML:
 ## Changing the default HTML output
 
 In the default setup, the helper uses a string template renderer, which utilizes string templates as known from the
-CakePHP core helpers, and can be customized via the `templates` and `templateVars` options.
+CakePHP core helpers that can be customized via the `templates` and `templateVars` options.
 
 Changing the default output is fairly simple, just pass the `templates` and/or `templateVars` options to either
 `MenuHelper::config()`, in order to change the defaults for all menus:
@@ -607,7 +609,7 @@ This is supported by all matching modes.
 ### Do not match against the URL that generates the link
 
 In case you want to only match against the URLs provided in the `routes` option, and use the URL defined via the `uri`
-option solely for generated the menu items link, you can set the `addUriToRoutes` option to `false`. Doing so will
+option solely for generating the menu items link, you can set the `addUriToRoutes` option to `false`. Doing so will
 exclude the primary URL from matching.
 
 This is supported by all matching modes.
@@ -715,7 +717,7 @@ $routes->prefix('PrefixName', function(RouteBuilder $routes) {
 As mentioned initially, in the default setup possible query strings are excluded from matching, which means a URL with
 query arguments can match regardless of the query string values that might be present in the request URL.
 
-If your example the current request URL is:
+If for example the current request URL is:
 
 ```
 /articles?filter=all
@@ -727,8 +729,8 @@ and the menu has an item defined like this:
 $menu->addChild('Item', ['uri' => ['controller' => 'Articles', 'action' => 'index']]);
 ```
 
-then this item will match, and will be set as the current item, even though it has no query arguments defined. Likewise
-an item which _has_ query arguments defined would also match, even if the query arguments are different:
+then this item will match, and it will be set as the current item, even though it has no query arguments defined.
+Likewise an item which _has_ query arguments defined would also match, even if the query arguments are different:
 
 ```php
 $menu->addChild('Item', ['uri' => ['controller' => 'Articles', 'action' => 'index', 'filter' => 'active']]);
