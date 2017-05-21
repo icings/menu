@@ -661,10 +661,11 @@ The matching can be made less fuzzy by specifying more (restrictive) parameters.
 #### Adding an action:
 
 ```php
-['controller' => 'Articles', 'action' => 'index']
+['controller' => 'Articles', 'action' => 'view']
 ```
 
-From the above routes examples, now the following route will not be matched anymore, as it doesn't connect to an action:
+From the above routes examples, now the following route will not be matched anymore, as it by default connects to the
+`index` action:
 
 ```php
 $routes->connect('/:controller');
