@@ -133,15 +133,20 @@ $this->Menu->config([
 
 #### Menu helper options
 
-The following options also apply to `MenuHelper::render()`. Defining them in the scope of the helper will make them the
-default values that `MenuHelper::render()` will use, where they can be overwritten if necessary.
+The following options also apply to `MenuHelper::render()`, and partially to `MenuHelper::create()`. Defining them in
+the scope of the helper will make them the default values that can be overwritten in `MenuHelper::create()` and
+`MenuHelper::render()` if necessary.
 
 For more advanced configuration that allows to change the internally used matcher, voters or renderer, please refer to
 the [Advanced usage](#advanced-usage) section.
 
+##### Matching related options
+
 - `matching` (`string`, defaults to `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)  
   Defines the mode to use for matching the menu items against the current request in order to determine the active
   items.
+
+##### Rendering related options
 
 - `templates` (`string[]`)  
   The templates that should be used. Defaults to:
@@ -207,15 +212,11 @@ Menus can be configured via the `$options` argument of `MenuHelper::create()`.
 
 In the default setup, the following options are supported:
 
-- `templates` (`string[]`, defaults to `[]`)  
-  The templates that should be used. For a list of available templates, refer to the
-  [Configuration > Helper configuration > Menu helper options](#menu-helper-options) section.
-
-- `templateVars` (`mixed[]|null`, defaults to `null`)  
-  An array of template variables.
-
 - `menuAttributes` (`array`, defaults to `null`)
   The HTML attributes to apply to the menu element.
+
+Additionally to the options listed above, all [rendering related options](#rendering-related-options) options of the
+helper are supported too, and can be used to overwrite the helpers defaults.
 
 ### Menu item configuration
 

@@ -133,8 +133,8 @@ class MenuHelper extends Helper
      *    The renderer object to use.
      *
      * Additional options that do not match the ones listed above, will be passed as options to the
-     * default renderer, the `StringTemplateRenderer`. See the class' API docs for information on
-     * the supported options.
+     * renderer, which by default is the `StringTemplateRenderer`. See the class' API docs for
+     * information on the supported options.
      *
      * @see MatcherInterface
      * @see VoterInterface
@@ -175,8 +175,8 @@ class MenuHelper extends Helper
      *
      * - `menuAttributes`: The HTML attributes to apply to the menu element. Defaults to `null`.
      *
-     * Additionally to the options listed above, this method supports all the options that the
-     * constructor supports.
+     * Similar to the constructor, additional options that do not match the ones listed above will be
+     * passed as options to the renderer.
      *
      * @see __construct()
      *
