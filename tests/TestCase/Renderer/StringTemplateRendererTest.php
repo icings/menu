@@ -609,6 +609,64 @@ class StringTemplateRendererTest extends AbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
+    public function testRenderEscapeLabel()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher());
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('<b>Escaped</b>', [
+            'attributes' => [
+                'escaped' => '"escaped"'
+            ]
+        ]);
+        $menu->addChild('<b>Unescaped</b>', [
+            'escapeLabel' => false,
+            'attributes' => [
+                'escaped' => '"escaped"'
+            ]
+        ]);
+
+        $expected = '
+            <ul>
+              <li escaped="&quot;escaped&quot;"><span>&lt;b&gt;Escaped&lt;/b&gt;</span></li>
+              <li escaped="&quot;escaped&quot;"><span><b>Unescaped</b></span></li>
+            </ul>
+        ';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderEscapeAttributesAndLabel()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher());
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('<b>Escaped</b>', [
+            'attributes' => [
+                'escaped' => '"escaped"'
+            ]
+        ]);
+        $menu->addChild('<b>Unescaped</b>', [
+            'escape' => false,
+            'attributes' => [
+                'unescaped' => '"unescaped"'
+            ]
+        ]);
+
+        $expected = '
+            <ul>
+              <li escaped="&quot;escaped&quot;"><span>&lt;b&gt;Escaped&lt;/b&gt;</span></li>
+              <li unescaped=""unescaped""><span><b>Unescaped</b></span></li>
+            </ul>
+        ';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
     //endregion
 
     // -----------------------------------------------------------------------------------------------------------------

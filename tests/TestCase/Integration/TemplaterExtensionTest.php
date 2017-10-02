@@ -197,10 +197,34 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
+    public function testBuildOptionsDefineDisableEscapeOnly()
+    {
+        $originalOptions = [
+            'escape' => false
+        ];
+        $options = $this->TemplaterExtension->buildOptions($originalOptions);
+        $expected = [
+            'extras' => $originalOptions
+        ];
+        $this->assertEquals($expected, $options);
+    }
+
     public function testBuildOptionsDefineEscapeLabelOnly()
     {
         $originalOptions = [
             'escapeLabel' => true
+        ];
+        $options = $this->TemplaterExtension->buildOptions($originalOptions);
+        $expected = [
+            'extras' => $originalOptions
+        ];
+        $this->assertEquals($expected, $options);
+    }
+
+    public function testBuildOptionsDefineDisableEscapeLabelOnly()
+    {
+        $originalOptions = [
+            'escapeLabel' => false
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
@@ -233,7 +257,7 @@ class TemplaterExtensionTest extends TestCase
             'nestAttributes' => [
                 'name' => 'value',
             ],
-            'escape' => true,
+            'escape' => false,
             'escapeLabel' => true
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);

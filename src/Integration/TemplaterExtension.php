@@ -65,11 +65,11 @@ class TemplaterExtension implements ExtensionInterface
             unset($options['nestAttributes']);
         }
 
-        if (!empty($options['escape'])) {
+        if (isset($options['escape'])) {
             $options['extras']['escape'] = $options['escape'];
             unset($options['escape']);
         }
-        if (!empty($options['escapeLabel'])) {
+        if (isset($options['escapeLabel'])) {
             $options['extras']['escapeLabel'] = $options['escapeLabel'];
             unset($options['escapeLabel']);
         }
