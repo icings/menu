@@ -15,9 +15,8 @@ use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
-use Knp\Menu\Tests\Renderer\AbstractRendererTest;
 
-class StringTemplateRendererTest extends AbstractRendererTest
+class StringTemplateRendererTest extends KnpAbstractRendererTest
 {
     public function assertTrimmedHtml($expected, $actual, $message = '')
     {
