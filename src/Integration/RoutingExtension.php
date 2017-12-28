@@ -31,43 +31,15 @@ class RoutingExtension implements ExtensionInterface
             unset($options['ignoreQueryString']);
 
             $routes = [];
-            $hasRoutes = !empty($options['routes']);
-            if ($hasRoutes) {
-                $options['extras']['urls'] = [
-                    'original' => [],
-                    'withoutQuery' => []
-                ];
-
-                foreach ($options['routes'] as $route) {
-                    if (is_array($route)) {
-                        $routes[] = $route;
-                    }
-                    $url = Router::url($route);
-                    $options['extras']['urls']['original'][] = $url;
-                    $options['extras']['urls']['withoutQuery'][] = $this->_stripQueryString($url);
-                }
-
-                unset($options['routes']);
+            if (!empty($options['routes'])) {
+                $routes = $options['routes'];
             }
+            unset($options['routes']);
 
             if (!isset($options['addUriToRoutes']) ||
                 $options['addUriToRoutes'] === true
             ) {
-                if (!$hasRoutes) {
-                    $options['extras']['urls']['original'] = [$options['uri']];
-                    $options['extras']['urls']['withoutQuery'] = [$this->_stripQueryString($options['uri'])];
-                } else {
-                    array_unshift($options['extras']['urls']['original'], $options['uri']);
-                    array_unshift($options['extras']['urls']['withoutQuery'], $this->_stripQueryString($options['uri']));
-                }
-
-                if (is_array($uri)) {
-                    if (empty($routes)) {
-                        $routes = [$uri];
-                    } else {
-                        array_unshift($routes, $uri);
-                    }
-                }
+                array_unshift($routes, $uri);
             }
             unset($options['addUriToRoutes']);
 
@@ -77,21 +49,6 @@ class RoutingExtension implements ExtensionInterface
         }
 
         return $options;
-    }
-
-    /**
-     * Removes the query string from the given URL.
-     *
-     * @param string $url The URL from which to strip the query string.
-     * @return string The URL without query string.
-     */
-    protected function _stripQueryString($url)
-    {
-        if (strpos($url, '?') !== false) {
-            return explode('?', $url, 2)[0];
-        }
-
-        return $url;
     }
 
     /**

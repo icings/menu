@@ -10,6 +10,7 @@ namespace Icings\Menu\Matcher\Voter;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Http\ServerRequest;
 use Cake\Network\Request;
+use Cake\Routing\Router;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
@@ -80,10 +81,8 @@ class UrlVoter implements VoterInterface
     {
         $this->config($options);
 
-        $this->_url = $this->_urlWithoutQuery = $request->here();
-        if (strpos($this->_urlWithoutQuery, '?') !== false) {
-            $this->_urlWithoutQuery = explode('?', $this->_urlWithoutQuery, 2)[0];
-        }
+        $this->_url = $request->here();
+        $this->_urlWithoutQuery = $this->_stripQueryString($this->_url);
     }
 
     /**
@@ -91,8 +90,8 @@ class UrlVoter implements VoterInterface
      */
     public function matchItem(ItemInterface $item)
     {
-        $urls = $item->getExtra('urls');
-        if ($urls === null) {
+        $routes = $item->getExtra('routes');
+        if ($routes === null) {
             return null;
         }
 
@@ -101,10 +100,35 @@ class UrlVoter implements VoterInterface
             $ignoreQueryString = $this->config('ignoreQueryString');
         }
 
-        if ($ignoreQueryString) {
-            return in_array($this->_urlWithoutQuery, $urls['withoutQuery'], true);
+        foreach ($routes as $route) {
+            $url = Router::url($route);
+
+            if ($ignoreQueryString &&
+                $this->_stripQueryString($url) === $this->_urlWithoutQuery
+            ) {
+                return true;
+            }
+
+            if ($url === $this->_url) {
+                return true;
+            }
         }
 
-        return in_array($this->_url, $urls['original'], true);
+        return null;
+    }
+
+    /**
+     * Removes the query string from the given URL.
+     *
+     * @param string $url The URL from which to strip the query string.
+     * @return string The URL without query string.
+     */
+    protected function _stripQueryString($url)
+    {
+        if (strpos($url, '?') !== false) {
+            return explode('?', $url, 2)[0];
+        }
+
+        return $url;
     }
 }

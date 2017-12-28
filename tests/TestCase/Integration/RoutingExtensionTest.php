@@ -63,10 +63,6 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => ['/controller/action'],
-                    'withoutQuery' => ['/controller/action']
                 ]
             ]
         ];
@@ -99,10 +95,6 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => ['/named/route'],
-                    'withoutQuery' => ['/named/route']
                 ]
             ]
         ];
@@ -118,9 +110,8 @@ class RoutingExtensionTest extends TestCase
         $expected = [
             'uri' => '/controller/action',
             'extras' => [
-                'urls' => [
-                    'original' => ['/controller/action'],
-                    'withoutQuery' => ['/controller/action']
+                'routes' => [
+                    '/controller/action'
                 ]
             ]
         ];
@@ -168,18 +159,6 @@ class RoutingExtensionTest extends TestCase
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
                     $originalOptions['routes'][1]
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller1/action',
-                        '/controller2/action',
-                        '/controller3/action'
-                    ],
-                    'withoutQuery' => [
-                        '/controller1/action',
-                        '/controller2/action',
-                        '/controller3/action'
-                    ]
                 ]
             ]
         ];
@@ -217,16 +196,6 @@ class RoutingExtensionTest extends TestCase
                 'routes' => [
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action',
-                        '/named/route'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action',
-                        '/named/route'
-                    ]
                 ]
             ]
         ];
@@ -249,17 +218,40 @@ class RoutingExtensionTest extends TestCase
             'uri' => '/controller/action',
             'extras' => [
                 'routes' => [
-                    $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action',
-                        '/other/action'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action',
-                        '/other/action'
-                    ]
+                    $originalOptions['uri'],
+                    '/other/action'
+                ]
+            ]
+        ];
+        $this->assertEquals($expected, $options);
+    }
+
+    public function testBuildOptionsDefineNonConnectedRoutes()
+    {
+        Router::reload();
+        Router::scope('/', function (RouteBuilder $routes) {
+            $routes->routeClass(DashedRoute::class);
+            $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
+        });
+
+        $originalOptions = [
+            'uri' => [
+                'controller' => 'Members',
+                'action' => 'about'
+            ],
+            'routes' => [
+                [
+                    'controller' => 'Members'
+                ]
+            ]
+        ];
+        $options = $this->RoutingExtension->buildOptions($originalOptions);
+        $expected = [
+            'uri' => '/members/about',
+            'extras' => [
+                'routes' => [
+                    $originalOptions['uri'],
+                    $originalOptions['routes'][0]
                 ]
             ]
         ];
@@ -289,17 +281,7 @@ class RoutingExtensionTest extends TestCase
         $expected = [
             'uri' => '/controller1/action',
             'extras' => [
-                'routes' => $originalOptions['routes'],
-                'urls' => [
-                    'original' => [
-                        '/controller2/action',
-                        '/controller3/action'
-                    ],
-                    'withoutQuery' => [
-                        '/controller2/action',
-                        '/controller3/action'
-                    ]
-                ]
+                'routes' => $originalOptions['routes']
             ]
         ];
         $this->assertEquals($expected, $options);
@@ -338,14 +320,6 @@ class RoutingExtensionTest extends TestCase
                 'ignoreQueryString' => false,
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action?query=value'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action'
-                    ]
                 ]
             ]
         ];
@@ -369,14 +343,6 @@ class RoutingExtensionTest extends TestCase
                 'ignoreQueryString' => true,
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action?query=value'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action'
-                    ]
                 ]
             ]
         ];
@@ -399,14 +365,6 @@ class RoutingExtensionTest extends TestCase
                 'ignoreQueryString' => true,
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action'
-                    ]
                 ]
             ]
         ];
@@ -430,14 +388,6 @@ class RoutingExtensionTest extends TestCase
                 'ignoreQueryString' => true,
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action?query=value'
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action'
-                    ]
                 ]
             ]
         ];
@@ -475,18 +425,6 @@ class RoutingExtensionTest extends TestCase
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
                     $originalOptions['routes'][1]
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller1/action?query=value',
-                        '/controller2/action?query=value',
-                        '/controller3/action?query=value',
-                    ],
-                    'withoutQuery' => [
-                        '/controller1/action',
-                        '/controller2/action',
-                        '/controller3/action',
-                    ]
                 ]
             ]
         ];
@@ -508,14 +446,6 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'routes' => [
                     $originalOptions['uri']
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller/action?query=value',
-                    ],
-                    'withoutQuery' => [
-                        '/controller/action',
-                    ]
                 ]
             ]
         ];
@@ -551,18 +481,6 @@ class RoutingExtensionTest extends TestCase
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
                     $originalOptions['routes'][1]
-                ],
-                'urls' => [
-                    'original' => [
-                        '/controller1/action?query=value',
-                        '/controller2/action?query=value',
-                        '/controller3/action?query=value',
-                    ],
-                    'withoutQuery' => [
-                        '/controller1/action',
-                        '/controller2/action',
-                        '/controller3/action',
-                    ]
                 ]
             ]
         ];
