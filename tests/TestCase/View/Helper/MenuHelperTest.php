@@ -577,8 +577,7 @@ class MenuHelperTest extends TestCase
             ->expects($this->at(0))
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
-                return
-                    ($argument instanceof UrlVoter) &&
+                return ($argument instanceof UrlVoter) &&
                     $argument->config('ignoreQueryString') === true;
             }));
 
@@ -611,8 +610,7 @@ class MenuHelperTest extends TestCase
             ->expects($this->at(0))
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
-                return
-                    ($argument instanceof UrlVoter) &&
+                return ($argument instanceof UrlVoter) &&
                     $argument->config('ignoreQueryString') === false;
             }));
 
