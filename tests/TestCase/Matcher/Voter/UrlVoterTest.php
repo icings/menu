@@ -48,7 +48,7 @@ class UrlVoterTest extends TestCase
     {
         $request = $this->createRequest('/controller/action');
 
-        /* @var $voter UrlVoter|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var UrlVoter|\PHPUnit_Framework_MockObject_MockObject $voter */
         $voter = $this
             ->getMockBuilder(UrlVoter::class)
             ->setConstructorArgs([$request])

@@ -502,7 +502,7 @@ class StringTemplateRenderer implements RendererInterface
             return $item->getLabel();
         }
 
-        return h($item->getLabel());
+        return (string)h($item->getLabel());
     }
 
     /**

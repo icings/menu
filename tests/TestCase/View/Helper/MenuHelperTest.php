@@ -167,7 +167,7 @@ class MenuHelperTest extends TestCase
             ->with('name', $menuItemOptions)
             ->willReturn($menu);
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper*/
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -350,7 +350,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -412,7 +412,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu), $rendererOptions);
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -513,7 +513,7 @@ class MenuHelperTest extends TestCase
             'nonNested2' => 'helper value'
         ];
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -582,7 +582,7 @@ class MenuHelperTest extends TestCase
                     $argument->config('ignoreQueryString') === true;
             }));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -616,7 +616,7 @@ class MenuHelperTest extends TestCase
                     $argument->config('ignoreQueryString') === false;
             }));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -648,7 +648,7 @@ class MenuHelperTest extends TestCase
             ->method('addVoter')
             ->with($this->isInstanceOf(FuzzyRouteVoter::class));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -707,7 +707,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -777,7 +777,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -852,7 +852,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /* @var $helper MenuHelper|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])

@@ -294,7 +294,7 @@ class MenuHelper extends Helper
 
             if (!isset($options['voters'])) {
                 $voters = $this->_createDefaultVoters($options['matching']);
-                if ($voters === false) {
+                if (!is_array($voters)) {
                     throw new \InvalidArgumentException(
                         sprintf(
                             'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` ' .
