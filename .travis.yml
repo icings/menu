@@ -28,6 +28,9 @@ matrix:
     - php: 7.2
       env: CAKEPHP=3.4.0
 
+    - php: 7.2
+      env: PHPCS=1 PHPUNIT=0
+
     - php: 7.0
       env: PHPSTAN=1 PHPUNIT=0
 
@@ -45,13 +48,14 @@ before_install:
 
 before_script:
   - if [[ $CAKEPHP ]]; then composer require --no-update cakephp/cakephp:~$CAKEPHP; fi
-  - if [[ $PHPSTAN = 1 ]]; then composer require --no-update phpstan/phpstan:^0.6; fi
+  - if [[ $PHPSTAN = 1 ]]; then composer require --no-update phpstan/phpstan:^0.9.1; fi
   - composer install --prefer-dist --no-interaction
 
 script:
+  - if [[ $PHPCS = 1 ]]; then vendor/bin/phpcs -p ./src ./tests; fi
   - if [[ $PHPUNIT = 1 ]]; then vendor/bin/phpunit; fi
-  - if [[ $PHPSTAN = 1 ]]; then vendor/bin/phpstan analyse -l 5 -c phpstan.src.neon src; fi
-  - if [[ $PHPSTAN = 1 ]]; then vendor/bin/phpstan analyse -l 5 -c phpstan.tests.neon tests; fi
+  - if [[ $PHPSTAN = 1 ]]; then vendor/bin/phpstan analyse -l 7 -c phpstan.src.neon src; fi
+  - if [[ $PHPSTAN = 1 ]]; then vendor/bin/phpstan analyse -l 7 -c phpstan.tests.neon tests; fi
   - if [[ $COVERAGE = 1 ]]; then vendor/bin/phpunit --coverage-clover=clover.xml; fi
 
 after_success:
