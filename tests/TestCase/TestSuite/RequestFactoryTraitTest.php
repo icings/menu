@@ -9,7 +9,6 @@ namespace Icings\Menu\Test\TestCase\TestSuite;
 
 use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -28,28 +27,9 @@ class RequestFactoryTraitTest extends TestCase
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->routeClass(DashedRoute::class);
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/:controller/:action');
         });
-    }
-
-    public function testCreateLegacyRequest()
-    {
-        Configure::write('Cake.version', '3.1.0');
-
-        $request = Stub::createRequest('/controller/action');
-        $this->assertInstanceOf(Request::class, $request);
-        $this->assertEquals('/controller/action', $request->here());
-    }
-
-    public function testCreateLegacyRequestWithQueryString()
-    {
-        Configure::write('Cake.version', '3.1.0');
-
-        $request = Stub::createRequest('/controller/action?query=value');
-        $this->assertInstanceOf(Request::class, $request);
-        $this->assertEquals('/controller/action?query=value', $request->here());
-        $this->assertEquals(['query' => 'value'], $request->query);
     }
 
     public function testCreateServerRequest()

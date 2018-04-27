@@ -9,7 +9,6 @@ namespace Icings\Menu\Matcher\Voter;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
 use Cake\Routing\Router;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
@@ -72,16 +71,16 @@ class UrlVoter implements VoterInterface
      * - `ignoreQueryString`: Defines whether the query string should be ignored when matching
      *   items. Defaults to `true`.
      *
-     * @param Request|ServerRequest $request The request object from where to extract the request
+     * @param ServerRequest $request The request object from where to extract the request
      *   target to match against.
      * @param array $options An array of options, see the "Options" section in the method
      *   description.
      */
-    public function __construct($request, array $options = [])
+    public function __construct(ServerRequest $request, array $options = [])
     {
-        $this->config($options);
+        $this->setConfig($options);
 
-        $this->_url = $request->here();
+        $this->_url = $request->getAttribute('base') . $request->getRequestTarget();
         $this->_urlWithoutQuery = $this->_stripQueryString($this->_url);
     }
 
@@ -97,7 +96,7 @@ class UrlVoter implements VoterInterface
 
         $ignoreQueryString = $item->getExtra('ignoreQueryString');
         if ($ignoreQueryString === null) {
-            $ignoreQueryString = $this->config('ignoreQueryString');
+            $ignoreQueryString = $this->getConfig('ignoreQueryString');
         }
 
         foreach ($routes as $route) {

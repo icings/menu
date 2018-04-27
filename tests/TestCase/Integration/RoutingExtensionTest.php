@@ -30,7 +30,7 @@ class RoutingExtensionTest extends TestCase
         $this->RoutingExtension = new RoutingExtension();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->routeClass(DashedRoute::class);
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/:controller/:action');
         });
     }
@@ -230,7 +230,7 @@ class RoutingExtensionTest extends TestCase
     {
         Router::reload();
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->routeClass(DashedRoute::class);
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
         });
 

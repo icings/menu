@@ -8,7 +8,6 @@
 namespace Icings\Menu\Matcher\Voter;
 
 use Cake\Http\ServerRequest;
-use Cake\Network\Request;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
@@ -37,10 +36,10 @@ class FuzzyRouteVoter implements VoterInterface
     /**
      * Constructor.
      *
-     * @param Request|ServerRequest $request The request object from where to extract the routing
+     * @param ServerRequest $request The request object from where to extract the routing
      *   parameters to match against.
      */
-    public function __construct($request)
+    public function __construct(ServerRequest $request)
     {
         $this->_params = $this->_extractParams($request);
     }
@@ -77,15 +76,15 @@ class FuzzyRouteVoter implements VoterInterface
     /**
      * Extracts the routing parameters from the given request.
      *
-     * @param Request|ServerRequest $request The request object from where to extract the routing
+     * @param ServerRequest $request The request object from where to extract the routing
      *   parameters.
      * @return array An array of routing parameters.
      */
-    protected function _extractParams($request)
+    protected function _extractParams(ServerRequest $request)
     {
-        $params = $request->params;
-        $params['?'] = $request->query;
-        $params['_method'] = $request->method();
+        $params = $request->getAttribute('params');
+        $params['?'] = $request->getQueryParams();
+        $params['_method'] = $request->getMethod();
         $params['_host'] = $request->host();
         if (!isset($params['_ext'])) {
             $params['_ext'] = null;
