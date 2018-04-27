@@ -28,7 +28,7 @@ class RequestFactoryTraitTest extends TestCase
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->routeClass(DashedRoute::class);
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/:controller/:action');
         });
     }
@@ -39,7 +39,7 @@ class RequestFactoryTraitTest extends TestCase
 
         $request = Stub::createRequest('/controller/action');
         $this->assertInstanceOf(Request::class, $request);
-        $this->assertEquals('/controller/action', $request->here());
+        $this->assertEquals('/controller/action', $request->getRequestTarget());
     }
 
     public function testCreateLegacyRequestWithQueryString()
@@ -48,8 +48,8 @@ class RequestFactoryTraitTest extends TestCase
 
         $request = Stub::createRequest('/controller/action?query=value');
         $this->assertInstanceOf(Request::class, $request);
-        $this->assertEquals('/controller/action?query=value', $request->here());
-        $this->assertEquals(['query' => 'value'], $request->query);
+        $this->assertEquals('/controller/action?query=value', $request->getRequestTarget());
+        $this->assertEquals(['query' => 'value'], $request->getQueryParams());
     }
 
     public function testCreateServerRequest()

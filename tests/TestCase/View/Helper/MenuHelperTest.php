@@ -67,7 +67,7 @@ class MenuHelperTest extends TestCase
             'voters' => null,
             'renderer' => null
         ];
-        $this->assertEquals($expected, $helper->config());
+        $this->assertEquals($expected, $helper->getConfig());
     }
 
     public function testConstructConfiguration()
@@ -80,7 +80,7 @@ class MenuHelperTest extends TestCase
         ];
         $helper = new MenuHelper($this->View, $config);
 
-        $this->assertEquals($config, $helper->config());
+        $this->assertEquals($config, $helper->getConfig());
     }
 
     //endregion
@@ -212,7 +212,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($mainMenu));
 
-        $this->Menu->config([
+        $this->Menu->setConfig([
             'renderer' => $renderer
         ]);
         $this->Menu->setMenuFactory($factory);
@@ -253,7 +253,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($mainMenu));
 
-        $this->Menu->config([
+        $this->Menu->setConfig([
             'renderer' => $renderer
         ]);
         $this->Menu->setMenuFactory($factory);
@@ -301,7 +301,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu), $this->isType('array'));
 
-        $this->Menu->config([
+        $this->Menu->setConfig([
             'renderer' => $renderer
         ]);
 
@@ -524,7 +524,7 @@ class MenuHelperTest extends TestCase
             ])
             ->getMock();
         $helper
-            ->config($helperOptions);
+            ->setConfig($helperOptions);
         $helper
             ->setMenuFactory($factory);
         $helper
@@ -578,7 +578,7 @@ class MenuHelperTest extends TestCase
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
-                    $argument->config('ignoreQueryString') === true;
+                    $argument->getConfig('ignoreQueryString') === true;
             }));
 
         /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
@@ -611,7 +611,7 @@ class MenuHelperTest extends TestCase
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
-                    $argument->config('ignoreQueryString') === false;
+                    $argument->getConfig('ignoreQueryString') === false;
             }));
 
         /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */

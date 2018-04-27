@@ -272,7 +272,7 @@ class MenuHelper extends Helper
             );
         }
 
-        $options = Hash::merge($this->config(), $options, $createOptions);
+        $options = Hash::merge($this->getConfig(), $options, $createOptions);
         $rendererOptions = $this->_extractRendererOptions($options);
 
         if ($options['renderer'] === null) {

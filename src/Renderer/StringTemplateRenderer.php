@@ -125,11 +125,11 @@ class StringTemplateRenderer implements RendererInterface
     public function __construct(MatcherInterface $matcher, array $config = [])
     {
         $this->_matcher = $matcher;
-        $this->config($config);
+        $this->setConfig($config);
 
-        $templates = $this->config('templates');
+        $templates = $this->getConfig('templates');
         if (is_string($templates)) {
-            $this->config('templates', $this->templater()->config());
+            $this->setConfig('templates', $this->templater()->getConfig());
         }
     }
 
@@ -149,7 +149,7 @@ class StringTemplateRenderer implements RendererInterface
      */
     public function render(ItemInterface $item, array $options = [])
     {
-        $options = Hash::merge($this->config(), $options);
+        $options = Hash::merge($this->getConfig(), $options);
 
         $rendered = $this->_renderMenu($item, $options);
 
@@ -185,7 +185,7 @@ class StringTemplateRenderer implements RendererInterface
             $templater->push();
             $templater->add($newTemplates);
         }
-        $options['defaultTemplates'] = $templater->config();
+        $options['defaultTemplates'] = $templater->getConfig();
         unset($options['templates']);
 
         $templateVars =

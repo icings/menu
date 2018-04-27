@@ -78,9 +78,9 @@ class UrlVoter implements VoterInterface
      */
     public function __construct($request, array $options = [])
     {
-        $this->config($options);
+        $this->setConfig($options);
 
-        $this->_url = $this->_urlWithoutQuery = $request->here();
+        $this->_url = $this->_urlWithoutQuery = $request->getAttribute('base') . $request->getRequestTarget();
         if (strpos($this->_urlWithoutQuery, '?') !== false) {
             $this->_urlWithoutQuery = explode('?', $this->_urlWithoutQuery, 2)[0];
         }
@@ -98,7 +98,7 @@ class UrlVoter implements VoterInterface
 
         $ignoreQueryString = $item->getExtra('ignoreQueryString');
         if ($ignoreQueryString === null) {
-            $ignoreQueryString = $this->config('ignoreQueryString');
+            $ignoreQueryString = $this->getConfig('ignoreQueryString');
         }
 
         if ($ignoreQueryString) {

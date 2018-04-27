@@ -69,9 +69,11 @@ trait RequestFactoryTrait
         $_SERVER['REQUEST_URI'] = $requestUri;
         $_SERVER['QUERY_STRING'] = $query['string'];
 
-        $request = Request::createFromGlobals();
-        $params = Router::parse($request->url, $request->method());
-        $request->addParams($params);
+        $request = ServerRequestFactory::fromGlobals();
+        $params = Router::parseRequest($request);
+        foreach ($params as $k => $v) {
+            $request = $request->withParam($k, $v);
+        }
 
         Router::setRequestInfo($request);
 
