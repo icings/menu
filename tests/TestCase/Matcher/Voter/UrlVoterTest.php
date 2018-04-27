@@ -26,8 +26,18 @@ class UrlVoterTest extends TestCase
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setExtensions(['json']);
-            $routes->setRouteClass(DashedRoute::class);
+            if (method_exists($routes, 'setExtensions')) {
+                $routes->setExtensions(['json']);
+            } else {
+                $routes->extensions(['json']);
+            }
+
+            if (method_exists($routes, 'setRouteClass')) {
+                $routes->setRouteClass(DashedRoute::class);
+            } else {
+                $routes->routeClass(DashedRoute::class);
+            }
+
             $routes->connect('/:controller/:action');
         });
     }

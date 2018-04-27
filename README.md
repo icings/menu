@@ -21,7 +21,7 @@ applications.
 
 ## Requirements
 
-* CakePHP 3.1+
+* CakePHP 3.4+
 * KnpMenu 2.0+
 
 

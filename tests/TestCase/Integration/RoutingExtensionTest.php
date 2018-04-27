@@ -30,7 +30,12 @@ class RoutingExtensionTest extends TestCase
         $this->RoutingExtension = new RoutingExtension();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setRouteClass(DashedRoute::class);
+            if (method_exists($routes, 'setRouteClass')) {
+                $routes->setRouteClass(DashedRoute::class);
+            } else {
+                $routes->routeClass(DashedRoute::class);
+            }
+
             $routes->connect('/:controller/:action');
         });
     }
@@ -230,7 +235,12 @@ class RoutingExtensionTest extends TestCase
     {
         Router::reload();
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setRouteClass(DashedRoute::class);
+            if (method_exists($routes, 'setRouteClass')) {
+                $routes->setRouteClass(DashedRoute::class);
+            } else {
+                $routes->routeClass(DashedRoute::class);
+            }
+
             $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
         });
 
