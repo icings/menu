@@ -9,6 +9,7 @@ namespace Icings\Menu\Matcher\Voter;
 
 use Cake\Http\ServerRequest;
 use Cake\Network\Request;
+use Cake\Utility\Hash;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
@@ -83,15 +84,16 @@ class FuzzyRouteVoter implements VoterInterface
      */
     protected function _extractParams($request)
     {
-        $params = $request->params;
-        $params['?'] = $request->query;
-        $params['_method'] = $request->method();
+        $attributes = $request->getAttributes();
+        $params = Hash::get($attributes, 'params', []);
+        $params['?'] = $request->getQuery();
+        $params['_method'] = $request->getMethod();
         $params['_host'] = $request->host();
         if (!isset($params['_ext'])) {
             $params['_ext'] = null;
         }
 
-        $pass = isset($params['pass']) ? $params['pass'] : [];
+        $pass = $request->getParam('pass', []);
 
         unset(
             $params['pass'],

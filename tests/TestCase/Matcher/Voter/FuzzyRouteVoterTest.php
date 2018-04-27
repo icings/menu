@@ -25,8 +25,8 @@ class FuzzyRouteVoterTest extends TestCase
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            $routes->extensions(['json']);
-            $routes->routeClass(DashedRoute::class);
+            $routes->setExtensions(['json']);
+            $routes->setRouteClass(DashedRoute::class);
 
             $routes->connect('/:controller');
             $routes->connect('/:controller/:action');

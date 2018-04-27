@@ -102,7 +102,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'clearMatcher' => true,
             'currentAsLink' => true
         ];
-        $this->assertEquals($expected, $renderer->config());
+        $this->assertEquals($expected, $renderer->getConfig());
     }
 
     public function testConstructWithOptions()
@@ -137,7 +137,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'currentAsLink' => true,
             'nonExistent' => 'option'
         ];
-        $this->assertEquals($expected, $renderer->config());
+        $this->assertEquals($expected, $renderer->getConfig());
     }
 
     public function testConstructWithTemplatesFile()
@@ -168,7 +168,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'clearMatcher' => true,
             'currentAsLink' => true,
         ];
-        $this->assertEquals($expected, $renderer->config());
+        $this->assertEquals($expected, $renderer->getConfig());
     }
 
     //endregion
