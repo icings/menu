@@ -123,10 +123,10 @@ $this->loadHelper('Icings/Menu.Menu', [
 ]);
 ```
 
-or via `Helper::config()`:
+or via `Helper::setConfig()`:
 
 ```php
-$this->Menu->config([
+$this->Menu->setConfig([
     'option' => 'value'
 ]);
 ```
@@ -450,10 +450,10 @@ In the default setup, the helper uses a string template renderer, which utilizes
 CakePHP core helpers that can be customized via the `templates` and `templateVars` options.
 
 Changing the default output is fairly simple, just pass the `templates` and/or `templateVars` options to either
-`MenuHelper::config()`, in order to change the defaults for all menus:
+`MenuHelper::setConfig()`, in order to change the defaults for all menus:
 
 ```php
-$this->Menu->config([
+$this->Menu->setConfig([
     'templates' => [
         'menu' => '<nav class="menu-wrapper"><ul{{attrs}}>{{items}}</ul></nav>',
         'item' => '<li data-item="{{itemVar}}"{{attrs}}>{{link}}{{nest}}</li>'
@@ -595,7 +595,7 @@ like this:
 ```php
 use Icings\Menu\View\Helper\MenuHelper;
 
-$this->Menu->config([
+$this->Menu->setConfig([
     'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
 ]);
 ```
@@ -626,7 +626,7 @@ Fuzzy route matching can be enabled by setting the `matching` option to `MATCH_F
 ```php
 use Icings\Menu\View\Helper\MenuHelper;
 
-$this->Menu->config([
+$this->Menu->setConfig([
     'matching' => MenuHelper::MATCH_FUZZY_ROUTE
 ]);
 ```
@@ -745,7 +745,7 @@ information):
 ```php
 use Icings\Menu\View\Helper\MenuHelper;
 
-$this->Menu->config([
+$this->Menu->setConfig([
     'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
 ]);
 ```
@@ -808,7 +808,7 @@ And when won't it match? It won't match when the keys/values are different. The 
 The menu helper is designed to abstract creating a matcher, voters, and a renderer, but if required it's possible to
 hook in custom objects.
 
-The following options are available for `MenuHelper::config()` and `MenuHelper::render()`:
+The following options are available for `MenuHelper::setConfig()` and `MenuHelper::render()`:
 
 - `matcher` (`Icings\Menu\Matcher\MatcherInterface`, defaults to `Icings\Menu\Matcher\Matcher`)  
   The matcher object to use.
@@ -822,7 +822,7 @@ The following options are available for `MenuHelper::config()` and `MenuHelper::
 ### Defining a matcher
 
 ```php
-$this->Menu->config([
+$this->Menu->setConfig([
     'matcher' => new CustomMatcher()
 ]);
 ```
@@ -830,7 +830,7 @@ $this->Menu->config([
 ### Defining voters
 
 ```php
-$this->Menu->config([
+$this->Menu->setConfig([
     'voters' => [
         new CustomVoter(),
         new OtherCustomVoter()
@@ -862,7 +862,7 @@ The voters defined on an item will be tested _before_ the voters defined in the 
 ```php
 use Icings\Menu\Matcher\Matcher;
 
-$this->Menu->config([
+$this->Menu->setConfig([
     'renderer' => [
         new CustomRenderer($matcher)
     ]
@@ -947,7 +947,7 @@ $menu->addChild('News', ['uri' => ['controller' => 'News']]);
 ```php
 use Icings\Menu\View\Helper\MenuHelper;
 
-$this->Menu->config([
+$this->Menu->setConfig([
     'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
 ]);
 
