@@ -37,6 +37,13 @@ class FuzzyRouteVoterTest extends TestCase
                 $routes->routeClass(DashedRoute::class);
             }
 
+            $routes->connect('/named', [
+                'controller' => 'Named',
+                'action' => 'index'
+            ], [
+                '_name' => 'named'
+            ]);
+
             $routes->connect('/:controller');
             $routes->connect('/:controller/:action');
             $routes->connect('/:controller/:action/:id', [], [
@@ -107,6 +114,10 @@ class FuzzyRouteVoterTest extends TestCase
             'Request route with custom defaults' => [
                 '/special',
                 ['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']]
+            ],
+            'Request named route' => [
+                '/named',
+                ['controller' => 'Named', 'action' => 'index']
             ],
         ];
     }
@@ -265,6 +276,17 @@ class FuzzyRouteVoterTest extends TestCase
             'Null plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => null]],
                 '/plugin_name/controller/action',
+                false
+            ],
+
+            'Matching named route without route name works' => [
+                [['controller' => 'Named', 'action' => 'index']],
+                '/named',
+                true
+            ],
+            'Matching named route with route name only does not match' => [
+                [['_name' => 'named']],
+                '/named',
                 false
             ],
 
