@@ -21,9 +21,9 @@ applications.
 
 ## Requirements
 
-* CakePHP 3.1+
+* CakePHP 3.1+ (use the [2.0+ version](https://github.com/icings/menu) of this plugin if you need CakePHP 3.6+
+  deprecation compatibility)
 * KnpMenu 2.0+
-
 
 ## Installation
 
