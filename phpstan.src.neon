@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        - '#Access to protected property Cake\\Http\\ServerRequest::\$params#'
+        - '#Access to protected property Cake\\Http\\ServerRequest::\$query#'
