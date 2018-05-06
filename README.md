@@ -21,7 +21,8 @@ applications.
 
 ## Requirements
 
-* CakePHP 3.4+
+* CakePHP 3.4+ (use the [1.x branch](https://github.com/icings/menu/tree/1.x) of this plugin if you need CakePHP 3.1+
+  compatibility)
 * KnpMenu 2.0+
 
 
