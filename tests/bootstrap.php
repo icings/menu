@@ -49,9 +49,15 @@ $config = [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
+    ],
+
+    'Error' => [
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
     ]
 ];
 Configure::write($config);
+
+(new \Cake\Console\ConsoleErrorHandler(Configure::read('Error')))->register();
 
 date_default_timezone_set('UTC');
 mb_internal_encoding(Configure::read('App.encoding'));
