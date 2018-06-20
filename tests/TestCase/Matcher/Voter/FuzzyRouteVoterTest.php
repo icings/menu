@@ -7,6 +7,7 @@
 
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
+use Cake\Core\Configure;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -86,7 +87,7 @@ class FuzzyRouteVoterTest extends TestCase
      */
     public function paramsDataProvider()
     {
-        return [
+        $provider = [
             'Controller only request' => [
                 '/controller',
                 ['controller' => 'Controller', 'action' => 'index']
@@ -127,15 +128,29 @@ class FuzzyRouteVoterTest extends TestCase
                 '/special',
                 ['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']]
             ],
-            'Request named route' => [
-                '/named',
-                ['_name' => 'named', 'controller' => 'Named', 'action' => 'index']
-            ],
-            'Request named route with elements' => [
-                '/named/element',
-                ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element']
-            ],
         ];
+
+        if (version_compare(Configure::version(), '3.5.11', '>=')) {
+            $provider += [
+                'Request named route' => [
+                    '/named',
+                    ['_name' => 'named', 'controller' => 'Named', 'action' => 'index']
+                ],
+                'Request named route with elements' => [
+                    '/named/element',
+                    ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element']
+                ],
+            ];
+        } else {
+            $provider += [
+                'Request named route' => [
+                    '/named',
+                    ['controller' => 'Named', 'action' => 'index']
+                ],
+            ];
+        }
+
+        return $provider;
     }
 
     /**
@@ -173,7 +188,7 @@ class FuzzyRouteVoterTest extends TestCase
      */
     public function matchingDataProvider()
     {
-        return [
+        $provider = [
             'No URL arrays set' => [
                 null,
                 '/controller/action',
@@ -307,21 +322,6 @@ class FuzzyRouteVoterTest extends TestCase
             ],
             'Matching named route with elements without route name works' => [
                 [['controller' => 'Named', 'action' => 'index']],
-                '/named/element',
-                true
-            ],
-            'Matching named route with route name only works' => [
-                [['_name' => 'named']],
-                '/named',
-                true
-            ],
-            'Matching named route with elements does work' => [
-                [['_name' => 'namedWithElement', 'element' => 'element']],
-                '/named/element',
-                true
-            ],
-            'Matching named route with elements partially does work' => [
-                [['_name' => 'namedWithElement']],
                 '/named/element',
                 true
             ],
@@ -474,6 +474,28 @@ class FuzzyRouteVoterTest extends TestCase
                 true
             ],
         ];
+
+        if (version_compare(Configure::version(), '3.5.11', '>=')) {
+            $provider += [
+                'Matching named route with route name only works' => [
+                    [['_name' => 'named']],
+                    '/named',
+                    true
+                ],
+                'Matching named route with elements does work' => [
+                    [['_name' => 'namedWithElement', 'element' => 'element']],
+                    '/named/element',
+                    true
+                ],
+                'Matching named route with elements partially does work' => [
+                    [['_name' => 'namedWithElement']],
+                    '/named/element',
+                    true
+                ],
+            ];
+        }
+
+        return $provider;
     }
 
     /**
