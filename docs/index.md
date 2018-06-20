@@ -716,6 +716,8 @@ $routes->prefix('PrefixName', function(RouteBuilder $routes) {
 
 #### Fuzzy matching named routes
 
+**Please note** that this feature requires at least CakePHP 3.5.11!
+
 Named routes that contain elements do match in a similar fuzzy manner as the routes discussed previously, that is,
 unlike with strict matching, the elements defined in the route do not need to be present.
 
