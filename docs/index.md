@@ -714,6 +714,45 @@ $routes->prefix('PrefixName', function(RouteBuilder $routes) {
 });
 ```
 
+#### Fuzzy matching named routes
+
+Named routes that contain elements do match in a similar fuzzy manner as the routes discussed previously, that is,
+unlike with strict matching, the elements defined in the route do not need to be present.
+
+Consider a route like this:
+
+```php
+$routes->connect(
+    '/articles/view/:id/:slug',
+    [
+        'controller' => 'Articles',
+        'action' => 'view'
+    ],
+    [
+        'pass' => ['id', 'slug'],
+        '_name' => 'routeName'
+    ]
+);
+```
+
+In order to match it strictly via its name, the URL array would need to contain the name, and all the elements:
+
+```php
+['_name' => 'routeName', 'id' => 123, 'slug' => 'the-article-slug']
+```
+
+With fuzzy route matching, matching will work with providing only the name:
+
+```php
+['_name' => 'routeName']
+```
+
+and with providing partial elements:
+
+```php
+['_name' => 'routeName', 'id' => 123]
+```
+
 ### Matching and query strings
 
 As mentioned initially, in the default setup possible query strings are excluded from matching, which means a URL with

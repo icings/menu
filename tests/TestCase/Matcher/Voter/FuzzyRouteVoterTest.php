@@ -44,6 +44,14 @@ class FuzzyRouteVoterTest extends TestCase
                 '_name' => 'named'
             ]);
 
+            $routes->connect('/named/:element', [
+                'controller' => 'Named',
+                'action' => 'index'
+            ], [
+                'pass' => ['element'],
+                '_name' => 'namedWithElement'
+            ]);
+
             $routes->connect('/:controller');
             $routes->connect('/:controller/:action');
             $routes->connect('/:controller/:action/:id', [], [
@@ -87,6 +95,10 @@ class FuzzyRouteVoterTest extends TestCase
                 '/controller/action',
                 ['controller' => 'Controller', 'action' => 'action']
             ],
+            'Request with passed element' => [
+                '/controller/action/123',
+                ['controller' => 'Controller', 'action' => 'action', 'id' => '123', '123']
+            ],
             'Request with extension' => [
                 '/controller/action.json',
                 ['controller' => 'Controller', 'action' => 'action', '_ext' => 'json']
@@ -117,7 +129,11 @@ class FuzzyRouteVoterTest extends TestCase
             ],
             'Request named route' => [
                 '/named',
-                ['controller' => 'Named', 'action' => 'index']
+                ['_name' => 'named', 'controller' => 'Named', 'action' => 'index']
+            ],
+            'Request named route with elements' => [
+                '/named/element',
+                ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element']
             ],
         ];
     }
@@ -144,7 +160,12 @@ class FuzzyRouteVoterTest extends TestCase
         ];
 
         $expected = Hash::merge($defaults, $expected);
-        $this->assertSame($expected, $voter->getParams());
+        ksort($expected, \SORT_STRING);
+
+        $actual = $voter->getParams();
+        ksort($actual, \SORT_STRING);
+
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -284,10 +305,25 @@ class FuzzyRouteVoterTest extends TestCase
                 '/named',
                 true
             ],
-            'Matching named route with route name only does not match' => [
+            'Matching named route with elements without route name works' => [
+                [['controller' => 'Named', 'action' => 'index']],
+                '/named/element',
+                true
+            ],
+            'Matching named route with route name only works' => [
                 [['_name' => 'named']],
                 '/named',
-                false
+                true
+            ],
+            'Matching named route with elements does work' => [
+                [['_name' => 'namedWithElement', 'element' => 'element']],
+                '/named/element',
+                true
+            ],
+            'Matching named route with elements partially does work' => [
+                [['_name' => 'namedWithElement']],
+                '/named/element',
+                true
             ],
 
             'Matching without custom defaults works' => [

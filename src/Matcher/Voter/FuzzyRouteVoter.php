@@ -102,8 +102,7 @@ class FuzzyRouteVoter implements VoterInterface
             $params['requested'],
             $params['return'],
             $params['_Token'],
-            $params['_matchedRoute'],
-            $params['_name']
+            $params['_matchedRoute']
         );
         $params = array_merge($params, $pass);
         $params += $params['?'];
