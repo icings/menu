@@ -252,7 +252,6 @@ class MenuHelper extends Helper
             }
 
             $menu = end($this->_menus);
-            $createOptions = $this->_menuConfigurations[$menu];
         } elseif (is_string($menu)) {
             if (!isset($this->_menus[$menu])) {
                 throw new \InvalidArgumentException(
@@ -261,7 +260,6 @@ class MenuHelper extends Helper
             }
 
             $menu = $this->_menus[$menu];
-            $createOptions = $this->_menuConfigurations[$menu];
         } elseif (!($menu instanceof ItemInterface)) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -270,6 +268,9 @@ class MenuHelper extends Helper
                     Debugger::getType($menu)
                 )
             );
+        }
+        if (isset($this->_menuConfigurations[$menu])) {
+            $createOptions = $this->_menuConfigurations[$menu];
         }
 
         $options = Hash::merge($this->getConfig(), $options, $createOptions);
