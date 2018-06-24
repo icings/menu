@@ -430,7 +430,7 @@ class MenuHelperTest extends TestCase
         $helper->render($menu, $options);
     }
 
-    public function testRenderMergeWithHelperAndCreateOptions()
+    public function renderMergeWithHelperAndCreateOptionsTestSetup()
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -548,7 +548,7 @@ class MenuHelperTest extends TestCase
             'nonNested2' => 'create value',
             'nonNested3' => 'create value'
         ];
-        $helper->create('name', $createOptions);
+        $menu = $helper->create('name', $createOptions);
 
         $renderOptions = [
             'matcher' => $matcher2,
@@ -561,7 +561,32 @@ class MenuHelperTest extends TestCase
             'nonNested3' => 'render value',
             'nonNested4' => 'render value'
         ];
-        $helper->render($renderOptions);
+
+        return compact('helper', 'menu', 'renderOptions');
+    }
+
+    public function testRenderMergeWithHelperAndCreateOptionsNoMenuArgument()
+    {
+        $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
+        $test['helper']->render(null, $test['renderOptions']);
+    }
+
+    public function testRenderMergeWithHelperAndCreateOptionsRenderOptionsViaMenuArgument()
+    {
+        $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
+        $test['helper']->render($test['renderOptions']);
+    }
+
+    public function testRenderMergeWithHelperAndCreateOptionsNamedMenu()
+    {
+        $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
+        $test['helper']->render($test['menu']->getName(), $test['renderOptions']);
+    }
+
+    public function testRenderMergeWithHelperAndCreateOptionsMenuInstance()
+    {
+        $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
+        $test['helper']->render($test['menu'], $test['renderOptions']);
     }
 
     public function testRenderDefaultMatchingOption()
