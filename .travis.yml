@@ -19,16 +19,10 @@ matrix:
     - php: 7.2
       env: PHPCS=1 PHPUNIT=0
 
-    - php: 7.0
-      env: PHPSTAN=1 PHPUNIT=0
-
-    - php: 7.1
-      env: PHPSTAN=1 PHPUNIT=0
-
     - php: 7.2
       env: PHPSTAN=1 PHPUNIT=0
 
-    - php: 7.0
+    - php: 7.2
       env: COVERAGE=1 PHPUNIT=0
 
 before_install:
