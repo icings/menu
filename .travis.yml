@@ -23,6 +23,9 @@ matrix:
       env: CAKEPHP=3.5.0
 
     - php: 7.2
+      env: CAKEPHP=3.6.0
+
+    - php: 7.2
       env: PHPCS=1 PHPUNIT=0
 
     - php: 7.0
