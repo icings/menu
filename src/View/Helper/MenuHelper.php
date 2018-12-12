@@ -436,15 +436,15 @@ class MenuHelper extends Helper
         switch ($type) {
             case static::MATCH_FUZZY_ROUTE:
                 return [
-                    new FuzzyRouteVoter($this->request)
+                    new FuzzyRouteVoter($this->getView()->getRequest())
                 ];
             case static::MATCH_URL:
                 return [
-                    new UrlVoter($this->request)
+                    new UrlVoter($this->getView()->getRequest())
                 ];
             case static::MATCH_URL_WITH_QUERY_STRING:
                 return [
-                    new UrlVoter($this->request, [
+                    new UrlVoter($this->getView()->getRequest(), [
                         'ignoreQueryString' => false
                     ])
                 ];

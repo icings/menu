@@ -7,6 +7,7 @@
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Icings\Menu\Plugin as MenuPlugin;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -57,4 +58,4 @@ date_default_timezone_set('UTC');
 mb_internal_encoding(Configure::read('App.encoding'));
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 
-Plugin::load('Icings/Menu', ['path' => ROOT]);
+Plugin::getCollection()->add(new MenuPlugin(['path' => ROOT]));
