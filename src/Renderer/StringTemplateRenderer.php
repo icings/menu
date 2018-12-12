@@ -197,7 +197,7 @@ class StringTemplateRenderer implements RendererInterface
         $options['defaultTemplateVars'] = $templateVars;
         unset($options['templateVars']);
 
-        $rendered = $templater->format('menu', [
+        $rendered = (string)$templater->format('menu', [
             'attrs' => $this->_formatAttributes($item->getChildrenAttributes(), $item),
             'templateVars' => $templateVars,
             'items' => $this->_renderChildren($item, $options)
@@ -254,7 +254,7 @@ class StringTemplateRenderer implements RendererInterface
             $templater->pop();
         }
 
-        return $templater->format('nest', [
+        return (string)$templater->format('nest', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'items' => $items
@@ -402,7 +402,7 @@ class StringTemplateRenderer implements RendererInterface
             $nested = '';
         }
 
-        $rendered = $templater->format('item', [
+        $rendered = (string)$templater->format('item', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'link' => $link,
@@ -456,7 +456,7 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderLinkElement(ItemInterface $item, array $options)
     {
-        return $this->templater()->format('link', [
+        return (string)$this->templater()->format('link', [
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'url' => h($item->getUri()),
@@ -478,7 +478,7 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderTextElement(ItemInterface $item, array $options)
     {
-        return $this->templater()->format('text', [
+        return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'label' => $this->_renderLabel($item)

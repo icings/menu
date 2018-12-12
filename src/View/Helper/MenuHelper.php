@@ -251,6 +251,7 @@ class MenuHelper extends Helper
                 throw new \RuntimeException('No menu has been created.');
             }
 
+            /** @var ItemInterface $menu */
             $menu = end($this->_menus);
         } elseif (is_string($menu)) {
             if (!isset($this->_menus[$menu])) {

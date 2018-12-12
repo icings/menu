@@ -32,7 +32,7 @@ class MatcherTest extends TestCase
             ->method('matchItem')
             ->with($this->identicalTo($item))
             ->willReturnCallback(function () use (&$itemVoterInvoked) {
-                if (!$itemVoterInvoked) {
+                if ($itemVoterInvoked === false) {
                     $this->fail('Expected the item voter to be invoked first.');
                 }
 
