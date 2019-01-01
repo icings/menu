@@ -41,13 +41,13 @@
    $ bin/cake plugin load Icings/Menu
    ```
 
-   or add the following call to your applications `config/bootstrap.php` manually:
+   or add the following call to your `Application` class' `bootstrap()` method in the `src/Application.php` file:
 
    ```php
-   Plugin::load('Icings/Menu');
+   $this->addPlugin('Icings/Menu');
    ```
 
-3. Load the helper in your `AppView` class' `initialize()` method:
+3. Load the helper in your `AppView` class' `initialize()` method, located in the `src/View/AppView.php` file:
 
    ```php
    $this->loadHelper('Icings/Menu.Menu');
