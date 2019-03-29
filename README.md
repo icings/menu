@@ -15,8 +15,8 @@
 [link-version]: https://packagist.org/packages/icings/menu
 [link-license]: LICENSE.txt
 
-A [KnpMenu](https://github.com/KnpLabs/KnpMenu) seasoned plugin that assists with creating menus for your CakePHP
-applications.
+A [KnpMenu](https://github.com/KnpLabs/KnpMenu) seasoned plugin that assists with creating menus for your
+[CakePHP](https://cakephp.org) applications.
 
 
 ## Requirements
