@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -36,7 +37,7 @@ class FuzzyRouteVoter implements VoterInterface
     /**
      * Constructor.
      *
-     * @param ServerRequest $request The request object from where to extract the routing
+     * @param \Cake\Http\ServerRequest $request The request object from where to extract the routing
      *   parameters to match against.
      */
     public function __construct(ServerRequest $request)
@@ -76,7 +77,7 @@ class FuzzyRouteVoter implements VoterInterface
     /**
      * Extracts the routing parameters from the given request.
      *
-     * @param ServerRequest $request The request object from where to extract the routing
+     * @param \Cake\Http\ServerRequest $request The request object from where to extract the routing
      *   parameters.
      * @return array An array of routing parameters.
      */
@@ -90,7 +91,7 @@ class FuzzyRouteVoter implements VoterInterface
             $params['_ext'] = null;
         }
 
-        $pass = isset($params['pass']) ? $params['pass'] : [];
+        $pass = $params['pass'] ?? [];
 
         unset(
             $params['pass'],

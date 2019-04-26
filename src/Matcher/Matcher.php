@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -28,7 +29,7 @@ class Matcher implements MatcherInterface
     /**
      * Collection of voters added `addVoter()`.
      *
-     * @var VoterInterface[]
+     * @var \Knp\Menu\Matcher\Voter\VoterInterface[]
      */
     protected $_voters = [];
 

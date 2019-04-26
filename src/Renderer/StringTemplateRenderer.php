@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -27,7 +28,7 @@ class StringTemplateRenderer implements RendererInterface
     /**
      * The matcher to use for determining the active items.
      *
-     * @var MatcherInterface
+     * @var \Knp\Menu\Matcher\MatcherInterface
      */
     protected $_matcher;
 
@@ -42,7 +43,7 @@ class StringTemplateRenderer implements RendererInterface
             'nest' => '<ul{{attrs}}>{{items}}</ul>',
             'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
             'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
-            'text' => '<span{{attrs}}>{{label}}</span>'
+            'text' => '<span{{attrs}}>{{label}}</span>',
         ],
         'templateVars' => null,
         'currentClass' => 'active',
@@ -118,7 +119,7 @@ class StringTemplateRenderer implements RendererInterface
      * - `currentAsLink` (`boolean`, defaults to `true`)
      *   Whether the active item should render a link, or a text element.
      *
-     * @param MatcherInterface $matcher The matcher to use for determining the active items.
+     * @param \Knp\Menu\Matcher\MatcherInterface $matcher The matcher to use for determining the active items.
      * @param array $config An array of options, see the "Configuration options" section in the
      *   method description.
      */
@@ -142,7 +143,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * @see __construct()
      *
-     * @param ItemInterface $item The menu to render.
+     * @param \Knp\Menu\ItemInterface $item The menu to render.
      * @param array $options An array of options, see the "Options" section in the method
      *   description.
      * @return string The rendered menu.
@@ -163,7 +164,7 @@ class StringTemplateRenderer implements RendererInterface
     /**
      * Renders the root menu item.
      *
-     * @param ItemInterface $item The menu item to render.
+     * @param \Knp\Menu\ItemInterface $item The menu item to render.
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
@@ -200,7 +201,7 @@ class StringTemplateRenderer implements RendererInterface
         $rendered = (string)$templater->format('menu', [
             'attrs' => $this->_formatAttributes($item->getChildrenAttributes(), $item),
             'templateVars' => $templateVars,
-            'items' => $this->_renderChildren($item, $options)
+            'items' => $this->_renderChildren($item, $options),
         ]);
 
         if ($newTemplates) {
@@ -219,7 +220,7 @@ class StringTemplateRenderer implements RendererInterface
      * - `templateVars`: The template variables to use for the element.
      * - `childrenTemplates`: The templates to use for the children of the element.
      *
-     * @param ItemInterface $item The menu whose children to render.
+     * @param \Knp\Menu\ItemInterface $item The menu whose children to render.
      * @param array $options The rendering options, see the "Options" section in the method
      *   description for specific nesting element options.
      * @return string The rendered element.
@@ -257,14 +258,14 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$templater->format('nest', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
     /**
      * Renders the menu items children.
      *
-     * @param ItemInterface $item The item whose children to render.
+     * @param \Knp\Menu\ItemInterface $item The item whose children to render.
      * @param array $options The rendering options.
      * @return string[] The rendered children.
      */
@@ -291,7 +292,7 @@ class StringTemplateRenderer implements RendererInterface
     /**
      * Renders the menu item and its children.
      *
-     * @param ItemInterface $item The menu item to render.
+     * @param \Knp\Menu\ItemInterface $item The menu item to render.
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
@@ -406,7 +407,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'link' => $link,
-            'nest' => $nested
+            'nest' => $nested,
         ]);
 
         if ($newTemplates) {
@@ -423,7 +424,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * - `currentAsLink`: Whether to render active items as links, or as text elements.
      *
-     * @param ItemInterface $item The menu item for which to render a link.
+     * @param \Knp\Menu\ItemInterface $item The menu item for which to render a link.
      * @param array $options The rendering options, see the "Options" section in the method
      *   description specific link options.
      * @return string The rendered link.
@@ -449,7 +450,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * - `templateVars`: The template variables to use for the link element.
      *
-     * @param ItemInterface $item The menu item which to render as a link element.
+     * @param \Knp\Menu\ItemInterface $item The menu item which to render as a link element.
      * @param array $options The rendering options, see the "Options" section in the method
      *   description specific link options.
      * @return string The rendered link element.
@@ -460,7 +461,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'url' => h($item->getUri()),
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 
@@ -471,7 +472,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * - `templateVars`: The template variables to use for the text element.
      *
-     * @param ItemInterface $item The item whose text to render.
+     * @param \Knp\Menu\ItemInterface $item The item whose text to render.
      * @param array $options The rendering options, see the "Options" section in the method
      *   description specific text options.
      * @return string The rendered text.
@@ -481,7 +482,7 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 
@@ -491,7 +492,7 @@ class StringTemplateRenderer implements RendererInterface
      * By default the label is being HTML entity encoded, unless explicitly disabled for the given
      * menu item via the `escape` or `escapeLabel` option.
      *
-     * @param ItemInterface $item The item whose label to render.
+     * @param \Knp\Menu\ItemInterface $item The item whose label to render.
      * @return string The rendered label.
      */
     protected function _renderLabel(ItemInterface $item)
@@ -509,7 +510,7 @@ class StringTemplateRenderer implements RendererInterface
      * Formats an array of attributes as a string of HTML attributes.
      *
      * @param array $attributes The attributes to format.
-     * @param ItemInterface $item The menu item that defined the attributes.
+     * @param \Knp\Menu\ItemInterface $item The menu item that defined the attributes.
      * @return string A formatted string of HTML attributes.
      */
     protected function _formatAttributes(array $attributes, ItemInterface $item)

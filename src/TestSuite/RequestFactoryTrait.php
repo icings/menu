@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,7 +8,6 @@
 
 namespace Icings\Menu\TestSuite;
 
-use Cake\Http\ServerRequest;
 use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Router;
 
@@ -20,19 +20,18 @@ trait RequestFactoryTrait
      * Creates a request object.
      *
      * @param string $requestUri The request URI for which to create a request object for.
-     * @return ServerRequest
+     * @return \Cake\Http\ServerRequest
      */
     public static function createRequest($requestUri)
     {
         $query = static::_extractQuery($requestUri);
-
         $request = ServerRequestFactory::fromGlobals(
             [
                 'PHP_SELF' => '/index.php',
                 'REQUEST_METHOD' => 'GET',
                 'HTTP_HOST' => 'localhost',
                 'REQUEST_URI' => $requestUri,
-                'QUERY_STRING' => $query['string']
+                'QUERY_STRING' => $query['string'],
             ],
             $query['arguments']
         );

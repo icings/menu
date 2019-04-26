@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -50,7 +51,7 @@ $config = [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
-    ]
+    ],
 ];
 Configure::write($config);
 

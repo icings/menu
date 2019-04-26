@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -8,9 +9,9 @@
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
 use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Icings\Menu\Matcher\Voter\UrlVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
@@ -198,21 +199,21 @@ class UrlVoterTest extends TestCase
             'Request without query, URL array, matching path, non-matching query' => [
                 '/controller/action',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 [
                     ['voterIgnore' => true, 'itemIgnore' => null, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => true, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request without query, URL array with query, non-matching path, non-matching query' => [
                 '/controller/action',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'query' => 'value']],
-                false
+                [['controller' => 'Other', 'action' => 'action', '?' => ['query' => 'value']]],
+                false,
             ],
             'Request with query, URL array without query, matching path, non-matching query' => [
                 '/controller/action?query=value',
@@ -224,46 +225,46 @@ class UrlVoterTest extends TestCase
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request with query, URL array without query, non-matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
                 [['controller' => 'Other', 'action' => 'action']],
-                false
+                false,
             ],
             'Request with query, URL array with query, matching path, matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
-                true
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
+                true,
             ],
             'Request with query, URL array with query, non-matching path, matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'query' => 'value']],
-                false
+                [['controller' => 'Other', 'action' => 'action', '?' => ['query' => 'value']]],
+                false,
             ],
             'Request with query, URL array with query, matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'other' => 'value']],
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['other' => 'value']]],
                 [
                     ['voterIgnore' => true, 'itemIgnore' => null, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => true, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request with query, URL array with query, non-matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'other' => 'value']],
-                false
-            ]
+                [['controller' => 'Other', 'action' => 'action', '?' => ['other' => 'value']]],
+                false,
+            ],
 
             //endregion
         ];
@@ -284,7 +285,7 @@ class UrlVoterTest extends TestCase
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => $set[3]],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => $set[3]],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => $set[3]],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => $set[3]]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => $set[3]],
                 ];
             }
 
@@ -295,7 +296,7 @@ class UrlVoterTest extends TestCase
                     $set[2],
                     $config['voterIgnore'],
                     $config['itemIgnore'],
-                    $config['expected']
+                    $config['expected'],
                 ];
             }
         }
@@ -309,16 +310,16 @@ class UrlVoterTest extends TestCase
      * @param string $requestUri The request URI to match against.
      * @param string $uri The menu items main URI.
      * @param array[] $routes An array of URL arrays.
-     * @param boolean $voterIgnore
-     * @param boolean $itemIgnore
-     * @param boolean $expected The expected assertion result.
+     * @param bool $voterIgnore
+     * @param bool $itemIgnore
+     * @param bool $expected The expected assertion result.
      */
     public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected)
     {
         $request = $this->createRequest($requestUri);
 
         $voter = new UrlVoter($request, [
-            'ignoreQueryString' => $voterIgnore
+            'ignoreQueryString' => $voterIgnore,
         ]);
 
         $factory = $this

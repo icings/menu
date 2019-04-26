@@ -11,15 +11,15 @@
             "homepage": "https://nowak-media.de"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
-        "php": ">=5.6.0",
-        "cakephp/cakephp": "^3.7",
+        "php": ">=7.1.0",
+        "cakephp/cakephp": "4.x-dev as 4.0.0",
         "knplabs/knp-menu": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7",
-        "cakephp/cakephp-codesniffer": "^3.0"
+        "phpunit/phpunit": "^7",
+        "cakephp/cakephp-codesniffer": "dev-next"
     },
     "autoload": {
         "psr-4": {
@@ -33,17 +33,21 @@
             "Knp\\Menu\\Tests\\": "vendor/knplabs/knp-menu/tests/Knp/Menu/Tests"
         }
     },
+    "prefer-stable": true,
     "scripts": {
         "check": [
-            "@cs",
+            "@cs-check",
             "@stan-src",
             "@stan-tests",
             "@test"
         ],
         "coverage": "phpunit --coverage-clover=./clover.xml",
-        "cs": "phpcs -p ./src ./tests",
+        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "psalm": "psalm --show-info=false",
         "stan-src": "phpstan analyse -l 7 -c ./phpstan.src.neon ./src",
         "stan-tests": "phpstan analyse -l 7 -c ./phpstan.tests.neon ./tests",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json", 
         "test": "phpunit"
     }
 }

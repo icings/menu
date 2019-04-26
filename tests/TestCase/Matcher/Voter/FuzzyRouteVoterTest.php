@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -8,9 +9,9 @@
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
 use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
@@ -40,36 +41,36 @@ class FuzzyRouteVoterTest extends TestCase
 
             $routes->connect('/named', [
                 'controller' => 'Named',
-                'action' => 'index'
+                'action' => 'index',
             ], [
-                '_name' => 'named'
+                '_name' => 'named',
             ]);
 
             $routes->connect('/named/:element', [
                 'controller' => 'Named',
-                'action' => 'index'
+                'action' => 'index',
             ], [
                 'pass' => ['element'],
-                '_name' => 'namedWithElement'
+                '_name' => 'namedWithElement',
             ]);
 
             $routes->connect('/:controller');
             $routes->connect('/:controller/:action');
             $routes->connect('/:controller/:action/:id', [], [
                 'id' => Router::ID,
-                'pass' => ['id']
+                'pass' => ['id'],
             ]);
             $routes->connect('/:controller/:action/:id/:slug', [], [
                 'id' => Router::ID,
-                'pass' => ['id', 'slug']
+                'pass' => ['id', 'slug'],
             ]);
 
             $routes->connect('/special', [
                 'controller' => 'Special',
                 'action' => 'index',
                 'specialKey' => [
-                    'foo', 123, 'a' => 'a', 'b' => 'b'
-                ]
+                    'foo', 123, 'a' => 'a', 'b' => 'b',
+                ],
             ]);
 
             $routes->prefix('PrefixName', function (RouteBuilder $routes) {
@@ -90,43 +91,43 @@ class FuzzyRouteVoterTest extends TestCase
         $provider = [
             'Controller only request' => [
                 '/controller',
-                ['controller' => 'Controller', 'action' => 'index']
+                ['controller' => 'Controller', 'action' => 'index'],
             ],
             'Controller + action request' => [
                 '/controller/action',
-                ['controller' => 'Controller', 'action' => 'action']
+                ['controller' => 'Controller', 'action' => 'action'],
             ],
             'Request with passed element' => [
                 '/controller/action/123',
-                ['controller' => 'Controller', 'action' => 'action', 'id' => '123', '123']
+                ['controller' => 'Controller', 'action' => 'action', 'id' => '123', '123'],
             ],
             'Request with extension' => [
                 '/controller/action.json',
-                ['controller' => 'Controller', 'action' => 'action', '_ext' => 'json']
+                ['controller' => 'Controller', 'action' => 'action', '_ext' => 'json'],
             ],
             'Request with query string' => [
                 '/controller/action?query=value',
-                ['controller' => 'Controller', 'action' => 'action', 'query' => 'value', '?' => ['query' => 'value']]
+                ['controller' => 'Controller', 'action' => 'action', 'query' => 'value', '?' => ['query' => 'value']],
             ],
             'Request with numerical query string value' => [
                 '/controller/action?query=123',
-                ['controller' => 'Controller', 'action' => 'action', 'query' => '123', '?' => ['query' => '123']]
+                ['controller' => 'Controller', 'action' => 'action', 'query' => '123', '?' => ['query' => '123']],
             ],
             'Request with float query string value' => [
                 '/controller/action?query=12.3',
-                ['controller' => 'Controller', 'action' => 'action', 'query' => '12.3', '?' => ['query' => '12.3']]
+                ['controller' => 'Controller', 'action' => 'action', 'query' => '12.3', '?' => ['query' => '12.3']],
             ],
             'Prefix request' => [
                 '/prefix_name/controller/action',
-                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']
+                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name'],
             ],
             'Plugin request' => [
                 '/plugin_name/controller/action',
-                ['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']
+                ['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName'],
             ],
             'Request route with custom defaults' => [
                 '/special',
-                ['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']]
+                ['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']],
             ],
         ];
 
@@ -134,18 +135,18 @@ class FuzzyRouteVoterTest extends TestCase
             $provider += [
                 'Request named route' => [
                     '/named',
-                    ['_name' => 'named', 'controller' => 'Named', 'action' => 'index']
+                    ['_name' => 'named', 'controller' => 'Named', 'action' => 'index'],
                 ],
                 'Request named route with elements' => [
                     '/named/element',
-                    ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element']
+                    ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element'],
                 ],
             ];
         } else {
             $provider += [
                 'Request named route' => [
                     '/named',
-                    ['controller' => 'Named', 'action' => 'index']
+                    ['controller' => 'Named', 'action' => 'index'],
                 ],
             ];
         }
@@ -171,7 +172,7 @@ class FuzzyRouteVoterTest extends TestCase
             '_method' => 'GET',
             'action' => null,
             'controller' => null,
-            'plugin' => null
+            'plugin' => null,
         ];
 
         $expected = Hash::merge($defaults, $expected);
@@ -189,205 +190,205 @@ class FuzzyRouteVoterTest extends TestCase
     public function matchingDataProvider()
     {
         $provider = [
-            'No URL arrays set' => [
-                null,
-                '/controller/action',
-                null
-            ],
+           'No URL arrays set' => [
+               null,
+               '/controller/action',
+               null,
+           ],
 
-            'Exact matching URL array' => [
-                [['controller' => 'Controller', 'action' => 'action']],
-                '/controller/action',
-                true
-            ],
-            'Wrong action name does not match' => [
-                [['controller' => 'Controller', 'action' => 'other']],
-                '/controller/action',
-                false
-            ],
-            'Wrong controller name does not match' => [
-                [['controller' => 'Other', 'action' => 'action']],
-                '/controller/action',
-                false
-            ],
-            'Elements do not require exact order' => [
-                [['action' => 'action', 'controller' => 'Controller']],
-                '/controller/action',
-                true
-            ],
+           'Exact matching URL array' => [
+               [['controller' => 'Controller', 'action' => 'action']],
+               '/controller/action',
+               true,
+           ],
+           'Wrong action name does not match' => [
+               [['controller' => 'Controller', 'action' => 'other']],
+               '/controller/action',
+               false,
+           ],
+           'Wrong controller name does not match' => [
+               [['controller' => 'Other', 'action' => 'action']],
+               '/controller/action',
+               false,
+           ],
+           'Elements do not require exact order' => [
+               [['action' => 'action', 'controller' => 'Controller']],
+               '/controller/action',
+               true,
+           ],
 
-            'Match configured extension' => [
-                [['controller' => 'Controller', 'action' => 'action', '_ext' => 'json']],
-                '/controller/action.json',
-                true
-            ],
-            'Wrong extension does not match' => [
-                [['controller' => 'Controller', 'action' => 'action', '_ext' => 'xml']],
-                '/controller/action.json',
-                false
-            ],
+           'Match configured extension' => [
+               [['controller' => 'Controller', 'action' => 'action', '_ext' => 'json']],
+               '/controller/action.json',
+               true,
+           ],
+           'Wrong extension does not match' => [
+               [['controller' => 'Controller', 'action' => 'action', '_ext' => 'xml']],
+               '/controller/action.json',
+               false,
+           ],
 
-            'Exact matching passed parameters' => [
-                [['controller' => 'Controller', 'action' => 'action', '123', 'whatever']],
-                '/controller/action/123/whatever',
-                true
-            ],
-            'Wrong passed parameter does not match' => [
-                [['controller' => 'Controller', 'action' => 'action', '456']],
-                '/controller/action/123',
-                false
-            ],
-            'Non existing passed parameters do not match' => [
-                [['controller' => 'Controller', 'action' => 'action', 'whatever', '123']],
-                '/controller/action/123',
-                false
-            ],
-            'Matching passed parameters requires exact order when using numerical indices' => [
-                [['controller' => 'Controller', 'action' => 'action', 'whatever', '123']],
-                '/controller/action/123/whatever',
-                false
-            ],
-            'Matching passed parameters partially requires exact order when using numerical indices' => [
-                [['controller' => 'Controller', 'action' => 'action', 'whatever']],
-                '/controller/action/123/whatever',
-                false
-            ],
-            'Matching passed parameters does not require exact order when using named indices' => [
-                [['controller' => 'Controller', 'action' => 'action', 'slug' => 'whatever', 'id' => '123']],
-                '/controller/action/123/whatever',
-                true
-            ],
-            'Matching passed parameters partially does not require exact order when using named indices' => [
-                [['controller' => 'Controller', 'action' => 'action', 'slug' => 'whatever']],
-                '/controller/action/123/whatever',
-                true
-            ],
-            'Matching passed parameters partially using numerical indices works' => [
-                [['controller' => 'Controller', 'action' => 'action', '123']],
-                '/controller/action/123/whatever',
-                true
-            ],
-            'Matching passed parameters partially using named indices works' => [
-                [['controller' => 'Controller', 'action' => 'action', 'id' => '123']],
-                '/controller/action/123/whatever',
-                true
-            ],
+           'Exact matching passed parameters' => [
+               [['controller' => 'Controller', 'action' => 'action', '123', 'whatever']],
+               '/controller/action/123/whatever',
+               true,
+           ],
+           'Wrong passed parameter does not match' => [
+               [['controller' => 'Controller', 'action' => 'action', '456']],
+               '/controller/action/123',
+               false,
+           ],
+           'Non existing passed parameters do not match' => [
+               [['controller' => 'Controller', 'action' => 'action', 'whatever', '123']],
+               '/controller/action/123',
+               false,
+           ],
+           'Matching passed parameters requires exact order when using numerical indices' => [
+               [['controller' => 'Controller', 'action' => 'action', 'whatever', '123']],
+               '/controller/action/123/whatever',
+               false,
+           ],
+           'Matching passed parameters partially requires exact order when using numerical indices' => [
+               [['controller' => 'Controller', 'action' => 'action', 'whatever']],
+               '/controller/action/123/whatever',
+               false,
+           ],
+           'Matching passed parameters does not require exact order when using named indices' => [
+               [['controller' => 'Controller', 'action' => 'action', 'slug' => 'whatever', 'id' => '123']],
+               '/controller/action/123/whatever',
+               true,
+           ],
+           'Matching passed parameters partially does not require exact order when using named indices' => [
+               [['controller' => 'Controller', 'action' => 'action', 'slug' => 'whatever']],
+               '/controller/action/123/whatever',
+               true,
+           ],
+           'Matching passed parameters partially using numerical indices works' => [
+               [['controller' => 'Controller', 'action' => 'action', '123']],
+               '/controller/action/123/whatever',
+               true,
+           ],
+           'Matching passed parameters partially using named indices works' => [
+               [['controller' => 'Controller', 'action' => 'action', 'id' => '123']],
+               '/controller/action/123/whatever',
+               true,
+           ],
 
-            'Matching without prefix works' => [
-                [['controller' => 'Controller', 'action' => 'action']],
-                '/prefix_name/controller/action',
-                true
-            ],
-            'Exact prefix matching' => [
-                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']],
-                '/prefix_name/controller/action',
-                true
-            ],
-            'Wrong prefix does not match' => [
-                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'other']],
-                '/prefix_name/controller/action',
-                false
-            ],
-            'Null prefix does not match' => [
-                [['controller' => 'Controller', 'action' => 'action', 'prefix' => null]],
-                '/prefix_name/controller/action',
-                false
-            ],
+           'Matching without prefix works' => [
+               [['controller' => 'Controller', 'action' => 'action']],
+               '/prefix_name/controller/action',
+               true,
+           ],
+           'Exact prefix matching' => [
+               [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']],
+               '/prefix_name/controller/action',
+               true,
+           ],
+           'Wrong prefix does not match' => [
+               [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'other']],
+               '/prefix_name/controller/action',
+               false,
+           ],
+           'Null prefix does not match' => [
+               [['controller' => 'Controller', 'action' => 'action', 'prefix' => null]],
+               '/prefix_name/controller/action',
+               false,
+           ],
 
-            'Matching without plugin works' => [
-                [['controller' => 'Controller', 'action' => 'action']],
-                '/plugin_name/controller/action',
-                true
-            ],
-            'Exact plugin matching' => [
-                [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']],
-                '/plugin_name/controller/action',
-                true
-            ],
-            'Wrong plugin does not match' => [
-                [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'OtherPlugin']],
-                '/plugin_name/controller/action',
-                false
-            ],
+           'Matching without plugin works' => [
+               [['controller' => 'Controller', 'action' => 'action']],
+               '/plugin_name/controller/action',
+               true,
+           ],
+           'Exact plugin matching' => [
+               [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']],
+               '/plugin_name/controller/action',
+               true,
+           ],
+           'Wrong plugin does not match' => [
+               [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'OtherPlugin']],
+               '/plugin_name/controller/action',
+               false,
+           ],
             'Null plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => null]],
                 '/plugin_name/controller/action',
-                false
+                false,
             ],
 
             'Matching named route without route name works' => [
                 [['controller' => 'Named', 'action' => 'index']],
                 '/named',
-                true
+                true,
             ],
             'Matching named route with elements without route name works' => [
                 [['controller' => 'Named', 'action' => 'index']],
                 '/named/element',
-                true
+                true,
             ],
 
             'Matching without custom defaults works' => [
                 [['controller' => 'Special', 'action' => 'index']],
                 '/special',
-                true
+                true,
             ],
             'Exact custom defaults matching' => [
                 [['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']]],
                 '/special',
-                true
+                true,
             ],
             'Custom default keys do not require exact order' => [
                 [['specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b'], 'controller' => 'Special', 'action' => 'index']],
                 '/special',
-                true
+                true,
             ],
             'Custom default array values require exact order for numeric indices' => [
                 [['controller' => 'Special', 'action' => 'index', 'specialKey' => [123, 'foo', 'a' => 'a', 'b' => 'b']]],
                 '/special',
-                false
+                false,
             ],
             'Custom default array values require exact order for named indices' => [
                 [['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'b' => 'b', 'a' => 'a']]],
                 '/special',
-                false
+                false,
             ],
 
             'Exact host matching' => [
                 [['controller' => 'Controller', 'action' => 'index', '_host' => 'localhost']],
                 '/controller/index',
-                true
+                true,
             ],
             'Wrong host does not match' => [
                 [['controller' => 'Controller', 'action' => 'index', '_host' => 'other']],
                 '/controller/index',
-                false
+                false,
             ],
             'Null host does not match' => [
                 [['controller' => 'Controller', 'action' => 'index', '_host' => null]],
                 '/controller/index',
-                false
+                false,
             ],
 
             'Exact method matching' => [
                 [['controller' => 'Controller', 'action' => 'index', '_method' => 'GET']],
                 '/controller/index',
-                true
+                true,
             ],
             'Wrong method does not match' => [
                 [['controller' => 'Controller', 'action' => 'index', '_method' => 'POST']],
                 '/controller/index',
-                false
+                false,
             ],
             'Null method does not match' => [
                 [['controller' => 'Controller', 'action' => 'index', '_method' => null]],
                 '/controller/index',
-                false
+                false,
             ],
 
             'Fragments are being ignored' => [
                 [['controller' => 'Controller', 'action' => 'action', '#' => 'fragment']],
                 '/controller/action',
-                true
+                true,
             ],
             'Special keys are being ignored' => [
                 [[
@@ -397,81 +398,81 @@ class FuzzyRouteVoterTest extends TestCase
                     '_scheme' => 'https',
                     '_port' => 42,
                     '_full' => true,
-                    '_ssl' => true
+                    '_ssl' => true,
                 ]],
                 '/controller/action',
-                true
+                true,
             ],
 
             'Exact query arguments matching' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
                 '/controller/action?query=value',
-                true
+                true,
             ],
             'Matching integer query argument values works' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 123]],
                 '/controller/action?query=123',
-                true
+                true,
             ],
             'Matching float query argument values works' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 12.3]],
                 '/controller/action?query=12.3',
-                true
+                true,
             ],
             'Matching query arguments partially works' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
                 '/controller/action?query=value&other=value',
-                true
+                true,
             ],
             'Wrong query argument does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
                 '/controller/action?other=value',
-                false
+                false,
             ],
             'Matching query arguments does does not require exact order' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 'value', 'other' => 'value']],
                 '/controller/action?other=value&query=value',
-                true
+                true,
             ],
             'Matching query arguments partially does not require exact order' => [
                 [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
                 '/controller/action?other=value&query=value',
-                true
+                true,
             ],
             'Exact query arguments matching via special `?` key' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 '/controller/action?query=value',
-                true
+                true,
             ],
             'Matching integer query argument values via special `?` key works' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 123]]],
                 '/controller/action?query=123',
-                true
+                true,
             ],
             'Matching float query argument values via special `?` key works' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 12.3]]],
                 '/controller/action?query=12.3',
-                true
+                true,
             ],
             'Matching query arguments partially via special `?` key works' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 '/controller/action?query=value&other=value',
-                true
+                true,
             ],
             'Wrong query argument via special `?` key does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 '/controller/action?other=value',
-                false
+                false,
             ],
             'Matching query arguments via special `?` key does does not require exact order' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value', 'other' => 'value']]],
                 '/controller/action?other=value&query=value',
-                true
+                true,
             ],
             'Matching query arguments partially via special `?` key does does not require exact order' => [
                 [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 '/controller/action?other=value&query=value',
-                true
+                true,
             ],
         ];
 
@@ -480,17 +481,17 @@ class FuzzyRouteVoterTest extends TestCase
                 'Matching named route with route name only works' => [
                     [['_name' => 'named']],
                     '/named',
-                    true
+                    true,
                 ],
                 'Matching named route with elements does work' => [
                     [['_name' => 'namedWithElement', 'element' => 'element']],
                     '/named/element',
-                    true
+                    true,
                 ],
                 'Matching named route with elements partially does work' => [
                     [['_name' => 'namedWithElement']],
                     '/named/element',
-                    true
+                    true,
                 ],
             ];
         }
@@ -503,7 +504,7 @@ class FuzzyRouteVoterTest extends TestCase
      *
      * @param array $url The URL array to test.
      * @param string $requestUri The request URI to test against.
-     * @param boolean|null $expected The matching result.
+     * @param bool|null $expected The matching result.
      */
     public function testMatching($url, $requestUri, $expected)
     {

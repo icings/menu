@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -22,7 +23,6 @@ use Icings\Menu\MenuFactory;
 use Icings\Menu\MenuFactoryInterface;
 use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\Voter\VoterInterface;
 use Knp\Menu\Renderer\RendererInterface;
 
 /**
@@ -35,21 +35,21 @@ class MenuHelper extends Helper
      *
      * @var string
      */
-    const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
+    public const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
 
     /**
      * The URL matching mode.
      *
      * @var string
      */
-    const MATCH_URL = 'matchUrl';
+    public const MATCH_URL = 'matchUrl';
 
     /**
      * The URL matching mode that includes query strings.
      *
      * @var string
      */
-    const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
+    public const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
 
     /**
      * Default configuration.
@@ -60,13 +60,13 @@ class MenuHelper extends Helper
         'matching' => null,
         'matcher' => null,
         'voters' => null,
-        'renderer' => null
+        'renderer' => null,
     ];
 
     /**
      * Collection of menu items created via `create()`.
      *
-     * @var ItemInterface[]
+     * @var \Knp\Menu\ItemInterface[]
      */
     protected $_menus = [];
 
@@ -80,14 +80,14 @@ class MenuHelper extends Helper
     /**
      * The factory to use for creating menu items.
      *
-     * @var MenuFactoryInterface
+     * @var \Icings\Menu\MenuFactoryInterface
      */
     protected $_factory = null;
 
     /**
      * Sets the menu factory to use for creating menu items.
      *
-     * @param MenuFactoryInterface $factory The factory to assign.
+     * @param \Icings\Menu\MenuFactoryInterface $factory The factory to assign.
      * @return $this
      */
     public function setMenuFactory(MenuFactoryInterface $factory)
@@ -100,7 +100,7 @@ class MenuHelper extends Helper
     /**
      * Gets the menu factory to use for creating menu items.
      *
-     * @return MenuFactoryInterface
+     * @return \Icings\Menu\MenuFactoryInterface
      */
     public function getMenuFactory()
     {
@@ -145,14 +145,14 @@ class MenuHelper extends Helper
      * @see create()
      * @see render()
      *
-     * @param View $View The View this helper is being attached to.
+     * @param \Cake\View\View $View The View this helper is being attached to.
      * @param array $config An array of options, see the "Configuration options" section in the
      *   method description.
      */
     public function __construct(View $View, array $config = [])
     {
         $config += [
-            'matching' => static::MATCH_URL
+            'matching' => static::MATCH_URL,
         ];
         parent::__construct($View, $config);
 
@@ -186,7 +186,7 @@ class MenuHelper extends Helper
      *   and rendering specific menus.
      * @param array $options An array of options, see the "Options" section in the method
      *   description.
-     * @return ItemInterface
+     * @return \Knp\Menu\ItemInterface
      */
     public function create($name, array $options = [])
     {
@@ -230,7 +230,7 @@ class MenuHelper extends Helper
      * @throws \InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
      *
-     * @param ItemInterface|string|array $menu Either an `\Knp\Menu\ItemInterface` implementation,
+     * @param \Knp\Menu\ItemInterface|string|array $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
      *  `$options` argument. If omitted or an array, the menu that was last created via `create()`
      *  will be used.
@@ -251,7 +251,7 @@ class MenuHelper extends Helper
                 throw new \RuntimeException('No menu has been created.');
             }
 
-            /** @var ItemInterface $menu */
+            /** @var \Knp\Menu\ItemInterface $menu */
             $menu = end($this->_menus);
         } elseif (is_string($menu)) {
             if (!isset($this->_menus[$menu])) {
@@ -344,7 +344,7 @@ class MenuHelper extends Helper
      * Stores a menu and associates a set of configuration options with it for later use
      * with `render()`.
      *
-     * @param ItemInterface $menu The menu to store.
+     * @param \Knp\Menu\ItemInterface $menu The menu to store.
      * @param array $options The options to associate with it.
      * @return void
      */
@@ -373,7 +373,7 @@ class MenuHelper extends Helper
             array_flip([
                 'templates',
                 'templateVars',
-                'menuAttributes'
+                'menuAttributes',
             ])
         );
 
@@ -406,7 +406,7 @@ class MenuHelper extends Helper
                 'matching',
                 'matcher',
                 'voters',
-                'renderer'
+                'renderer',
             ])
         );
 
@@ -418,7 +418,7 @@ class MenuHelper extends Helper
     /**
      * Creates the default matcher.
      *
-     * @return MatcherInterface
+     * @return \Icings\Menu\Matcher\MatcherInterface
      */
     protected function _createDefaultMatcher()
     {
@@ -429,7 +429,7 @@ class MenuHelper extends Helper
      * Creates default voters for the given type.
      *
      * @param string $type The type of the voters to create.
-     * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
+     * @return \Knp\Menu\Matcher\Voter\VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
      *   types.
      */
     protected function _createDefaultVoters($type)
@@ -437,17 +437,17 @@ class MenuHelper extends Helper
         switch ($type) {
             case static::MATCH_FUZZY_ROUTE:
                 return [
-                    new FuzzyRouteVoter($this->getView()->getRequest())
+                    new FuzzyRouteVoter($this->getView()->getRequest()),
                 ];
             case static::MATCH_URL:
                 return [
-                    new UrlVoter($this->getView()->getRequest())
+                    new UrlVoter($this->getView()->getRequest()),
                 ];
             case static::MATCH_URL_WITH_QUERY_STRING:
                 return [
                     new UrlVoter($this->getView()->getRequest(), [
-                        'ignoreQueryString' => false
-                    ])
+                        'ignoreQueryString' => false,
+                    ]),
                 ];
         }
 
@@ -457,8 +457,8 @@ class MenuHelper extends Helper
     /**
      * Creates the default renderer.
      *
-     * @param MatcherInterface $matcher The matcher to pass to the renderer.
-     * @return StringTemplateRenderer
+     * @param \Icings\Menu\Matcher\MatcherInterface $matcher The matcher to pass to the renderer.
+     * @return \Icings\Menu\Renderer\StringTemplateRenderer
      */
     protected function _createDefaultRenderer(MatcherInterface $matcher)
     {

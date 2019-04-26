@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -26,7 +27,7 @@ class UrlVoter implements VoterInterface
      * @var array
      */
     protected $_defaultConfig = [
-        'ignoreQueryString' => true
+        'ignoreQueryString' => true,
     ];
 
     /**
@@ -71,7 +72,7 @@ class UrlVoter implements VoterInterface
      * - `ignoreQueryString`: Defines whether the query string should be ignored when matching
      *   items. Defaults to `true`.
      *
-     * @param ServerRequest $request The request object from where to extract the request
+     * @param \Cake\Http\ServerRequest $request The request object from where to extract the request
      *   target to match against.
      * @param array $options An array of options, see the "Options" section in the method
      *   description.

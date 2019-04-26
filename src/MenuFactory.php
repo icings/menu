@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -12,5 +13,4 @@ namespace Icings\Menu;
  */
 class MenuFactory extends \Knp\Menu\MenuFactory implements MenuFactoryInterface
 {
-
 }

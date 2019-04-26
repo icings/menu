@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,8 +8,8 @@
 
 namespace Icings\Menu\Test\TestCase;
 
-use Knp\Menu\MenuItem;
 use Knp\Menu\MenuFactory;
+use Knp\Menu\MenuItem;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -59,7 +60,7 @@ abstract class KnpMenuTestCase extends TestCase
     protected function setUp()
     {
         $factory = new MenuFactory();
-        $this->menu = $factory->createItem('Root li', array('childrenAttributes' => array('class' => 'root')));
+        $this->menu = $factory->createItem('Root li', ['childrenAttributes' => ['class' => 'root']]);
         $this->pt1 = $this->menu->addChild('Parent 1');
         $this->ch1 = $this->pt1->addChild('Child 1');
         $this->ch2 = $this->pt1->addChild('Child 2');
@@ -88,13 +89,13 @@ abstract class KnpMenuTestCase extends TestCase
     // prints a visual representation of our basic testing tree
     protected function printTestTree()
     {
-        print('      Menu Structure   '."\n");
-        print('               rt      '."\n");
-        print('             /    \    '."\n");
-        print('          pt1      pt2 '."\n");
-        print('        /  | \      |  '."\n");
-        print('      ch1 ch2 ch3  ch4 '."\n");
-        print('                    |  '."\n");
-        print('                   gc1 '."\n");
+        print '      Menu Structure   ' . "\n";
+        print '               rt      ' . "\n";
+        print '             /    \    ' . "\n";
+        print '          pt1      pt2 ' . "\n";
+        print '        /  | \      |  ' . "\n";
+        print '      ch1 ch2 ch3  ch4 ' . "\n";
+        print '                    |  ' . "\n";
+        print '                   gc1 ' . "\n";
     }
 }

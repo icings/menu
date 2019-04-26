@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,9 +8,9 @@
 
 namespace Icings\Menu\Test\TestCase\Integration;
 
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\RoutingExtension;
 use Knp\Menu\FactoryInterface;
@@ -59,17 +60,17 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller',
-                'action' => 'action'
-            ]
+                'action' => 'action',
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
             'uri' => '/controller/action',
             'extras' => [
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -81,27 +82,27 @@ class RoutingExtensionTest extends TestCase
                 '/named/route',
                 [
                     'controller' => 'Named',
-                    'action' => 'route'
+                    'action' => 'route',
                 ],
                 [
-                    '_name' => 'RouteName'
+                    '_name' => 'RouteName',
                 ]
             );
         });
 
         $originalOptions = [
             'uri' => [
-                '_name' => 'RouteName'
-            ]
+                '_name' => 'RouteName',
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
             'uri' => '/named/route',
             'extras' => [
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -109,16 +110,16 @@ class RoutingExtensionTest extends TestCase
     public function testBuildOptionsDefineUriAsString()
     {
         $originalOptions = [
-            'uri' => '/controller/action'
+            'uri' => '/controller/action',
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
             'uri' => '/controller/action',
             'extras' => [
                 'routes' => [
-                    '/controller/action'
-                ]
-            ]
+                    '/controller/action',
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -129,9 +130,9 @@ class RoutingExtensionTest extends TestCase
             'routes' => [
                 [
                     'controller' => 'ControllerName',
-                    'action' => 'actionName'
-                ]
-            ]
+                    'action' => 'actionName',
+                ],
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = $originalOptions;
@@ -143,18 +144,18 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller1',
-                'action' => 'action'
+                'action' => 'action',
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
-                    'action' => 'action'
+                    'action' => 'action',
                 ],
                 [
                     'controller' => 'Controller3',
-                    'action' => 'action'
-                ]
-            ]
+                    'action' => 'action',
+                ],
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -163,9 +164,9 @@ class RoutingExtensionTest extends TestCase
                 'routes' => [
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
-                    $originalOptions['routes'][1]
-                ]
-            ]
+                    $originalOptions['routes'][1],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -177,10 +178,10 @@ class RoutingExtensionTest extends TestCase
                 '/named/route',
                 [
                     'controller' => 'Named',
-                    'action' => 'route'
+                    'action' => 'route',
                 ],
                 [
-                    '_name' => 'RouteName'
+                    '_name' => 'RouteName',
                 ]
             );
         });
@@ -188,11 +189,11 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller',
-                'action' => 'action'
+                'action' => 'action',
             ],
             'routes' => [
-                ['_name' => 'RouteName']
-            ]
+                ['_name' => 'RouteName'],
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -201,8 +202,8 @@ class RoutingExtensionTest extends TestCase
                 'routes' => [
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
-                ]
-            ]
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -212,11 +213,11 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller',
-                'action' => 'action'
+                'action' => 'action',
             ],
             'routes' => [
-                '/other/action'
-            ]
+                '/other/action',
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -224,9 +225,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'routes' => [
                     $originalOptions['uri'],
-                    '/other/action'
-                ]
-            ]
+                    '/other/action',
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -247,13 +248,13 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Members',
-                'action' => 'about'
+                'action' => 'about',
             ],
             'routes' => [
                 [
-                    'controller' => 'Members'
-                ]
-            ]
+                    'controller' => 'Members',
+                ],
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -261,9 +262,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'routes' => [
                     $originalOptions['uri'],
-                    $originalOptions['routes'][0]
-                ]
-            ]
+                    $originalOptions['routes'][0],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -273,26 +274,26 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller1',
-                'action' => 'action'
+                'action' => 'action',
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
-                    'action' => 'action'
+                    'action' => 'action',
                 ],
                 [
                     'controller' => 'Controller3',
-                    'action' => 'action'
-                ]
+                    'action' => 'action',
+                ],
             ],
-            'addUriToRoutes' => false
+            'addUriToRoutes' => false,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
             'uri' => '/controller1/action',
             'extras' => [
-                'routes' => $originalOptions['routes']
-            ]
+                'routes' => $originalOptions['routes'],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -302,13 +303,13 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller',
-                'action' => 'action'
+                'action' => 'action',
             ],
-            'addUriToRoutes' => false
+            'addUriToRoutes' => false,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
-            'uri' => '/controller/action'
+            'uri' => '/controller/action',
         ];
         $this->assertEquals($expected, $options);
     }
@@ -319,9 +320,11 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value',
+                ],
             ],
-            'ignoreQueryString' => false
+            'ignoreQueryString' => false,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -329,9 +332,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'ignoreQueryString' => false,
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -342,9 +345,11 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value',
+                ],
             ],
-            'ignoreQueryString' => true
+            'ignoreQueryString' => true,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -352,9 +357,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'ignoreQueryString' => true,
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -364,9 +369,9 @@ class RoutingExtensionTest extends TestCase
         $originalOptions = [
             'uri' => [
                 'controller' => 'Controller',
-                'action' => 'action'
+                'action' => 'action',
             ],
-            'ignoreQueryString' => true
+            'ignoreQueryString' => true,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -374,9 +379,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'ignoreQueryString' => true,
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -387,9 +392,11 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value',
+                ],
             ],
-            'ignoreQueryString' => true
+            'ignoreQueryString' => true,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -397,9 +404,9 @@ class RoutingExtensionTest extends TestCase
             'extras' => [
                 'ignoreQueryString' => true,
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -410,21 +417,23 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller1',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value',
+                ],
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
                     'action' => 'action',
-                    'query' => 'value'
+                    'query' => 'value',
                 ],
                 [
                     'controller' => 'Controller3',
                     'action' => 'action',
-                    'query' => 'value'
-                ]
+                    'query' => 'value',
+                ],
             ],
-            'ignoreQueryString' => true
+            'ignoreQueryString' => true,
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
@@ -434,9 +443,9 @@ class RoutingExtensionTest extends TestCase
                 'routes' => [
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
-                    $originalOptions['routes'][1]
-                ]
-            ]
+                    $originalOptions['routes'][1],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -447,17 +456,19 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
-            ]
+                '?' => [
+                    'query' => 'value',
+                ],
+            ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
         $expected = [
             'uri' => '/controller/action?query=value',
             'extras' => [
                 'routes' => [
-                    $originalOptions['uri']
-                ]
-            ]
+                    $originalOptions['uri'],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -468,19 +479,21 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller1',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value',
+                ],
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
                     'action' => 'action',
-                    'query' => 'value'
+                    'query' => 'value',
                 ],
                 [
                     'controller' => 'Controller3',
                     'action' => 'action',
-                    'query' => 'value'
-                ]
+                    'query' => 'value',
+                ],
             ],
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
@@ -490,9 +503,9 @@ class RoutingExtensionTest extends TestCase
                 'routes' => [
                     $originalOptions['uri'],
                     $originalOptions['routes'][0],
-                    $originalOptions['routes'][1]
-                ]
-            ]
+                    $originalOptions['routes'][1],
+                ],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }

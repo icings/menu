@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -18,7 +19,7 @@ interface MatcherInterface extends BaseMatcherInterface
     /**
      * Adds a voter in the matcher.
      *
-     * @param VoterInterface $voter The voter to add.
+     * @param \Knp\Menu\Matcher\Voter\VoterInterface $voter The voter to add.
      * @return void
      */
     public function addVoter(VoterInterface $voter);
