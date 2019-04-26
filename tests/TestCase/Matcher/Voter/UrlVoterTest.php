@@ -100,13 +100,13 @@ class UrlVoterTest extends TestCase
                 '/controller/action',
                 '/controller/action',
                 [],
-                true
+                true,
             ],
             'Request without query, URL without query, non-matching path' => [
                 '/controller/action',
                 '/other/action',
                 [],
-                false
+                false,
             ],
             'Request without query, URL with query, matching path, non-matching query' => [
                 '/controller/action',
@@ -118,14 +118,14 @@ class UrlVoterTest extends TestCase
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request without query, URL with query, non-matching path, non-matching query' => [
                 '/controller/action',
                 '/other/action?query=value',
                 [],
-                false
+                false,
             ],
             'Request with query, URL without query, matching path, non-matching query' => [
                 '/controller/action?query=value',
@@ -137,26 +137,26 @@ class UrlVoterTest extends TestCase
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request with query, URL without query, non-matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
                 [],
-                false
+                false,
             ],
             'Request with query, URL with query, matching path, matching query' => [
                 '/controller/action?query=value',
                 '/controller/action?query=value',
                 [],
-                true
+                true,
             ],
             'Request with query, URL with query, non-matching path, matching query' => [
                 '/controller/action?query=value',
                 '/other/action?query=value',
                 [],
-                false
+                false,
             ],
             'Request with query, URL with query, matching path, non-matching query' => [
                 '/controller/action?query=value',
@@ -168,14 +168,14 @@ class UrlVoterTest extends TestCase
                     ['voterIgnore' => true, 'itemIgnore' => false, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => null, 'expected' => false],
                     ['voterIgnore' => false, 'itemIgnore' => false, 'expected' => false],
-                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true]
-                ]
+                    ['voterIgnore' => false, 'itemIgnore' => true, 'expected' => true],
+                ],
             ],
             'Request with query, URL with query, non-matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action?other=value',
                 [],
-                false
+                false,
             ],
 
             //endregion
@@ -188,13 +188,13 @@ class UrlVoterTest extends TestCase
                 '/controller/action',
                 '/other/action',
                 [['controller' => 'Controller', 'action' => 'action']],
-                true
+                true,
             ],
             'Request without query, URL array, non-matching path' => [
                 '/controller/action',
                 '/other/action',
                 [['controller' => 'Other', 'action' => 'action']],
-                false
+                false,
             ],
             'Request without query, URL array, matching path, non-matching query' => [
                 '/controller/action',
