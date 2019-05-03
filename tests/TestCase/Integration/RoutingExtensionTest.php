@@ -25,7 +25,7 @@ class RoutingExtensionTest extends TestCase
      */
     public $RoutingExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->RoutingExtension = new RoutingExtension();
@@ -41,7 +41,7 @@ class RoutingExtensionTest extends TestCase
         });
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->RoutingExtension);
 

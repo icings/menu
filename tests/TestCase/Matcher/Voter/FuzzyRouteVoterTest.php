@@ -22,7 +22,7 @@ class FuzzyRouteVoterTest extends TestCase
 {
     use RequestFactoryTrait;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

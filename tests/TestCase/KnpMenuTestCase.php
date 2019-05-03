@@ -57,7 +57,7 @@ abstract class KnpMenuTestCase extends TestCase
      */
     protected $gc1;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $factory = new MenuFactory();
         $this->menu = $factory->createItem('Root li', ['childrenAttributes' => ['class' => 'root']]);
@@ -74,7 +74,7 @@ abstract class KnpMenuTestCase extends TestCase
         $this->gc1 = $this->ch4->addChild('Grandchild 1');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->menu = null;
         $this->pt1 = null;

@@ -22,13 +22,13 @@ class PerItemVotersExtensionTest extends TestCase
      */
     public $PerItemVotersExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->PerItemVotersExtension = new PerItemVotersExtension();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->PerItemVotersExtension);
 

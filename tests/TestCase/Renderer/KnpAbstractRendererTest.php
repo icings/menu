@@ -29,7 +29,7 @@ abstract class KnpAbstractRendererTest extends KnpMenuTestCase
      */
     private $matcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->matcher = new Matcher();
@@ -38,7 +38,7 @@ abstract class KnpAbstractRendererTest extends KnpMenuTestCase
 
     abstract protected function createRenderer(MatcherInterface $matcher);
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->renderer = null;
