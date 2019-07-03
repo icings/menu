@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -8,9 +10,9 @@
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
 use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
@@ -503,7 +505,7 @@ class FuzzyRouteVoterTest extends TestCase
      *
      * @param array $url The URL array to test.
      * @param string $requestUri The request URI to test against.
-     * @param boolean|null $expected The matching result.
+     * @param bool|null $expected The matching result.
      */
     public function testMatching($url, $requestUri, $expected)
     {

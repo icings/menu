@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -175,8 +177,8 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider currentFlagDataProvider
-     * @param boolean|null $flag
-     * @param boolean $expected
+     * @param bool|null $flag
+     * @param bool $expected
      */
     public function testItemFlag($flag, $expected)
     {
@@ -219,7 +221,7 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider matchingResultDataProvider
-     * @param boolean $value
+     * @param bool $value
      */
     public function testFlagWinsOverVoter($value)
     {
@@ -246,7 +248,7 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider matchingResultDataProvider
-     * @param boolean $value
+     * @param bool $value
      */
     public function testFirstVoterWins($value)
     {

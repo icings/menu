@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -90,7 +92,11 @@ class FuzzyRouteVoter implements VoterInterface
             $params['_ext'] = null;
         }
 
-        $pass = isset($params['pass']) ? $params['pass'] : [];
+        if (isset($params['pass'])) {
+            $pass = $params['pass'];
+        } else {
+            $pass = [];
+        }
 
         unset(
             $params['pass'],

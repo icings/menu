@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,9 +9,9 @@
 
 namespace Icings\Menu\Test\TestCase\Integration;
 
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\RoutingExtension;
 use Knp\Menu\FactoryInterface;

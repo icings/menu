@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -35,21 +37,21 @@ class MenuHelper extends Helper
      *
      * @var string
      */
-    const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
+    public const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
 
     /**
      * The URL matching mode.
      *
      * @var string
      */
-    const MATCH_URL = 'matchUrl';
+    public const MATCH_URL = 'matchUrl';
 
     /**
      * The URL matching mode that includes query strings.
      *
      * @var string
      */
-    const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
+    public const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
 
     /**
      * Default configuration.

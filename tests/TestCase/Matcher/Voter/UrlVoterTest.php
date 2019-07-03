@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -8,9 +10,9 @@
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
 use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Icings\Menu\Matcher\Voter\UrlVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
@@ -309,9 +311,9 @@ class UrlVoterTest extends TestCase
      * @param string $requestUri The request URI to match against.
      * @param string $uri The menu items main URI.
      * @param array[] $routes An array of URL arrays.
-     * @param boolean $voterIgnore
-     * @param boolean $itemIgnore
-     * @param boolean $expected The expected assertion result.
+     * @param bool $voterIgnore
+     * @param bool $itemIgnore
+     * @param bool $expected The expected assertion result.
      */
     public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected)
     {
