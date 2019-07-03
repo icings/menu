@@ -23,13 +23,13 @@ class TemplaterExtensionTest extends TestCase
      */
     public $TemplaterExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->TemplaterExtension = new TemplaterExtension();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->TemplaterExtension);
 

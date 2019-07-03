@@ -36,7 +36,7 @@ class MenuHelperTest extends TestCase
      */
     public $View;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -44,7 +44,7 @@ class MenuHelperTest extends TestCase
         $this->Menu = new MenuHelper($this->View);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->Menu);
         unset($this->View);

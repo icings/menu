@@ -19,7 +19,7 @@ use Icings\Menu\TestSuite\RequestFactoryTrait;
 
 class RequestFactoryTraitTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
