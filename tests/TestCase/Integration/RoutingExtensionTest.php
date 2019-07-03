@@ -16,6 +16,7 @@ use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\RoutingExtension;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class RoutingExtensionTest extends TestCase
 {
@@ -32,12 +33,7 @@ class RoutingExtensionTest extends TestCase
         $this->RoutingExtension = new RoutingExtension();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            if (method_exists($routes, 'setRouteClass')) {
-                $routes->setRouteClass(DashedRoute::class);
-            } else {
-                $routes->routeClass(DashedRoute::class);
-            }
-
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/:controller/:action');
         });
     }
@@ -237,12 +233,7 @@ class RoutingExtensionTest extends TestCase
     {
         Router::reload();
         Router::scope('/', function (RouteBuilder $routes) {
-            if (method_exists($routes, 'setRouteClass')) {
-                $routes->setRouteClass(DashedRoute::class);
-            } else {
-                $routes->routeClass(DashedRoute::class);
-            }
-
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
         });
 
@@ -321,7 +312,9 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ],
             'ignoreQueryString' => false
         ];
@@ -344,7 +337,9 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ],
             'ignoreQueryString' => true
         ];
@@ -389,7 +384,9 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ],
             'ignoreQueryString' => true
         ];
@@ -412,18 +409,24 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller1',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
                     'action' => 'action',
-                    'query' => 'value'
+                    '?' => [
+                        'query' => 'value'
+                    ]
                 ],
                 [
                     'controller' => 'Controller3',
                     'action' => 'action',
-                    'query' => 'value'
+                    '?' => [
+                        'query' => 'value'
+                    ]
                 ]
             ],
             'ignoreQueryString' => true
@@ -449,7 +452,9 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ]
         ];
         $options = $this->RoutingExtension->buildOptions($originalOptions);
@@ -470,18 +475,24 @@ class RoutingExtensionTest extends TestCase
             'uri' => [
                 'controller' => 'Controller1',
                 'action' => 'action',
-                'query' => 'value'
+                '?' => [
+                    'query' => 'value'
+                ]
             ],
             'routes' => [
                 [
                     'controller' => 'Controller2',
                     'action' => 'action',
-                    'query' => 'value'
+                    '?' => [
+                        'query' => 'value'
+                    ]
                 ],
                 [
                     'controller' => 'Controller3',
                     'action' => 'action',
-                    'query' => 'value'
+                    '?' => [
+                        'query' => 'value'
+                    ]
                 ]
             ],
         ];
@@ -501,7 +512,10 @@ class RoutingExtensionTest extends TestCase
 
     public function testBuildItem()
     {
-        $item = new MenuItem('item', $this->getMockBuilder(FactoryInterface::class)->getMock());
+        /** @var FactoryInterface|MockObject $factory */
+        $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
+
+        $item = new MenuItem('item', $factory);
         $this->assertNull($this->RoutingExtension->buildItem($item, []));
     }
 }

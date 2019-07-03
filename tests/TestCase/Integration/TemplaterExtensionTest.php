@@ -13,6 +13,7 @@ use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\TemplaterExtension;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class TemplaterExtensionTest extends TestCase
 {
@@ -300,7 +301,10 @@ class TemplaterExtensionTest extends TestCase
 
     public function testBuildItem()
     {
-        $item = new MenuItem('item', $this->getMockBuilder(FactoryInterface::class)->getMock());
+        /** @var FactoryInterface|MockObject $factory */
+        $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
+
+        $item = new MenuItem('item', $factory);
         $this->assertNull($this->TemplaterExtension->buildItem($item, []));
     }
 }

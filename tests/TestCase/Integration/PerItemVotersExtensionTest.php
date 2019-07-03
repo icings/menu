@@ -13,6 +13,7 @@ use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\PerItemVotersExtension;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class PerItemVotersExtensionTest extends TestCase
 {
@@ -62,7 +63,10 @@ class PerItemVotersExtensionTest extends TestCase
 
     public function testBuildItem()
     {
-        $item = new MenuItem('item', $this->getMockBuilder(FactoryInterface::class)->getMock());
+        /** @var FactoryInterface|MockObject $factory */
+        $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
+
+        $item = new MenuItem('item', $factory);
         $this->assertNull($this->PerItemVotersExtension->buildItem($item, []));
     }
 }

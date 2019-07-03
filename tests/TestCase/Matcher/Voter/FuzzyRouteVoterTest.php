@@ -18,6 +18,7 @@ use Cake\Utility\Hash;
 use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class FuzzyRouteVoterTest extends TestCase
 {
@@ -28,17 +29,8 @@ class FuzzyRouteVoterTest extends TestCase
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            if (method_exists($routes, 'setExtensions')) {
-                $routes->setExtensions(['json']);
-            } else {
-                $routes->extensions(['json']);
-            }
-
-            if (method_exists($routes, 'setRouteClass')) {
-                $routes->setRouteClass(DashedRoute::class);
-            } else {
-                $routes->routeClass(DashedRoute::class);
-            }
+            $routes->setExtensions(['json']);
+            $routes->setRouteClass(DashedRoute::class);
 
             $routes->connect('/named', [
                 'controller' => 'Named',
@@ -119,11 +111,11 @@ class FuzzyRouteVoterTest extends TestCase
                 ['controller' => 'Controller', 'action' => 'action', 'query' => '12.3', '?' => ['query' => '12.3']]
             ],
             'Prefix request' => [
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']
             ],
             'Plugin request' => [
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 ['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']
             ],
             'Request route with custom defaults' => [
@@ -277,43 +269,43 @@ class FuzzyRouteVoterTest extends TestCase
 
             'Matching without prefix works' => [
                 [['controller' => 'Controller', 'action' => 'action']],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 true
             ],
             'Exact prefix matching' => [
                 [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 true
             ],
             'Wrong prefix does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'other']],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 false
             ],
             'Null prefix does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'prefix' => null]],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 false
             ],
 
             'Matching without plugin works' => [
                 [['controller' => 'Controller', 'action' => 'action']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 true
             ],
             'Exact plugin matching' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 true
             ],
             'Wrong plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'OtherPlugin']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 false
             ],
             'Null plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => null]],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 false
             ],
 
@@ -509,6 +501,7 @@ class FuzzyRouteVoterTest extends TestCase
      */
     public function testMatching($url, $requestUri, $expected)
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();

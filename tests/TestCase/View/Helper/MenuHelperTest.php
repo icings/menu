@@ -21,6 +21,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Renderer\RendererInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class MenuHelperTest extends TestCase
 {
@@ -91,21 +92,19 @@ class MenuHelperTest extends TestCase
     //region create()
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `$name` argument must be a string, `integer` given.
-     */
     public function testCreateInvalidNameArgumentType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `$name` argument must be a string, `integer` given.');
+
         $this->Menu->create(123);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `$name` argument must not be empty.
-     */
     public function testCreateInvalidNameArgumentContent()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `$name` argument must not be empty.');
+
         $this->Menu->create('');
     }
 
@@ -124,6 +123,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
 
+        /** @var MenuFactoryInterface|MockObject $factory */
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -160,6 +160,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
 
+        /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -169,7 +170,7 @@ class MenuHelperTest extends TestCase
             ->with('name', $menuItemOptions)
             ->willReturn($menu);
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper*/
+        /** @var MenuHelper|MockObject $helper*/
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -194,6 +195,7 @@ class MenuHelperTest extends TestCase
 
     public function testRenderLastCreatedMenu()
     {
+        /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -224,17 +226,17 @@ class MenuHelperTest extends TestCase
         $this->Menu->render();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage No menu has been created.
-     */
     public function testRenderLastCreatedMenuNoMenuHasBeenCreated()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No menu has been created.');
+
         $this->Menu->render();
     }
 
     public function testRenderNamedMenu()
     {
+        /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -265,16 +267,16 @@ class MenuHelperTest extends TestCase
         $this->Menu->render('main');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The menu with the name `non-existent` does not exist.
-     */
     public function testRenderNamedMenuDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The menu with the name `non-existent` does not exist.');
+
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
 
+        /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -310,12 +312,11 @@ class MenuHelperTest extends TestCase
         $this->Menu->render($menu);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `integer` given.
-     */
     public function testRenderInvalidType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `integer` given.');
+
         $this->Menu->render(123);
     }
 
@@ -352,7 +353,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -414,7 +415,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu), $rendererOptions);
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -495,6 +496,7 @@ class MenuHelperTest extends TestCase
                 'nonNested4' => 'render value'
             ]);
 
+        /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
             ->getMockBuilder(MenuFactoryInterface::class)
             ->getMock();
@@ -515,7 +517,7 @@ class MenuHelperTest extends TestCase
             'nonNested2' => 'helper value'
         ];
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -608,7 +610,7 @@ class MenuHelperTest extends TestCase
                     $argument->getConfig('ignoreQueryString') === true;
             }));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -641,7 +643,7 @@ class MenuHelperTest extends TestCase
                     $argument->getConfig('ignoreQueryString') === false;
             }));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -673,7 +675,7 @@ class MenuHelperTest extends TestCase
             ->method('addVoter')
             ->with($this->isInstanceOf(FuzzyRouteVoter::class));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -691,12 +693,11 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `'invalid'` given.
-     */
     public function testRenderInvalidMatchingOption()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `\'invalid\'` given.');
+
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -732,7 +733,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -761,12 +762,11 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` implementation, `string` given.
-     */
     public function testRenderInvalidMatcherOption()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` implementation, `string` given.');
+
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -802,7 +802,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -830,12 +830,11 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `voters` option must be an array, `string` given.
-     */
     public function testRenderInvalidVotersOption()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `voters` option must be an array, `string` given.');
+
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -877,7 +876,7 @@ class MenuHelperTest extends TestCase
             ->method('render')
             ->with($this->identicalTo($menu));
 
-        /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
+        /** @var MenuHelper|MockObject $helper */
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
@@ -902,12 +901,11 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` implementation, `string` given.
-     */
     public function testRenderInvalidRendererOption()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` implementation, `string` given.');
+
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();

@@ -17,6 +17,7 @@ use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class StringTemplateRendererTest extends KnpAbstractRendererTest
 {
@@ -558,6 +559,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
     public function testRenderDoClearMatcher()
     {
+        /** @var MatcherInterface|MockObject $matcher */
         $matcher = $this
             ->getMockBuilder(MatcherInterface::class)
             ->getMock();
@@ -572,6 +574,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
     public function testRenderDoNotClearMatcher()
     {
+        /** @var MatcherInterface|MockObject $matcher */
         $matcher = $this
             ->getMockBuilder(MatcherInterface::class)
             ->getMock();
