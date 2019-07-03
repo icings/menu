@@ -36,15 +36,21 @@
     },
     "scripts": {
         "check": [
-            "@cs",
-            "@stan-src",
-            "@stan-tests",
+            "@cs-check",
             "@test"
         ],
-        "coverage": "phpunit --coverage-clover=./clover.xml",
-        "cs": "phpcs -p ./src ./tests",
-        "stan-src": "phpstan analyse -l 7 -c ./phpstan.src.neon ./src",
-        "stan-tests": "phpstan analyse -l 7 -c ./phpstan.tests.neon ./tests",
-        "test": "phpunit"
+        "cs-check": "phpcs -p ./src ./tests",
+        "cs-fix": "phpcbf -p ./src ./tests",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-clover=./clover.xml",
+        "stan": [
+            "@phpstan-src",
+            "@phpstan-tests",
+            "@psalm"
+        ],
+        "stan-setup": "cp composer.json composer.backup && composer require --dev \"phpstan/phpstan-shim:^0.11\" \"psalm/phar:^3.4\" && mv composer.backup composer.json",
+        "phpstan-src": "phpstan analyse -l 7 -c ./phpstan.src.neon ./src",
+        "phpstan-tests": "phpstan analyse -l 7 -c ./phpstan.tests.neon ./tests",
+        "psalm": "php ./vendor/psalm/phar/psalm.phar --show-info=false"
     }
 }

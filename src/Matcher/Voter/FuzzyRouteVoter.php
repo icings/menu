@@ -132,11 +132,17 @@ class FuzzyRouteVoter implements VoterInterface
     protected function _normalizeParams(array &$params): void
     {
         ksort($params, \SORT_STRING);
-        array_walk($params, function (&$value) {
-            if (is_numeric($value)) {
-                $value = (string)$value;
+        array_walk(
+            $params,
+            /**
+             * @param mixed $value
+             */
+            function (&$value) {
+                if (is_numeric($value)) {
+                    $value = (string)$value;
+                }
             }
-        });
+        );
 
         if (isset($params['?'])) {
             $this->_normalizeParams($params['?']);

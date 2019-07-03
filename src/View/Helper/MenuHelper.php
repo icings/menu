@@ -84,7 +84,7 @@ class MenuHelper extends Helper
      *
      * @var MenuFactoryInterface
      */
-    protected $_factory = null;
+    protected $_factory;
 
     /**
      * Sets the menu factory to use for creating menu items.
@@ -225,7 +225,7 @@ class MenuHelper extends Helper
      * @throws \InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
      *
-     * @param ItemInterface|string|array $menu Either an `\Knp\Menu\ItemInterface` implementation,
+     * @param ItemInterface|string|array|null $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
      *  `$options` argument. If omitted or an array, the menu that was last created via `create()`
      *  will be used.
