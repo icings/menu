@@ -516,6 +516,9 @@ class RoutingExtensionTest extends TestCase
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
 
         $item = new MenuItem('item', $factory);
-        $this->assertNull($this->RoutingExtension->buildItem($item, []));
+        $clone = clone $item;
+
+        $this->RoutingExtension->buildItem($item, []);
+        $this->assertEquals($item, $clone);
     }
 }

@@ -67,6 +67,9 @@ class PerItemVotersExtensionTest extends TestCase
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
 
         $item = new MenuItem('item', $factory);
-        $this->assertNull($this->PerItemVotersExtension->buildItem($item, []));
+        $clone = clone $item;
+
+        $this->PerItemVotersExtension->buildItem($item, []);
+        $this->assertEquals($item, $clone);
     }
 }

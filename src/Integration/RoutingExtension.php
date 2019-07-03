@@ -58,6 +58,5 @@ class RoutingExtension implements ExtensionInterface
      */
     public function buildItem(ItemInterface $item, array $options)
     {
-        return null;
     }
 }

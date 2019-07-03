@@ -305,6 +305,9 @@ class TemplaterExtensionTest extends TestCase
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
 
         $item = new MenuItem('item', $factory);
-        $this->assertNull($this->TemplaterExtension->buildItem($item, []));
+        $clone = clone $item;
+
+        $this->TemplaterExtension->buildItem($item, []);
+        $this->assertEquals($item, $clone);
     }
 }
