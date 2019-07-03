@@ -177,6 +177,30 @@ class FuzzyRouteVoterTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
+    public function testGetParamsWithoutPass()
+    {
+        $request = static::createRequest('/controller/action');
+
+        $params = $request->getAttribute('params');
+        unset($params['pass']);
+        $request = $request->withAttribute('params', $params);
+
+        $voter = new FuzzyRouteVoter($request);
+
+        $expected = [
+            '?' => [],
+            '_ext' => null,
+            '_host' => 'localhost',
+            '_method' => 'GET',
+            'action' => 'action',
+            'controller' => 'Controller',
+            'plugin' => null
+        ];
+        $actual = $voter->getParams();
+
+        $this->assertSame($expected, $actual);
+    }
+
     /**
      * @return array
      */
