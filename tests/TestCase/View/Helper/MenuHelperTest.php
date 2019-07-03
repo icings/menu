@@ -95,7 +95,9 @@ class MenuHelperTest extends TestCase
     public function testCreateInvalidNameArgumentType()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 passed to Icings\Menu\View\Helper\MenuHelper::create() must be of the type string, integer given');
+        $this->expectExceptionMessageRegExp(
+            '/^Argument 1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::create\(\) must be of the type string, (int|integer) given/'
+        );
 
         $this->Menu->create(123);
     }
