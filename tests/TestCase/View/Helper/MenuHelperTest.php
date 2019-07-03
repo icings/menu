@@ -94,8 +94,8 @@ class MenuHelperTest extends TestCase
 
     public function testCreateInvalidNameArgumentType()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `$name` argument must be a string, `integer` given.');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 passed to Icings\Menu\View\Helper\MenuHelper::create() must be of the type string, integer given');
 
         $this->Menu->create(123);
     }
@@ -214,7 +214,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->once())
             ->method('render')
-            ->with($this->identicalTo($mainMenu));
+            ->with($this->identicalTo($mainMenu))
+            ->willReturn('rendered');
 
         $this->Menu->setConfig([
             'renderer' => $renderer
@@ -255,7 +256,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->once())
             ->method('render')
-            ->with($this->identicalTo($mainMenu));
+            ->with($this->identicalTo($mainMenu))
+            ->willReturn('rendered');
 
         $this->Menu->setConfig([
             'renderer' => $renderer
@@ -303,7 +305,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->once())
             ->method('render')
-            ->with($this->identicalTo($menu), $this->isType('array'));
+            ->with($this->identicalTo($menu), $this->isType('array'))
+            ->willReturn('rendered');
 
         $this->Menu->setConfig([
             'renderer' => $renderer
@@ -351,7 +354,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->at(0))
             ->method('render')
-            ->with($this->identicalTo($menu));
+            ->with($this->identicalTo($menu))
+            ->willReturn('rendered');
 
         /** @var MenuHelper|MockObject $helper */
         $helper = $this
@@ -413,7 +417,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->once())
             ->method('render')
-            ->with($this->identicalTo($menu), $rendererOptions);
+            ->with($this->identicalTo($menu), $rendererOptions)
+            ->willReturn('rendered');
 
         /** @var MenuHelper|MockObject $helper */
         $helper = $this
@@ -494,7 +499,8 @@ class MenuHelperTest extends TestCase
                 'nonNested2' => 'create value',
                 'nonNested3' => 'create value',
                 'nonNested4' => 'render value'
-            ]);
+            ])
+            ->willReturn('rendered');
 
         /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
@@ -731,7 +737,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->at(0))
             ->method('render')
-            ->with($this->identicalTo($menu));
+            ->with($this->identicalTo($menu))
+            ->willReturn('rendered');
 
         /** @var MenuHelper|MockObject $helper */
         $helper = $this
@@ -800,7 +807,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->at(0))
             ->method('render')
-            ->with($this->identicalTo($menu));
+            ->with($this->identicalTo($menu))
+            ->willReturn('rendered');
 
         /** @var MenuHelper|MockObject $helper */
         $helper = $this
@@ -874,7 +882,8 @@ class MenuHelperTest extends TestCase
         $renderer
             ->expects($this->at(0))
             ->method('render')
-            ->with($this->identicalTo($menu));
+            ->with($this->identicalTo($menu))
+            ->willReturn('rendered');
 
         /** @var MenuHelper|MockObject $helper */
         $helper = $this

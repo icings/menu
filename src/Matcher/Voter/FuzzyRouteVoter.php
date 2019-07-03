@@ -30,7 +30,7 @@ class FuzzyRouteVoter implements VoterInterface
      *
      * @return array
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->_params;
     }
@@ -49,7 +49,7 @@ class FuzzyRouteVoter implements VoterInterface
     /**
      * {@inheritDoc}
      */
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $routes = $item->getExtra('routes');
         if ($routes === null) {
@@ -82,7 +82,7 @@ class FuzzyRouteVoter implements VoterInterface
      *   parameters.
      * @return array An array of routing parameters.
      */
-    protected function _extractParams(ServerRequest $request)
+    protected function _extractParams(ServerRequest $request): array
     {
         $params = $request->getAttribute('params');
         $params['?'] = $request->getQueryParams();
@@ -129,7 +129,7 @@ class FuzzyRouteVoter implements VoterInterface
      * @param array $params The parameters to normalize.
      * @return void
      */
-    protected function _normalizeParams(array &$params)
+    protected function _normalizeParams(array &$params): void
     {
         ksort($params, \SORT_STRING);
         array_walk($params, function (&$value) {
@@ -156,7 +156,7 @@ class FuzzyRouteVoter implements VoterInterface
      * @param array $route The route (URL array) to normalize.
      * @return void
      */
-    protected function _normalizeRoute(array &$route)
+    protected function _normalizeRoute(array &$route): void
     {
         unset(
             $route['#'],

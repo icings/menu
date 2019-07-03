@@ -104,7 +104,7 @@ class MenuHelper extends Helper
      *
      * @return MenuFactoryInterface
      */
-    public function getMenuFactory()
+    public function getMenuFactory(): MenuFactoryInterface
     {
         return $this->_factory;
     }
@@ -190,15 +190,8 @@ class MenuHelper extends Helper
      *   description.
      * @return ItemInterface
      */
-    public function create($name, array $options = [])
+    public function create(string $name, array $options = []): ItemInterface
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'The `$name` argument must be a string, `%s` given.',
-                Debugger::getType($name)
-            ));
-        }
-
         if (strlen(trim($name)) === 0) {
             throw new \InvalidArgumentException('The `$name` argument must not be empty.');
         }
@@ -240,7 +233,7 @@ class MenuHelper extends Helper
      *  description.
      * @return string The rendered menu.
      */
-    public function render($menu = null, array $options = [])
+    public function render($menu = null, array $options = []): string
     {
         if (is_array($menu)) {
             $options = $menu;
@@ -350,7 +343,7 @@ class MenuHelper extends Helper
      * @param array $options The options to associate with it.
      * @return void
      */
-    protected function _addMenu(ItemInterface $menu, array $options)
+    protected function _addMenu(ItemInterface $menu, array $options): void
     {
         $this->_menus[$menu->getName()] = $menu;
         $this->_menuConfigurations->attach($menu, $options);
@@ -368,7 +361,7 @@ class MenuHelper extends Helper
      * @param array $options The options array from which to extract (and remove) the menu options.
      * @return array The extracted renderer options.
      */
-    protected function _extractMenuOptions(array &$options)
+    protected function _extractMenuOptions(array &$options): array
     {
         $menuOptions = array_intersect_key(
             $options,
@@ -399,7 +392,7 @@ class MenuHelper extends Helper
      *   options.
      * @return array The extracted renderer options.
      */
-    protected function _extractRendererOptions(array &$options)
+    protected function _extractRendererOptions(array &$options): array
     {
         $rendererOptions = array_diff_key(
             $options,
@@ -422,7 +415,7 @@ class MenuHelper extends Helper
      *
      * @return MatcherInterface
      */
-    protected function _createDefaultMatcher()
+    protected function _createDefaultMatcher(): MatcherInterface
     {
         return new Matcher();
     }
@@ -434,7 +427,7 @@ class MenuHelper extends Helper
      * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
      *   types.
      */
-    protected function _createDefaultVoters($type)
+    protected function _createDefaultVoters(string $type)
     {
         switch ($type) {
             case static::MATCH_FUZZY_ROUTE:
@@ -460,9 +453,9 @@ class MenuHelper extends Helper
      * Creates the default renderer.
      *
      * @param MatcherInterface $matcher The matcher to pass to the renderer.
-     * @return StringTemplateRenderer
+     * @return RendererInterface
      */
-    protected function _createDefaultRenderer(MatcherInterface $matcher)
+    protected function _createDefaultRenderer(MatcherInterface $matcher): RendererInterface
     {
         return new StringTemplateRenderer($matcher);
     }

@@ -149,7 +149,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description.
      * @return string The rendered menu.
      */
-    public function render(ItemInterface $item, array $options = [])
+    public function render(ItemInterface $item, array $options = []): string
     {
         $options = Hash::merge($this->getConfig(), $options);
 
@@ -169,7 +169,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
-    protected function _renderMenu(ItemInterface $item, array $options)
+    protected function _renderMenu(ItemInterface $item, array $options): string
     {
         if (!$item->hasChildren() ||
             $options['depth'] === 0 ||
@@ -226,7 +226,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description for specific nesting element options.
      * @return string The rendered element.
      */
-    protected function _renderNested(ItemInterface $item, array $options)
+    protected function _renderNested(ItemInterface $item, array $options): string
     {
         if (!$item->hasChildren() ||
             $options['depth'] === 0 ||
@@ -270,7 +270,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string[] The rendered children.
      */
-    protected function _renderChildren(ItemInterface $item, array $options)
+    protected function _renderChildren(ItemInterface $item, array $options): array
     {
         if ($options['depth'] !== null) {
             $options['depth'] = $options['depth'] - 1;
@@ -297,7 +297,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
-    protected function _renderItem(ItemInterface $item, array $options)
+    protected function _renderItem(ItemInterface $item, array $options): string
     {
         if (!$item->isDisplayed()) {
             return '';
@@ -430,7 +430,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific link options.
      * @return string The rendered link.
      */
-    protected function _renderLink(ItemInterface $item, array $options)
+    protected function _renderLink(ItemInterface $item, array $options): string
     {
         if ($item->getUri() &&
             (
@@ -456,7 +456,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific link options.
      * @return string The rendered link element.
      */
-    protected function _renderLinkElement(ItemInterface $item, array $options)
+    protected function _renderLinkElement(ItemInterface $item, array $options): string
     {
         return (string)$this->templater()->format('link', [
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
@@ -478,7 +478,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific text options.
      * @return string The rendered text.
      */
-    protected function _renderTextElement(ItemInterface $item, array $options)
+    protected function _renderTextElement(ItemInterface $item, array $options): string
     {
         return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
@@ -496,7 +496,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param ItemInterface $item The item whose label to render.
      * @return string The rendered label.
      */
-    protected function _renderLabel(ItemInterface $item)
+    protected function _renderLabel(ItemInterface $item): string
     {
         if (!$item->getExtra('escapeLabel', true) ||
             !$item->getExtra('escape', true)
@@ -514,7 +514,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param ItemInterface $item The menu item that defined the attributes.
      * @return string A formatted string of HTML attributes.
      */
-    protected function _formatAttributes(array $attributes, ItemInterface $item)
+    protected function _formatAttributes(array $attributes, ItemInterface $item): string
     {
         if (!empty($attributes)) {
             return $this->templater()->formatAttributes(

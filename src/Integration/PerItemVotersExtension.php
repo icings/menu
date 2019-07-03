@@ -20,7 +20,7 @@ class PerItemVotersExtension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function buildOptions(array $options = [])
+    public function buildOptions(array $options = []): array
     {
         if (!empty($options['voters'])) {
             $options['extras']['voters'] = $options['voters'];
@@ -33,7 +33,7 @@ class PerItemVotersExtension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function buildItem(ItemInterface $item, array $options)
+    public function buildItem(ItemInterface $item, array $options): void
     {
     }
 }
