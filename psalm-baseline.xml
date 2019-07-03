@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.4.7@caf7737bbe5a5e9cbdfcc1ada83ea576ca07c9ff">
+  <file src="src/Plugin.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <referencedProperty name="Cake\Core\BasePlugin::$path"/>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Renderer/StringTemplateRenderer.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <referencedProperty name="Cake\View\StringTemplateTrait::$_templater"/>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/View/Helper/MenuHelper.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>$menu instanceof ItemInterface</code>
+    </DocblockTypeContradiction>
+    <TooManyArguments occurrences="1">
+      <code>Hash::merge($this-&gt;getConfig(), $options, $createOptions)</code>
+    </TooManyArguments>
+  </file>
+</files>
