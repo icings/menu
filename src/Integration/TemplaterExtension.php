@@ -74,6 +74,15 @@ class TemplaterExtension implements ExtensionInterface
             unset($options['escapeLabel']);
         }
 
+        if (isset($options['inheritItemClasses'])) {
+            $options['extras']['inheritItemClasses'] = $options['inheritItemClasses'];
+            unset($options['inheritItemClasses']);
+        }
+        if (isset($options['consumeItemClasses'])) {
+            $options['extras']['consumeItemClasses'] = $options['consumeItemClasses'];
+            unset($options['consumeItemClasses']);
+        }
+
         return $options;
     }
 

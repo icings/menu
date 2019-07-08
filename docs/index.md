@@ -11,6 +11,7 @@
 - [Adding menu items](#adding-menu-items)
 - [Nesting menu items](#nesting-menu-items)
 - [Adding attributes](#adding-attributes)
+- [Inheriting/Consuming auto-generated item classes](#inheritingconsuming-auto-generated-item-classes)
 - [Changing the default HTML output](#changing-the-default-html-output)
   - [Changing the defaults for an item and its children](#changing-the-defaults-for-an-item-and-its-children)
 - [Determining the active item](#determining-the-active-item)
@@ -199,6 +200,16 @@ the [Advanced usage](#advanced-usage) section.
 - `currentAsLink` (`boolean`, defaults to `true`)  
   Whether the active item should render a link, or a text element.
 
+- `inheritItemClasses` (`array|boolean|null`, defaults to `null`)  
+  Defines which classes should be inherited by the menu item's link and text elements. `true` will cause all classes to
+  be inherited. An array is used to specify specific classes to inherit (valid class names are `currentClass`,
+  `ancestorClass`, `leafClass`, `branchClass`, `firstClass`, `lastClass`). `null` or `false` will disable this feature.
+
+- `consumeItemClasses` (`array|boolean|null`, defaults to `null`)  
+  Defines which classes should be consumed by the menu item's link and text elements. `true` will cause all classes to
+  be consumed. An array is used to specify specific classes to consume (see the `inheritItemClasses` option for a list
+  of valid class names).  `null` or `false` will disable this feature.
+
 ### Render configuration
 
 Rendering can be configured using the `$options` argument of `MenuHelper::render()`. It supports the exact same options
@@ -304,6 +315,19 @@ In the default setup, the following options are supported:
 - `nestAttributes` (`array`, defaults to `null`)  
   The HTML attributes to apply to the element that holds the children of the menu item.
 
+- `inheritItemClasses` (`array|boolean|null`, defaults to `null`)  
+  Defines which classes should be inherited by the menu item's link and text elements. `true` will cause all classes to
+  be inherited. An array is used to specify specific classes to inherit. For a list of valid classes, refer to the
+  `inheritItemClasses` renderer option description in the
+  [Configuration > Helper configuration > Rendering related options](#rendering-related-options) section. `false` will
+  disable this feature, and `null` means that the renderer defaults will apply.
+
+- `consumeItemClasses` (`array|boolean|null`, defaults to `null`)  
+  Defines which classes should be consumed by the menu item's link and text elements. `true` will cause all classes to
+  be consumed. An array is used to specify specific classes to consume. For a list of valid classes, refer to the
+  `inheritItemClasses` renderer option description in the
+  [Configuration > Helper configuration > Rendering related options](#rendering-related-options) section. `false` will
+  disable this feature, and `null` means that the renderer defaults will apply.
 
 ## Creating menus
 
@@ -441,6 +465,71 @@ In the default setup, this would generate the following HTML:
         </ul>
     </li>
 </ul>
+```
+
+
+## Inheriting/Consuming auto-generated item classes
+
+In certain situations it might be required to have classes like the one for the current/active item to be set on the
+`link`/`text` element, instead of the outer `item` element.
+
+For example in the default setup, the current/active item would receive the class, and the following HTML would be
+generated for the menu item:
+
+```html
+<li class="active">  
+    <a href="/controller/action">Label</a>
+</li>
+```
+
+In order to have the `active` class being set on the link element instead, one can use the `inheritItemClasses` or
+`consumeItemClasses` option. Both options are supported as rendering options (see the
+[Configuration > Helper configuration > Rendering related options](#rendering-related-options) section), or as menu item
+options.
+
+Specifying `true` will cause all auto-generated item classes to be inherited/consumed, using an array a list of specific
+classes to inherit/consume can be specified (valid class names are `currentClass`, `ancestorClass`, `leafClass`,
+`branchClass`, `firstClass`, `lastClass`), and `false` will disable the feature. On renderer level `null` will disable
+the feature too, where as on menu item level it means that the renderer defaults should be used.
+
+### Inheriting
+
+"_Inheriting_" means that the classes that are being set on the item, will be set on the item's link/text elements too.
+The following active menu item would generate HTML where the current class is being set on the link element too:
+
+```php
+$menu->addChild('Label', [
+    'uri' => ['controller' => 'Controller', 'action' => 'action'],
+    'inheritItemClasses' => [
+        'currentClass'
+    ]
+]);
+```
+
+```html
+<li class="active">  
+    <a href="/controller/action" class="active">Label</a>
+</li>
+```
+
+### Consuming
+
+"_Consuming_" means that the classes are being set on the item's link/text elements _instead_ of on the item. The
+following active menu item would generate HTML where the current class is being set on the link element only:
+
+```php
+$menu->addChild('Label', [
+    'uri' => ['controller' => 'Controller', 'action' => 'action'],
+    'consumeItemClasses' => [
+        'currentClass'
+    ]
+]);
+```
+
+```html
+<li>  
+    <a href="/controller/action" class="active">Label</a>
+</li>
 ```
 
 
