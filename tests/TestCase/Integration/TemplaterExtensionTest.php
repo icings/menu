@@ -233,6 +233,40 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
+    public function testBuildOptionsDefineInheritItemClassesOnly()
+    {
+        $originalOptions = [
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass'
+            ]
+        ];
+        $options = $this->TemplaterExtension->buildOptions($originalOptions);
+        $expected = [
+            'extras' => [
+                'inheritItemClasses' => $originalOptions['inheritItemClasses']
+            ]
+        ];
+        $this->assertEquals($expected, $options);
+    }
+
+    public function testBuildOptionsDefineConsumeItemClassesOnly()
+    {
+        $originalOptions = [
+            'consumeItemClasses' => [
+                'currentClass',
+                'leafClass'
+            ]
+        ];
+        $options = $this->TemplaterExtension->buildOptions($originalOptions);
+        $expected = [
+            'extras' => [
+                'consumeItemClasses' => $originalOptions['consumeItemClasses']
+            ]
+        ];
+        $this->assertEquals($expected, $options);
+    }
+
     public function testBuildOptionsDefineAll()
     {
         $originalOptions = [
@@ -258,7 +292,15 @@ class TemplaterExtensionTest extends TestCase
                 'name' => 'value',
             ],
             'escape' => false,
-            'escapeLabel' => true
+            'escapeLabel' => true,
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass'
+            ],
+            'consumeItemClasses' => [
+                'currentClass',
+                'leafClass'
+            ]
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
 
