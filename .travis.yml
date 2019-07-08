@@ -17,6 +17,9 @@ matrix:
 
   include:
     - php: 7.2
+      env: CAKEPHP=3.7.0
+
+    - php: 7.2
       env: PHPCS=1 PHPUNIT=0
 
     - php: 7.2
