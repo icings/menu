@@ -241,6 +241,7 @@ class MenuHelper extends Helper
         }
 
         $createOptions = [];
+        /** @psalm-suppress DocblockTypeContradiction */
         if ($menu === null) {
             if (empty($this->_menus)) {
                 throw new \RuntimeException('No menu has been created.');
@@ -269,6 +270,7 @@ class MenuHelper extends Helper
             $createOptions = $this->_menuConfigurations[$menu];
         }
 
+        /** @psalm-suppress TooManyArguments */
         $options = Hash::merge($this->getConfig(), $options, $createOptions);
         $rendererOptions = $this->_extractRendererOptions($options);
 
@@ -363,6 +365,7 @@ class MenuHelper extends Helper
      */
     protected function _extractMenuOptions(array &$options): array
     {
+        /** @psalm-suppress PossiblyNullArgument */
         $menuOptions = array_intersect_key(
             $options,
             array_flip([
@@ -394,6 +397,7 @@ class MenuHelper extends Helper
      */
     protected function _extractRendererOptions(array &$options): array
     {
+        /** @psalm-suppress PossiblyNullArgument */
         $rendererOptions = array_diff_key(
             $options,
             array_flip([

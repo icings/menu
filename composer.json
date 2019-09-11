@@ -48,7 +48,7 @@
             "@phpstan-tests",
             "@psalm"
         ],
-        "stan-setup": "cp composer.json composer.backup && composer require --dev \"phpstan/phpstan-shim:^0.11\" \"psalm/phar:^3.4\" && mv composer.backup composer.json",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev \"phpstan/phpstan-shim:^0.11\" \"psalm/phar:^3.5\" && mv composer.backup composer.json",
         "phpstan-src": "phpstan analyse -l 7 -c ./phpstan.src.neon ./src",
         "phpstan-tests": "phpstan analyse -l 7 -c ./phpstan.tests.neon ./tests",
         "psalm": "php ./vendor/psalm/phar/psalm.phar --show-info=false"
