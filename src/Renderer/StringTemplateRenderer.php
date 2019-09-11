@@ -44,7 +44,7 @@ class StringTemplateRenderer implements RendererInterface
             'nest' => '<ul{{attrs}}>{{items}}</ul>',
             'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
             'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
-            'text' => '<span{{attrs}}>{{label}}</span>'
+            'text' => '<span{{attrs}}>{{label}}</span>',
         ],
         'templateVars' => null,
         'currentClass' => 'active',
@@ -202,7 +202,7 @@ class StringTemplateRenderer implements RendererInterface
         $rendered = (string)$templater->format('menu', [
             'attrs' => $this->_formatAttributes($item->getChildrenAttributes(), $item),
             'templateVars' => $templateVars,
-            'items' => $this->_renderChildren($item, $options)
+            'items' => $this->_renderChildren($item, $options),
         ]);
 
         if ($newTemplates) {
@@ -259,7 +259,7 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$templater->format('nest', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
@@ -408,7 +408,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'link' => $link,
-            'nest' => $nested
+            'nest' => $nested,
         ]);
 
         if ($newTemplates) {
@@ -462,7 +462,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'url' => h($item->getUri()),
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 
@@ -483,7 +483,7 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 

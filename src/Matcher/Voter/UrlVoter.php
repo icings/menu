@@ -28,7 +28,7 @@ class UrlVoter implements VoterInterface
      * @var array
      */
     protected $_defaultConfig = [
-        'ignoreQueryString' => true
+        'ignoreQueryString' => true,
     ];
 
     /**

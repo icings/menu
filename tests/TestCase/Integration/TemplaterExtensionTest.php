@@ -48,14 +48,14 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'templates' => [
-                'name' => 'value'
-            ]
+                'name' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
             'extras' => [
-                'templates' => $originalOptions['templates']
-            ]
+                'templates' => $originalOptions['templates'],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -64,14 +64,14 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'templateVars' => [
-                'name' => 'value'
-            ]
+                'name' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
             'extras' => [
-                'templateVars' => $originalOptions['templateVars']
-            ]
+                'templateVars' => $originalOptions['templateVars'],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -81,12 +81,12 @@ class TemplaterExtensionTest extends TestCase
         $originalOptions = [
             'menuAttributes' => [
                 'id' => 'value',
-                'class' => 'value'
-            ]
+                'class' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'childrenAttributes' => $originalOptions['menuAttributes']
+            'childrenAttributes' => $originalOptions['menuAttributes'],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -96,20 +96,20 @@ class TemplaterExtensionTest extends TestCase
         $originalOptions = [
             'childrenAttributes' => [
                 'existing' => 'value',
-                'otherExisting' => 'value'
+                'otherExisting' => 'value',
             ],
             'menuAttributes' => [
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
             'childrenAttributes' => [
                 'existing' => 'value',
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -118,12 +118,12 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'nestAttributes' => [
-                'name' => 'value'
-            ]
+                'name' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'childrenAttributes' => $originalOptions['nestAttributes']
+            'childrenAttributes' => $originalOptions['nestAttributes'],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -133,20 +133,20 @@ class TemplaterExtensionTest extends TestCase
         $originalOptions = [
             'childrenAttributes' => [
                 'existing' => 'value',
-                'otherExisting' => 'value'
+                'otherExisting' => 'value',
             ],
             'nestAttributes' => [
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
             'childrenAttributes' => [
                 'existing' => 'value',
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -155,12 +155,12 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'textAttributes' => [
-                'name' => 'value'
-            ]
+                'name' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'labelAttributes' => $originalOptions['textAttributes']
+            'labelAttributes' => $originalOptions['textAttributes'],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -170,20 +170,20 @@ class TemplaterExtensionTest extends TestCase
         $originalOptions = [
             'labelAttributes' => [
                 'existing' => 'value',
-                'otherExisting' => 'value'
+                'otherExisting' => 'value',
             ],
             'textAttributes' => [
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
             'labelAttributes' => [
                 'existing' => 'value',
                 'name' => 'value',
-                'otherExisting' => 'new value'
-            ]
+                'otherExisting' => 'new value',
+            ],
         ];
         $this->assertEquals($expected, $options);
     }
@@ -191,11 +191,11 @@ class TemplaterExtensionTest extends TestCase
     public function testBuildOptionsDefineEscapeOnly()
     {
         $originalOptions = [
-            'escape' => true
+            'escape' => true,
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }
@@ -203,11 +203,11 @@ class TemplaterExtensionTest extends TestCase
     public function testBuildOptionsDefineDisableEscapeOnly()
     {
         $originalOptions = [
-            'escape' => false
+            'escape' => false,
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }
@@ -215,11 +215,11 @@ class TemplaterExtensionTest extends TestCase
     public function testBuildOptionsDefineEscapeLabelOnly()
     {
         $originalOptions = [
-            'escapeLabel' => true
+            'escapeLabel' => true,
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }
@@ -227,11 +227,11 @@ class TemplaterExtensionTest extends TestCase
     public function testBuildOptionsDefineDisableEscapeLabelOnly()
     {
         $originalOptions = [
-            'escapeLabel' => false
+            'escapeLabel' => false,
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }
@@ -240,19 +240,19 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'templates' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'templateVars' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'defaultTemplates' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'defaultTemplateVars' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'menuAttributes' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'textAttributes' => [
                 'name' => 'value',
@@ -261,7 +261,7 @@ class TemplaterExtensionTest extends TestCase
                 'name' => 'value',
             ],
             'escape' => false,
-            'escapeLabel' => true
+            'escapeLabel' => true,
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
 
@@ -272,12 +272,12 @@ class TemplaterExtensionTest extends TestCase
         );
         $expected = [
             'labelAttributes' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'childrenAttributes' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }
@@ -286,15 +286,15 @@ class TemplaterExtensionTest extends TestCase
     {
         $originalOptions = [
             'templates' => [
-                'name' => 'value'
+                'name' => 'value',
             ],
             'templateVars' => [
-                'name' => 'value'
-            ]
+                'name' => 'value',
+            ],
         ];
         $options = $this->TemplaterExtension->buildOptions($originalOptions);
         $expected = [
-            'extras' => $originalOptions
+            'extras' => $originalOptions,
         ];
         $this->assertEquals($expected, $options);
     }

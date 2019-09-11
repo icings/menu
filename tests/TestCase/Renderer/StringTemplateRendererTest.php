@@ -89,41 +89,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ul{{attrs}}>{{items}}</ul>',
                 'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
                 'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
-                'text' => '<span{{attrs}}>{{label}}</span>'
-            ],
-            'templateVars' => null,
-            'currentClass' => 'active',
-            'ancestorClass' => 'active-ancestor',
-            'leafClass' => null,
-            'branchClass' => 'has-dropdown',
-            'nestedMenuClass' => 'dropdown',
-            'menuLevelClass' => null,
-            'firstClass' => null,
-            'lastClass' => null,
-            'depth' => null,
-            'matchingDepth' => null,
-            'clearMatcher' => true,
-            'currentAsLink' => true
-        ];
-        $this->assertEquals($expected, $renderer->getConfig());
-    }
-
-    public function testConstructWithOptions()
-    {
-        $renderer = new StringTemplateRenderer(new Matcher(), [
-            'templates' => [
-                'menu' => '{{items}}'
-            ],
-            'nonExistent' => 'option'
-        ]);
-
-        $expected = [
-            'templates' => [
-                'menu' => '{{items}}',
-                'nest' => '<ul{{attrs}}>{{items}}</ul>',
-                'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
-                'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
-                'text' => '<span{{attrs}}>{{label}}</span>'
+                'text' => '<span{{attrs}}>{{label}}</span>',
             ],
             'templateVars' => null,
             'currentClass' => 'active',
@@ -138,7 +104,41 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'matchingDepth' => null,
             'clearMatcher' => true,
             'currentAsLink' => true,
-            'nonExistent' => 'option'
+        ];
+        $this->assertEquals($expected, $renderer->getConfig());
+    }
+
+    public function testConstructWithOptions()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'templates' => [
+                'menu' => '{{items}}',
+            ],
+            'nonExistent' => 'option',
+        ]);
+
+        $expected = [
+            'templates' => [
+                'menu' => '{{items}}',
+                'nest' => '<ul{{attrs}}>{{items}}</ul>',
+                'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
+                'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
+                'text' => '<span{{attrs}}>{{label}}</span>',
+            ],
+            'templateVars' => null,
+            'currentClass' => 'active',
+            'ancestorClass' => 'active-ancestor',
+            'leafClass' => null,
+            'branchClass' => 'has-dropdown',
+            'nestedMenuClass' => 'dropdown',
+            'menuLevelClass' => null,
+            'firstClass' => null,
+            'lastClass' => null,
+            'depth' => null,
+            'matchingDepth' => null,
+            'clearMatcher' => true,
+            'currentAsLink' => true,
+            'nonExistent' => 'option',
         ];
         $this->assertEquals($expected, $renderer->getConfig());
     }
@@ -146,7 +146,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
     public function testConstructWithTemplatesFile()
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
-            'templates' => 'renderer_templates'
+            'templates' => 'renderer_templates',
         ]);
 
         $expected = [
@@ -155,7 +155,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ul data-ul{{attrs}}>{{items}}</ul>',
                 'item' => '<li data-li{{attrs}}>{{link}}{{nest}}</li>',
                 'link' => '<a data-a href="{{url}}"{{attrs}}>{{label}}</a>',
-                'text' => '<span data-span{{attrs}}>{{label}}</span>'
+                'text' => '<span data-span{{attrs}}>{{label}}</span>',
             ],
             'templateVars' => null,
             'currentClass' => 'active',
@@ -214,7 +214,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ol{{attrs}}>{{items}}</ol>',
                 'item' => '<li{{attrs}}><i>before</i>{{link}}{{nest}}</li>',
                 'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a><i>after</i>',
-                'text' => '<p{{attrs}}>{{label}}</p>'
+                'text' => '<p{{attrs}}>{{label}}</p>',
             ],
         ]);
 
@@ -283,11 +283,11 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ol{{attrs}}>{{items}}</ol>',
                 'item' => '<li data-var="{{someVar}}"{{attrs}}><i>before</i>{{link}}{{nest}}</li>',
                 'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a><i>after</i>',
-                'text' => '<p{{attrs}}>{{label}}</p>'
+                'text' => '<p{{attrs}}>{{label}}</p>',
             ],
             'templateVars' => [
-                'someVar' => 'default var'
-            ]
+                'someVar' => 'default var',
+            ],
         ]));
     }
 
@@ -303,30 +303,30 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $menu = $factory->createItem('test', [
             'templates' => [
                 'menu' => '<div><ul{{attrs}}>{{items}}</ul></div>',
-                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>'
+                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'someVar' => 'default var'
-            ]
+                'someVar' => 'default var',
+            ],
         ]);
         $menu->addChild('Link', [
-            'uri' => '/link'
+            'uri' => '/link',
         ]);
         $menu['Link']->addChild('Nested', [
             'templates' => [
-                'item' => '<li data-specific-item{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>'
+                'item' => '<li data-specific-item{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'someVar' => 'item var'
-            ]
+                'someVar' => 'item var',
+            ],
         ]);
         $menu['Link']['Nested']->addChild('EvenDeeper', [
-            'uri' => '/even-deeper'
+            'uri' => '/even-deeper',
         ]);
         $menu->addChild('Text', [
             'templates' => [
-                'text' => '<p{{attrs}}>{{label}}</p>'
-            ]
+                'text' => '<p{{attrs}}>{{label}}</p>',
+            ],
         ]);
 
         $expected = '
@@ -372,8 +372,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'item' => '<li data-menu-var="{{someVar}}"{{attrs}}>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'someVar' => 'menu default var'
-            ]
+                'someVar' => 'menu default var',
+            ],
         ]);
         $menu->addChild('Link', ['uri' => '/link']);
         $menu['Link']->addChild('Nested');
@@ -399,11 +399,11 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'templates' => [
                 'nest' => '<ol{{attrs}}>{{items}}</ol>',
                 'item' => '<li data-render-var="{{someVar}}"{{attrs}}>{{link}}{{nest}}</li>',
-                'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>'
+                'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
             ],
             'templateVars' => [
-                'someVar' => 'render default var'
-            ]
+                'someVar' => 'render default var',
+            ],
         ]));
     }
 
@@ -419,14 +419,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $menu = $factory->createItem('test', [
             'templates' => [
                 'menu' => '<div><ul{{attrs}}>{{items}}</ul></div>',
-                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>'
+                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'someVar' => 'default var'
-            ]
+                'someVar' => 'default var',
+            ],
         ]);
         $menu->addChild('Parent', [
-            'uri' => '/parent'
+            'uri' => '/parent',
         ]);
         $menu['Parent']->addChild('Child', [
             'uri' => '/child',
@@ -435,8 +435,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ul data-specific-nested{{attrs}}>{{items}}</ul>',
             ],
             'templateVars' => [
-                'someVar' => 'item var'
-            ]
+                'someVar' => 'item var',
+            ],
         ]);
         $menu['Parent']['Child']->addChild('Grandchild', [
             'uri' => '/grand-child',
@@ -448,11 +448,11 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'nest' => '<ul data-new-defaults{{attrs}}>{{items}}</ul>',
             ],
             'defaultTemplateVars' => [
-                'someVar' => 'new default var'
-            ]
+                'someVar' => 'new default var',
+            ],
         ]);
         $menu['Parent']['Child']['Grandchild']['GreatGrandchild']->addChild('SecondGreatGrandchild', [
-            'uri' => '/second-great-grandchild'
+            'uri' => '/second-great-grandchild',
         ]);
         $menu->addChild('Text');
 
@@ -505,14 +505,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $menu = $factory->createItem('test', [
             'templates' => [
                 'menu' => '<div><ul{{attrs}}>{{items}}</ul></div>',
-                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>'
+                'item' => '<li{{attrs}}><i data-var="{{someVar}}">before</i>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'someVar' => 'default var'
-            ]
+                'someVar' => 'default var',
+            ],
         ]);
         $menu->addChild('Parent', [
-            'uri' => '/parent'
+            'uri' => '/parent',
         ]);
         $menu['Parent']->addChild('Child', [
             'uri' => '/child',
@@ -520,7 +520,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
                 'item' => '<li data-do-not-overwrite data-var="{{itemVar}}"{{attrs}}>{{link}}{{nest}}</li>',
             ],
             'templateVars' => [
-                'itemVar' => 'do not overwrite'
+                'itemVar' => 'do not overwrite',
             ],
             'defaultTemplates' => [
                 'item' => '<li data-new-defaults data-var="{{someVar}}"{{attrs}}>{{link}}{{nest}}</li>',
@@ -528,8 +528,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             ],
             'defaultTemplateVars' => [
                 'itemVar' => 'new value',
-                'someVar' => 'new default var'
-            ]
+                'someVar' => 'new default var',
+            ],
         ]);
         $menu['Parent']['Child']->addChild('Grandchild', [
             'uri' => '/grand-child',
@@ -585,14 +585,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $renderer = new StringTemplateRenderer($matcher);
 
         $renderer->render($this->menu, [
-            'clearMatcher' => false
+            'clearMatcher' => false,
         ]);
     }
 
     public function testRenderNoAncestorClass()
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
-            'ancestorClass' => null
+            'ancestorClass' => null,
         ]);
 
         $menu = new MenuItem('test', new MenuFactory());
@@ -623,14 +623,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $menu = $factory->createItem('test');
         $menu->addChild('<b>Escaped</b>', [
             'attributes' => [
-                'escaped' => '"escaped"'
-            ]
+                'escaped' => '"escaped"',
+            ],
         ]);
         $menu->addChild('<b>Unescaped</b>', [
             'escapeLabel' => false,
             'attributes' => [
-                'escaped' => '"escaped"'
-            ]
+                'escaped' => '"escaped"',
+            ],
         ]);
 
         $expected = '
@@ -652,14 +652,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $menu = $factory->createItem('test');
         $menu->addChild('<b>Escaped</b>', [
             'attributes' => [
-                'escaped' => '"escaped"'
-            ]
+                'escaped' => '"escaped"',
+            ],
         ]);
         $menu->addChild('<b>Unescaped</b>', [
             'escape' => false,
             'attributes' => [
-                'unescaped' => '"unescaped"'
-            ]
+                'unescaped' => '"unescaped"',
+            ],
         ]);
 
         $expected = '
@@ -686,7 +686,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'menuLevelClass' => 'menu_level_',
             'firstClass' => 'first',
             'lastClass' => 'last',
-            'branchClass' => null
+            'branchClass' => null,
         ]);
 
         return $renderer;
@@ -744,7 +744,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($this->menu, [
             'depth' => 2,
             'leafClass' => 'leaf',
-            'branchClass' => 'branch'
+            'branchClass' => 'branch',
         ]));
     }
 

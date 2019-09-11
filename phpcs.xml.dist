@@ -4,7 +4,6 @@
     <exclude-pattern>./tests/TestCase/Renderer/KnpAbstractRendererTest.php</exclude-pattern>
     <rule ref="./vendor/cakephp/cakephp-codesniffer/CakePHP/ruleset.xml">
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation" />
-        <exclude name="SlevomatCodingStandard.Arrays.TrailingArrayComma" />
     </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
         <properties>
