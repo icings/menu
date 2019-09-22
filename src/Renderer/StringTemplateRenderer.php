@@ -499,7 +499,7 @@ class StringTemplateRenderer implements RendererInterface
         if (!$item->getExtra('escapeLabel', true) ||
             !$item->getExtra('escape', true)
         ) {
-            return $item->getLabel();
+            return (string)$item->getLabel();
         }
 
         return (string)h($item->getLabel());
