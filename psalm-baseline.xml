@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.5.1@deb36e8b273d4b25601f1991482a69d412e3169f">
+<files psalm-version="3.6.6@5e17a9af104de39321c47f73b253cece9df1cf2c">
   <file src="src/Plugin.php">
     <PropertyNotSetInConstructor occurrences="1">
       <referencedProperty name="Cake\Core\BasePlugin::$path"/>
