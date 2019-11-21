@@ -104,6 +104,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'matchingDepth' => null,
             'clearMatcher' => true,
             'currentAsLink' => true,
+            'inheritItemClasses' => null,
+            'consumeItemClasses' => null,
         ];
         $this->assertEquals($expected, $renderer->getConfig());
     }
@@ -138,6 +140,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'matchingDepth' => null,
             'clearMatcher' => true,
             'currentAsLink' => true,
+            'inheritItemClasses' => null,
+            'consumeItemClasses' => null,
             'nonExistent' => 'option',
         ];
         $this->assertEquals($expected, $renderer->getConfig());
@@ -170,6 +174,8 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             'matchingDepth' => null,
             'clearMatcher' => true,
             'currentAsLink' => true,
+            'inheritItemClasses' => null,
+            'consumeItemClasses' => null,
         ];
         $this->assertEquals($expected, $renderer->getConfig());
     }
@@ -557,6 +563,870 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
+    public function testRenderInheritAllClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeAllClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => true,
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeAllClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+            'consumeItemClasses' => true,
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritSpecificClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeSpecificClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="first last"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="last"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeSpecificClassesByDefault()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+            'consumeItemClasses' => [
+                'currentClass',
+                'lastClass',
+            ],
+        ]);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']->addChild('Nested', ['uri' => '/nested'])->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="first leaf"><a href="/nested" class="active last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="leaf"><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => true,
+                'consumeItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="first last"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+                'consumeItemClasses' => [
+                    'currentClass',
+                    'lastClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="first leaf"><a href="/nested" class="active last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span>Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAllClassesByDefaultOverrideInheritClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeAllClassesByDefaultOverrideConsumeClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="first last"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+            'consumeItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+                'consumeItemClasses' => [
+                    'currentClass',
+                    'leafClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="first last"><a href="/nested" class="active leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritSpecificClassesByDefaultOverrideInheritSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'firstClass',
+                    'lastClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="first last">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => [
+                    'firstClass',
+                    'lastClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active leaf"><a href="/nested" class="first last">Nested</a></li>
+                </ul>
+              </li>
+              <li class="last"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeSpecificClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+            ],
+            'consumeItemClasses' => [
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => [
+                    'firstClass',
+                ],
+                'consumeItemClasses' => [
+                    'lastClass',
+                ],
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first leaf"><a href="/nested" class="first last">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritSpecificClassesByDefaultOverrideInheritAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => [
+                'currentClass',
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="last"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeAllClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => [
+                'currentClass',
+            ],
+            'consumeItemClasses' => [
+                'leafClass',
+            ],
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => true,
+                'consumeItemClasses' => true,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link">Link</a>
+                <ul class="dropdown">
+                  <li><a href="/nested" class="active first last leaf">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last"><span class="active leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAllClassesByDefaultOverrideInheritNoClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => false,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li class="active-ancestor first has-dropdown">
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested">Nested</a></li>
+                </ul>
+              </li>
+              <li class="active last leaf"><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderConsumeAllClassesByDefaultOverrideConsumeNoClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'consumeItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'consumeItemClasses' => false,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
+    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeNoClassesPerItem()
+    {
+        $renderer = new StringTemplateRenderer(new Matcher(), [
+            'leafClass' => 'leaf',
+            'firstClass' => 'first',
+            'lastClass' => 'last',
+            'inheritItemClasses' => true,
+            'consumeItemClasses' => true,
+        ]);
+
+        $factory = new MenuFactory();
+        $factory->addExtension(new TemplaterExtension());
+
+        $menu = $factory->createItem('test');
+        $menu->addChild('Link', ['uri' => '/link']);
+        $menu['Link']
+            ->addChild('Nested', [
+                'uri' => '/nested',
+                'inheritItemClasses' => false,
+                'consumeItemClasses' => false,
+            ])
+            ->setCurrent(true);
+        $menu->addChild('Text')->setCurrent(true);
+
+        $expected = '
+            <ul>
+              <li>
+                <a href="/link" class="active-ancestor first has-dropdown">Link</a>
+                <ul class="dropdown">
+                  <li class="active first last leaf"><a href="/nested">Nested</a></li>
+                </ul>
+              </li>
+              <li><span class="active last leaf">Text</span></li>
+            </ul>';
+        $this->assertTrimmedHtml($expected, $renderer->render($menu));
+    }
+
     public function testRenderDoClearMatcher()
     {
         /** @var MatcherInterface|MockObject $matcher */
@@ -739,7 +1609,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
     public function testLeafAndBranchRendering()
     {
-        $expected = '<ul class="root"><li class="first branch"><span>Parent 1</span><ul class="menu_level_1"><li class="first leaf"><span>Child 1</span></li><li class="leaf"><span>Child 2</span></li><li class="last leaf"><span>Child 3</span></li></ul></li><li class="last branch"><span>Parent 2</span><ul class="menu_level_1"><li class="first last leaf"><span>Child 4</span></li></ul></li></ul>';
+        $expected = '<ul class="root"><li class="branch first"><span>Parent 1</span><ul class="menu_level_1"><li class="first leaf"><span>Child 1</span></li><li class="leaf"><span>Child 2</span></li><li class="last leaf"><span>Child 3</span></li></ul></li><li class="branch last"><span>Parent 2</span><ul class="menu_level_1"><li class="first last leaf"><span>Child 4</span></li></ul></li></ul>';
 
         $this->assertEquals($expected, $this->renderer->render($this->menu, [
             'depth' => 2,
