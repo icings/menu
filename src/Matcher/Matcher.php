@@ -96,7 +96,8 @@ class Matcher implements MatcherInterface
         }
 
         foreach ($item->getChildren() as $child) {
-            if ($this->isCurrent($child) ||
+            if (
+                $this->isCurrent($child) ||
                 $this->isAncestor($child, $childDepth)
             ) {
                 return true;

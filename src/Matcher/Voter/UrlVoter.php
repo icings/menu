@@ -104,7 +104,8 @@ class UrlVoter implements VoterInterface
         foreach ($routes as $route) {
             $url = Router::url($route);
 
-            if ($ignoreQueryString &&
+            if (
+                $ignoreQueryString &&
                 $this->_stripQueryString($url) === $this->_urlWithoutQuery
             ) {
                 return true;

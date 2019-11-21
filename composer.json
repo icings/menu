@@ -39,8 +39,8 @@
             "@cs-check",
             "@test"
         ],
-        "cs-check": "phpcs -p ./src ./tests",
-        "cs-fix": "phpcbf -p ./src ./tests",
+        "cs-check": "phpcs --parallel=16 -p ./src ./tests",
+        "cs-fix": "phpcbf --parallel=16 -p ./src ./tests",
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-clover=./clover.xml",
         "stan": [

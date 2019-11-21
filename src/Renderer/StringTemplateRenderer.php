@@ -171,7 +171,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderMenu(ItemInterface $item, array $options): string
     {
-        if (!$item->hasChildren() ||
+        if (
+            !$item->hasChildren() ||
             $options['depth'] === 0 ||
             !$item->getDisplayChildren()
         ) {
@@ -228,7 +229,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderNested(ItemInterface $item, array $options): string
     {
-        if (!$item->hasChildren() ||
+        if (
+            !$item->hasChildren() ||
             $options['depth'] === 0 ||
             !$item->getDisplayChildren()
         ) {
@@ -276,7 +278,8 @@ class StringTemplateRenderer implements RendererInterface
             $options['depth'] = $options['depth'] - 1;
         }
 
-        if ($options['matchingDepth'] !== null &&
+        if (
+            $options['matchingDepth'] !== null &&
             $options['matchingDepth'] > 0
         ) {
             $options['matchingDepth'] = $options['matchingDepth'] - 1;
@@ -309,28 +312,33 @@ class StringTemplateRenderer implements RendererInterface
 
         if ($this->_matcher->isCurrent($item)) {
             $class[] = $options['currentClass'];
-        } elseif (isset($options['ancestorClass']) &&
+        } elseif (
+            isset($options['ancestorClass']) &&
             $this->_matcher->isAncestor($item, $options['matchingDepth'])
         ) {
             $class[] = $options['ancestorClass'];
         }
 
-        if (isset($options['firstClass']) &&
+        if (
+            isset($options['firstClass']) &&
             $item->actsLikeFirst()
         ) {
             $class[] = $options['firstClass'];
         }
-        if (isset($options['lastClass']) &&
+        if (
+            isset($options['lastClass']) &&
             $item->actsLikeLast()
         ) {
             $class[] = $options['lastClass'];
         }
 
         $hasChildren = $item->hasChildren();
-        if ($hasChildren &&
+        if (
+            $hasChildren &&
             $options['depth'] !== 0
         ) {
-            if ($options['branchClass'] !== null &&
+            if (
+                $options['branchClass'] !== null &&
                 $item->getDisplayChildren()
             ) {
                 $class[] = $options['branchClass'];
@@ -432,7 +440,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderLink(ItemInterface $item, array $options): string
     {
-        if ($item->getUri() &&
+        if (
+            $item->getUri() &&
             (
                 !$item->isCurrent() ||
                 $options['currentAsLink']
@@ -498,7 +507,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderLabel(ItemInterface $item): string
     {
-        if (!$item->getExtra('escapeLabel', true) ||
+        if (
+            !$item->getExtra('escapeLabel', true) ||
             !$item->getExtra('escape', true)
         ) {
             return (string)$item->getLabel();
