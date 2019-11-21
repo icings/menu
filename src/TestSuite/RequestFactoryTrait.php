@@ -38,7 +38,7 @@ trait RequestFactoryTrait
             ],
             $query['arguments']
         );
-        Router::setRequestContext($request);
+        Router::setRequest($request);
 
         return $request->withAttribute(
             'params',

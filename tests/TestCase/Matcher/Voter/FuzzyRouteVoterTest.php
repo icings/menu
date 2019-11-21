@@ -112,7 +112,7 @@ class FuzzyRouteVoterTest extends TestCase
             ],
             'Prefix request' => [
                 '/prefix-name/controller/action',
-                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name'],
+                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'PrefixName'],
             ],
             'Plugin request' => [
                 '/plugin-name/controller/action',
@@ -297,7 +297,7 @@ class FuzzyRouteVoterTest extends TestCase
                 true,
             ],
             'Exact prefix matching' => [
-                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']],
+                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'PrefixName']],
                 '/prefix-name/controller/action',
                 true,
             ],
