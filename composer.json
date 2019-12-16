@@ -11,16 +11,15 @@
             "homepage": "https://nowak-media.de"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "minimum-stability": "stable",
     "require": {
         "php": ">=7.2.0",
-        "cakephp/cakephp": "4.x-dev as 4.0.0",
+        "cakephp/cakephp": "^4.0",
         "knplabs/knp-menu": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0",
-        "cakephp/cakephp-codesniffer": "dev-next"
+        "phpunit/phpunit": "~8.5.0",
+        "cakephp/cakephp-codesniffer": "^4.0"
     },
     "autoload": {
         "psr-4": {
