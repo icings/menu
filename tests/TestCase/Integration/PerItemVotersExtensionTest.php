@@ -46,14 +46,14 @@ class PerItemVotersExtensionTest extends TestCase
         $originalOptions = [
             'voters' => [
                 'voter1',
-                'voter2'
-            ]
+                'voter2',
+            ],
         ];
         $options = $this->PerItemVotersExtension->buildOptions($originalOptions);
         $expected = [
             'extras' => [
-                'voters' => $originalOptions['voters']
-            ]
+                'voters' => $originalOptions['voters'],
+            ],
         ];
         $this->assertEquals($expected, $options);
     }

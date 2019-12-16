@@ -50,7 +50,7 @@ $config = [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
-    ]
+    ],
 ];
 Configure::write($config);
 

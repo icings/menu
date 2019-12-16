@@ -65,7 +65,7 @@ class MenuHelperTest extends TestCase
             'matching' => MenuHelper::MATCH_URL,
             'matcher' => null,
             'voters' => null,
-            'renderer' => null
+            'renderer' => null,
         ];
         $this->assertEquals($expected, $helper->getConfig());
     }
@@ -76,7 +76,7 @@ class MenuHelperTest extends TestCase
             'matching' => MenuHelper::MATCH_FUZZY_ROUTE,
             'matcher' => 'matcher',
             'voters' => 'voters',
-            'renderer' => 'renderer'
+            'renderer' => 'renderer',
         ];
         $helper = new MenuHelper($this->View, $config);
 
@@ -112,10 +112,10 @@ class MenuHelperTest extends TestCase
         $menuOptions = [
             'templates' => [],
             'templateVars' => [],
-            'menuAttributes' => []
+            'menuAttributes' => [],
         ];
         $nonMenuOptions = [
-            'option' => 'value'
+            'option' => 'value',
         ];
 
         $menu = $this
@@ -142,16 +142,16 @@ class MenuHelperTest extends TestCase
         $menuItemOptions = [
             'templates' => [],
             'templateVars' => [],
-            'menuAttributes' => []
+            'menuAttributes' => [],
         ];
         $nonRendererOptions = [
             'matching' => 'matching',
             'matcher' => 'matcher',
             'voters' => 'voters',
-            'renderer' => 'renderer'
+            'renderer' => 'renderer',
         ];
         $rendererOptions = [
-            'currentClass' => 'current'
+            'currentClass' => 'current',
         ];
 
         $menu = $this
@@ -213,7 +213,7 @@ class MenuHelperTest extends TestCase
             ->with($this->identicalTo($mainMenu));
 
         $this->Menu->setConfig([
-            'renderer' => $renderer
+            'renderer' => $renderer,
         ]);
         $this->Menu->setMenuFactory($factory);
 
@@ -254,7 +254,7 @@ class MenuHelperTest extends TestCase
             ->with($this->identicalTo($mainMenu));
 
         $this->Menu->setConfig([
-            'renderer' => $renderer
+            'renderer' => $renderer,
         ]);
         $this->Menu->setMenuFactory($factory);
 
@@ -302,7 +302,7 @@ class MenuHelperTest extends TestCase
             ->with($this->identicalTo($menu), $this->isType('array'));
 
         $this->Menu->setConfig([
-            'renderer' => $renderer
+            'renderer' => $renderer,
         ]);
 
         $this->Menu->render($menu);
@@ -357,7 +357,7 @@ class MenuHelperTest extends TestCase
             ->setMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -392,12 +392,12 @@ class MenuHelperTest extends TestCase
             'menuAttributes' => [],
             'matching' => 'matching',
             'matcher' => $matcher,
-            'voters' => [$voter]
+            'voters' => [$voter],
         ];
         $rendererOptions = [
             'templates' => [],
             'templateVars' => [],
-            'option' => 'value'
+            'option' => 'value',
         ];
 
         $menu = $this
@@ -417,7 +417,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
             ->setMethods([
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -485,12 +485,12 @@ class MenuHelperTest extends TestCase
                     'option1' => 'helper value',
                     'option2' => 'create value',
                     'option3' => 'create value',
-                    'option4' => 'render value'
+                    'option4' => 'render value',
                 ],
                 'nonNested1' => 'helper value',
                 'nonNested2' => 'create value',
                 'nonNested3' => 'create value',
-                'nonNested4' => 'render value'
+                'nonNested4' => 'render value',
             ]);
 
         $factory = $this
@@ -507,10 +507,10 @@ class MenuHelperTest extends TestCase
             'renderer' => $renderer1,
             'nested' => [
                 'option1' => 'helper value',
-                'option2' => 'helper value'
+                'option2' => 'helper value',
             ],
             'nonNested1' => 'helper value',
-            'nonNested2' => 'helper value'
+            'nonNested2' => 'helper value',
         ];
 
         /** @var MenuHelper|\PHPUnit_Framework_MockObject_MockObject $helper */
@@ -520,7 +520,7 @@ class MenuHelperTest extends TestCase
             ->setMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -543,10 +543,10 @@ class MenuHelperTest extends TestCase
             'renderer' => $renderer2,
             'nested' => [
                 'option2' => 'create value',
-                'option3' => 'create value'
+                'option3' => 'create value',
             ],
             'nonNested2' => 'create value',
-            'nonNested3' => 'create value'
+            'nonNested3' => 'create value',
         ];
         $menu = $helper->create('name', $createOptions);
 
@@ -556,10 +556,10 @@ class MenuHelperTest extends TestCase
             'renderer' => $renderer3,
             'nested' => [
                 'option3' => 'render value',
-                'option4' => 'render value'
+                'option4' => 'render value',
             ],
             'nonNested3' => 'render value',
-            'nonNested4' => 'render value'
+            'nonNested4' => 'render value',
         ];
 
         return compact('helper', 'menu', 'renderOptions');
@@ -611,7 +611,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
             ->setMethods([
-                '_createDefaultMatcher'
+                '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
@@ -644,7 +644,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
             ->setMethods([
-                '_createDefaultMatcher'
+                '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
@@ -653,7 +653,7 @@ class MenuHelperTest extends TestCase
             ->willReturn($matcher);
 
         $helper->render($menu, [
-            'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
+            'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING,
         ]);
     }
 
@@ -676,7 +676,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
             ->setMethods([
-                '_createDefaultMatcher'
+                '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
@@ -685,7 +685,7 @@ class MenuHelperTest extends TestCase
             ->willReturn($matcher);
 
         $helper->render($menu, [
-            'matching' => MenuHelper::MATCH_FUZZY_ROUTE
+            'matching' => MenuHelper::MATCH_FUZZY_ROUTE,
         ]);
     }
 
@@ -700,7 +700,7 @@ class MenuHelperTest extends TestCase
             ->getMock();
 
         $this->Menu->render($menu, [
-            'matching' => 'invalid'
+            'matching' => 'invalid',
         ]);
     }
 
@@ -737,7 +737,7 @@ class MenuHelperTest extends TestCase
             ->setMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -755,7 +755,7 @@ class MenuHelperTest extends TestCase
             ->willReturn($renderer);
 
         $helper->render($menu, [
-            'matcher' => $matcher
+            'matcher' => $matcher,
         ]);
     }
 
@@ -770,7 +770,7 @@ class MenuHelperTest extends TestCase
             ->getMock();
 
         $this->Menu->render($menu, [
-            'matcher' => 'invalid'
+            'matcher' => 'invalid',
         ]);
     }
 
@@ -807,7 +807,7 @@ class MenuHelperTest extends TestCase
             ->setMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -824,7 +824,7 @@ class MenuHelperTest extends TestCase
             ->willReturn($renderer);
 
         $helper->render($menu, [
-            'voters' => [$voter]
+            'voters' => [$voter],
         ]);
     }
 
@@ -839,7 +839,7 @@ class MenuHelperTest extends TestCase
             ->getMock();
 
         $this->Menu->render($menu, [
-            'voters' => 'invalid'
+            'voters' => 'invalid',
         ]);
     }
 
@@ -857,7 +857,7 @@ class MenuHelperTest extends TestCase
             ->getMock();
 
         $this->Menu->render($menu, [
-            'voters' => ['invalid']
+            'voters' => ['invalid'],
         ]);
     }
 
@@ -882,7 +882,7 @@ class MenuHelperTest extends TestCase
             ->setMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
-                '_createDefaultRenderer'
+                '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
@@ -896,7 +896,7 @@ class MenuHelperTest extends TestCase
             ->method('_createDefaultRenderer');
 
         $helper->render($menu, [
-            'renderer' => $renderer
+            'renderer' => $renderer,
         ]);
     }
 
@@ -911,7 +911,7 @@ class MenuHelperTest extends TestCase
             ->getMock();
 
         $this->Menu->render($menu, [
-            'renderer' => 'invalid'
+            'renderer' => 'invalid',
         ]);
     }
 

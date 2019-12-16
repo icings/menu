@@ -36,7 +36,8 @@ class RoutingExtension implements ExtensionInterface
             }
             unset($options['routes']);
 
-            if (!isset($options['addUriToRoutes']) ||
+            if (
+                !isset($options['addUriToRoutes']) ||
                 $options['addUriToRoutes'] === true
             ) {
                 array_unshift($routes, $uri);

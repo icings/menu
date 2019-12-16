@@ -60,7 +60,7 @@ class MenuHelper extends Helper
         'matching' => null,
         'matcher' => null,
         'voters' => null,
-        'renderer' => null
+        'renderer' => null,
     ];
 
     /**
@@ -152,7 +152,7 @@ class MenuHelper extends Helper
     public function __construct(View $View, array $config = [])
     {
         $config += [
-            'matching' => static::MATCH_URL
+            'matching' => static::MATCH_URL,
         ];
         parent::__construct($View, $config);
 
@@ -373,7 +373,7 @@ class MenuHelper extends Helper
             array_flip([
                 'templates',
                 'templateVars',
-                'menuAttributes'
+                'menuAttributes',
             ])
         );
 
@@ -406,7 +406,7 @@ class MenuHelper extends Helper
                 'matching',
                 'matcher',
                 'voters',
-                'renderer'
+                'renderer',
             ])
         );
 
@@ -437,17 +437,17 @@ class MenuHelper extends Helper
         switch ($type) {
             case static::MATCH_FUZZY_ROUTE:
                 return [
-                    new FuzzyRouteVoter($this->getView()->getRequest())
+                    new FuzzyRouteVoter($this->getView()->getRequest()),
                 ];
             case static::MATCH_URL:
                 return [
-                    new UrlVoter($this->getView()->getRequest())
+                    new UrlVoter($this->getView()->getRequest()),
                 ];
             case static::MATCH_URL_WITH_QUERY_STRING:
                 return [
                     new UrlVoter($this->getView()->getRequest(), [
-                        'ignoreQueryString' => false
-                    ])
+                        'ignoreQueryString' => false,
+                    ]),
                 ];
         }
 

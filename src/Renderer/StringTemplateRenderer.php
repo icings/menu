@@ -42,7 +42,7 @@ class StringTemplateRenderer implements RendererInterface
             'nest' => '<ul{{attrs}}>{{items}}</ul>',
             'item' => '<li{{attrs}}>{{link}}{{nest}}</li>',
             'link' => '<a href="{{url}}"{{attrs}}>{{label}}</a>',
-            'text' => '<span{{attrs}}>{{label}}</span>'
+            'text' => '<span{{attrs}}>{{label}}</span>',
         ],
         'templateVars' => null,
         'currentClass' => 'active',
@@ -169,7 +169,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderMenu(ItemInterface $item, array $options)
     {
-        if (!$item->hasChildren() ||
+        if (
+            !$item->hasChildren() ||
             $options['depth'] === 0 ||
             !$item->getDisplayChildren()
         ) {
@@ -200,7 +201,7 @@ class StringTemplateRenderer implements RendererInterface
         $rendered = (string)$templater->format('menu', [
             'attrs' => $this->_formatAttributes($item->getChildrenAttributes(), $item),
             'templateVars' => $templateVars,
-            'items' => $this->_renderChildren($item, $options)
+            'items' => $this->_renderChildren($item, $options),
         ]);
 
         if ($newTemplates) {
@@ -226,7 +227,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderNested(ItemInterface $item, array $options)
     {
-        if (!$item->hasChildren() ||
+        if (
+            !$item->hasChildren() ||
             $options['depth'] === 0 ||
             !$item->getDisplayChildren()
         ) {
@@ -257,7 +259,7 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$templater->format('nest', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
@@ -274,7 +276,8 @@ class StringTemplateRenderer implements RendererInterface
             $options['depth'] = $options['depth'] - 1;
         }
 
-        if ($options['matchingDepth'] !== null &&
+        if (
+            $options['matchingDepth'] !== null &&
             $options['matchingDepth'] > 0
         ) {
             $options['matchingDepth'] = $options['matchingDepth'] - 1;
@@ -307,28 +310,33 @@ class StringTemplateRenderer implements RendererInterface
 
         if ($this->_matcher->isCurrent($item)) {
             $class[] = $options['currentClass'];
-        } elseif (isset($options['ancestorClass']) &&
+        } elseif (
+            isset($options['ancestorClass']) &&
             $this->_matcher->isAncestor($item, $options['matchingDepth'])
         ) {
             $class[] = $options['ancestorClass'];
         }
 
-        if (isset($options['firstClass']) &&
+        if (
+            isset($options['firstClass']) &&
             $item->actsLikeFirst()
         ) {
             $class[] = $options['firstClass'];
         }
-        if (isset($options['lastClass']) &&
+        if (
+            isset($options['lastClass']) &&
             $item->actsLikeLast()
         ) {
             $class[] = $options['lastClass'];
         }
 
         $hasChildren = $item->hasChildren();
-        if ($hasChildren &&
+        if (
+            $hasChildren &&
             $options['depth'] !== 0
         ) {
-            if ($options['branchClass'] !== null &&
+            if (
+                $options['branchClass'] !== null &&
                 $item->getDisplayChildren()
             ) {
                 $class[] = $options['branchClass'];
@@ -406,7 +414,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'link' => $link,
-            'nest' => $nested
+            'nest' => $nested,
         ]);
 
         if ($newTemplates) {
@@ -430,7 +438,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderLink(ItemInterface $item, array $options)
     {
-        if ($item->getUri() &&
+        if (
+            $item->getUri() &&
             (
                 !$item->isCurrent() ||
                 $options['currentAsLink']
@@ -460,7 +469,7 @@ class StringTemplateRenderer implements RendererInterface
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'url' => h($item->getUri()),
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 
@@ -481,7 +490,7 @@ class StringTemplateRenderer implements RendererInterface
         return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
-            'label' => $this->_renderLabel($item)
+            'label' => $this->_renderLabel($item),
         ]);
     }
 
@@ -496,7 +505,8 @@ class StringTemplateRenderer implements RendererInterface
      */
     protected function _renderLabel(ItemInterface $item)
     {
-        if (!$item->getExtra('escapeLabel', true) ||
+        if (
+            !$item->getExtra('escapeLabel', true) ||
             !$item->getExtra('escape', true)
         ) {
             return (string)$item->getLabel();

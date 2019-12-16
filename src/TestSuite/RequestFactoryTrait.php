@@ -32,7 +32,7 @@ trait RequestFactoryTrait
                 'REQUEST_METHOD' => 'GET',
                 'HTTP_HOST' => 'localhost',
                 'REQUEST_URI' => $requestUri,
-                'QUERY_STRING' => $query['string']
+                'QUERY_STRING' => $query['string'],
             ],
             $query['arguments']
         );

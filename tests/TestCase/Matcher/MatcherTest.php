@@ -169,7 +169,7 @@ class MatcherTest extends TestCase
         return [
             [true, true],
             [false, false],
-            [null, false]
+            [null, false],
         ];
     }
 
