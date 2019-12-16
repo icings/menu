@@ -21,7 +21,7 @@ matrix:
     - php: 7.4
       env: PHPSTAN=1 PHPUNIT=0
 
-    - php: 7.4
+    - php: 7.3
       env: COVERAGE=1 PHPUNIT=0
 
 before_install:
