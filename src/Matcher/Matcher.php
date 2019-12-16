@@ -83,7 +83,7 @@ class Matcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function isAncestor(ItemInterface $item, $depth = null): bool
+    public function isAncestor(ItemInterface $item, ?int $depth = null): bool
     {
         if ($depth === 0) {
             return false;
