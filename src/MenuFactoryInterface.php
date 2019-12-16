@@ -24,5 +24,5 @@ interface MenuFactoryInterface extends FactoryInterface
      * @param int $priority The priority to assign to the extension.
      * @return void
      */
-    public function addExtension(ExtensionInterface $extension, $priority = 0);
+    public function addExtension(ExtensionInterface $extension, int $priority = 0): void;
 }

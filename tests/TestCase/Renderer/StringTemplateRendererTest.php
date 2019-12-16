@@ -1608,6 +1608,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($menu));
     }
 
+    public function testRenderWithClassAndTitle(): void
+    {
+        $this->pt2->setAttribute('class', 'parent2_class');
+        $this->pt2->setAttribute('title', 'parent2 title');
+        $rendered = '<ul class="root"><li class="first"><span>Parent 1</span><ul class="menu_level_1"><li class="first"><span>Child 1</span></li><li><span>Child 2</span></li><li class="last"><span>Child 3</span></li></ul></li><li class="last parent2_class" title="parent2 title"><span>Parent 2</span><ul class="menu_level_1"><li class="first last"><span>Child 4</span><ul class="menu_level_2"><li class="first last"><span>Grandchild 1</span></li></ul></li></ul></li></ul>';
+        $this->assertEquals($rendered, $this->renderer->render($this->menu));
+    }
+
     public function testLeafAndBranchRendering(): void
     {
         $expected = '<ul class="root"><li class="branch first"><span>Parent 1</span><ul class="menu_level_1"><li class="first leaf"><span>Child 1</span></li><li class="leaf"><span>Child 2</span></li><li class="last leaf"><span>Child 3</span></li></ul></li><li class="branch last"><span>Parent 2</span><ul class="menu_level_1"><li class="first last leaf"><span>Child 4</span></li></ul></li></ul>';
