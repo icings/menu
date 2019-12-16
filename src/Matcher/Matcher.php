@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -43,7 +45,7 @@ class Matcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function addVoter(VoterInterface $voter)
+    public function addVoter(VoterInterface $voter): void
     {
         $this->_voters[] = $voter;
     }
@@ -51,7 +53,7 @@ class Matcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function isCurrent(ItemInterface $item)
+    public function isCurrent(ItemInterface $item): bool
     {
         $current = $item->isCurrent();
         if ($current !== null) {
@@ -59,7 +61,7 @@ class Matcher implements MatcherInterface
         }
 
         if ($this->_cache->contains($item)) {
-            return $this->_cache[$item];
+            return (bool)$this->_cache[$item];
         }
 
         $voters = $this->_voters;
@@ -81,7 +83,7 @@ class Matcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function isAncestor(ItemInterface $item, $depth = null)
+    public function isAncestor(ItemInterface $item, $depth = null): bool
     {
         if ($depth === 0) {
             return false;
@@ -108,7 +110,7 @@ class Matcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->_cache = new \SplObjectStorage();
     }

@@ -21,7 +21,7 @@ A [KnpMenu](https://github.com/KnpLabs/KnpMenu) seasoned plugin that assists wit
 
 ## Requirements
 
-* CakePHP 3.7+ (use the [2.x branch](https://github.com/icings/menu/tree/2.x) of this plugin if you need CakePHP < 3.7
+* CakePHP 4.0+ (use the [3.x branch](https://github.com/icings/menu/tree/3.x) of this plugin if you need CakePHP 3
   compatibility)
 * KnpMenu 2.0+
 

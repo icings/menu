@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -57,6 +59,8 @@ class StringTemplateRenderer implements RendererInterface
         'matchingDepth' => null,
         'clearMatcher' => true,
         'currentAsLink' => true,
+        'inheritItemClasses' => null,
+        'consumeItemClasses' => null,
     ];
 
     /**
@@ -118,6 +122,18 @@ class StringTemplateRenderer implements RendererInterface
      * - `currentAsLink` (`boolean`, defaults to `true`)
      *   Whether the active item should render a link, or a text element.
      *
+     * - `inheritItemClasses` (`boolean|array|null`, defaults to `null`)
+     *   Defines which classes should be inherited by menu item's link and text elements.
+     *   `true` will cause all classes to be inherited. An array is used to specify specific
+     *   classes to inherit (valid class names are `currentClass`, `ancestorClass`, `leafClass`,
+     *   `branchClass`, `firstClass`, `lastClass`).
+     *
+     * - `consumeItemClasses` (`boolean|array|null`, defaults to `null`)
+     *   Defines which classes should be consumed by menu item's link and text elements.
+     *   `true` will cause all classes to be consumed. An array is used to specify specific
+     *   classes to consume (see the `inheritItemClasses` option for a list of valid class
+     *   names).
+     *
      * @param MatcherInterface $matcher The matcher to use for determining the active items.
      * @param array $config An array of options, see the "Configuration options" section in the
      *   method description.
@@ -147,7 +163,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description.
      * @return string The rendered menu.
      */
-    public function render(ItemInterface $item, array $options = [])
+    public function render(ItemInterface $item, array $options = []): string
     {
         $options = Hash::merge($this->getConfig(), $options);
 
@@ -167,7 +183,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
-    protected function _renderMenu(ItemInterface $item, array $options)
+    protected function _renderMenu(ItemInterface $item, array $options): string
     {
         if (
             !$item->hasChildren() ||
@@ -225,7 +241,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description for specific nesting element options.
      * @return string The rendered element.
      */
-    protected function _renderNested(ItemInterface $item, array $options)
+    protected function _renderNested(ItemInterface $item, array $options): string
     {
         if (
             !$item->hasChildren() ||
@@ -270,7 +286,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string[] The rendered children.
      */
-    protected function _renderChildren(ItemInterface $item, array $options)
+    protected function _renderChildren(ItemInterface $item, array $options): array
     {
         if ($options['depth'] !== null) {
             $options['depth'] = $options['depth'] - 1;
@@ -298,36 +314,34 @@ class StringTemplateRenderer implements RendererInterface
      * @param array $options The rendering options.
      * @return string The rendered menu item.
      */
-    protected function _renderItem(ItemInterface $item, array $options)
+    protected function _renderItem(ItemInterface $item, array $options): string
     {
         if (!$item->isDisplayed()) {
             return '';
         }
 
-        $level = $item->getLevel();
-
-        $class = (array)$item->getAttribute('class');
+        $classMap = [];
 
         if ($this->_matcher->isCurrent($item)) {
-            $class[] = $options['currentClass'];
+            $classMap['currentClass'] = $options['currentClass'];
         } elseif (
             isset($options['ancestorClass']) &&
             $this->_matcher->isAncestor($item, $options['matchingDepth'])
         ) {
-            $class[] = $options['ancestorClass'];
+            $classMap['ancestorClass'] = $options['ancestorClass'];
         }
 
         if (
             isset($options['firstClass']) &&
             $item->actsLikeFirst()
         ) {
-            $class[] = $options['firstClass'];
+            $classMap['firstClass'] = $options['firstClass'];
         }
         if (
             isset($options['lastClass']) &&
             $item->actsLikeLast()
         ) {
-            $class[] = $options['lastClass'];
+            $classMap['lastClass'] = $options['lastClass'];
         }
 
         $hasChildren = $item->hasChildren();
@@ -339,14 +353,60 @@ class StringTemplateRenderer implements RendererInterface
                 $options['branchClass'] !== null &&
                 $item->getDisplayChildren()
             ) {
-                $class[] = $options['branchClass'];
+                $classMap['branchClass'] = $options['branchClass'];
             }
         } elseif ($options['leafClass'] !== null) {
-            $class[] = $options['leafClass'];
+            $classMap['leafClass'] = $options['leafClass'];
+        }
+
+        $class = (array)$item->getAttribute('class');
+
+        $inheritClasses = $item->getExtra('inheritItemClasses');
+        if ($inheritClasses === null) {
+            $inheritClasses = $options['inheritItemClasses'];
+        }
+        $consumeClasses = $item->getExtra('consumeItemClasses');
+        if ($consumeClasses === null) {
+            $consumeClasses = $options['consumeItemClasses'];
+        }
+
+        $elementClasses = [];
+        if (!empty($classMap)) {
+            if ($consumeClasses) {
+                if ($consumeClasses === true) {
+                    $elementClasses = array_values($classMap);
+                    $classMap = [];
+                } elseif (is_array($consumeClasses)) {
+                    foreach ($consumeClasses as $inheritClass) {
+                        if (isset($classMap[$inheritClass])) {
+                            $elementClasses[] = $classMap[$inheritClass];
+                            unset($classMap[$inheritClass]);
+                        }
+                    }
+                }
+            }
+
+            if (
+                !empty($classMap) &&
+                $inheritClasses
+            ) {
+                if ($inheritClasses === true) {
+                    $elementClasses = array_merge($elementClasses, array_values($classMap));
+                } elseif (is_array($inheritClasses)) {
+                    foreach ($inheritClasses as $inheritClass) {
+                        if (isset($classMap[$inheritClass])) {
+                            $elementClasses[] = $classMap[$inheritClass];
+                        }
+                    }
+                }
+            }
+
+            $class = array_merge($class, array_values($classMap));
         }
 
         $attributes = $item->getAttributes();
         if (!empty($class)) {
+            sort($class);
             $attributes['class'] = implode(' ', $class);
         }
 
@@ -374,12 +434,17 @@ class StringTemplateRenderer implements RendererInterface
         }
         $options['templateVars'] = $templateVars;
 
-        $link = $this->_renderLink($item, $options);
+        $linkOptions = $options;
+        if (!empty($elementClasses)) {
+            sort($elementClasses);
+            $linkOptions['class'] = array_unique($elementClasses);
+        }
+        $link = $this->_renderLink($item, $linkOptions);
 
         if ($hasChildren) {
             $nestedClass = (array)$item->getChildrenAttribute('class');
             if ($options['menuLevelClass'] !== null) {
-                $nestedClass[] = $options['menuLevelClass'] . $level;
+                $nestedClass[] = $options['menuLevelClass'] . $item->getLevel();
             }
             if ($options['nestedMenuClass'] !== null) {
                 $nestedClass[] = $options['nestedMenuClass'];
@@ -436,7 +501,7 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific link options.
      * @return string The rendered link.
      */
-    protected function _renderLink(ItemInterface $item, array $options)
+    protected function _renderLink(ItemInterface $item, array $options): string
     {
         if (
             $item->getUri() &&
@@ -456,6 +521,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * ## Options
      *
+     * - `class`: The class(es) to set on the link element.
      * - `templateVars`: The template variables to use for the link element.
      *
      * @param ItemInterface $item The menu item which to render as a link element.
@@ -463,8 +529,14 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific link options.
      * @return string The rendered link element.
      */
-    protected function _renderLinkElement(ItemInterface $item, array $options)
+    protected function _renderLinkElement(ItemInterface $item, array $options): string
     {
+        if (isset($options['class'])) {
+            $class = (array)$item->getLinkAttribute('class');
+            $class = array_merge($class, (array)$options['class']);
+            $item->setLinkAttribute('class', implode(' ', $class));
+        }
+
         return (string)$this->templater()->format('link', [
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
@@ -478,6 +550,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * ## Options
      *
+     * - `class`: The class(es) to set on the text element.
      * - `templateVars`: The template variables to use for the text element.
      *
      * @param ItemInterface $item The item whose text to render.
@@ -485,8 +558,14 @@ class StringTemplateRenderer implements RendererInterface
      *   description specific text options.
      * @return string The rendered text.
      */
-    protected function _renderTextElement(ItemInterface $item, array $options)
+    protected function _renderTextElement(ItemInterface $item, array $options): string
     {
+        if (isset($options['class'])) {
+            $class = (array)$item->getLabelAttribute('class');
+            $class = array_merge($class, (array)$options['class']);
+            $item->setLabelAttribute('class', implode(' ', $class));
+        }
+
         return (string)$this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
@@ -503,7 +582,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param ItemInterface $item The item whose label to render.
      * @return string The rendered label.
      */
-    protected function _renderLabel(ItemInterface $item)
+    protected function _renderLabel(ItemInterface $item): string
     {
         if (
             !$item->getExtra('escapeLabel', true) ||
@@ -522,7 +601,7 @@ class StringTemplateRenderer implements RendererInterface
      * @param ItemInterface $item The menu item that defined the attributes.
      * @return string A formatted string of HTML attributes.
      */
-    protected function _formatAttributes(array $attributes, ItemInterface $item)
+    protected function _formatAttributes(array $attributes, ItemInterface $item): string
     {
         if (!empty($attributes)) {
             return $this->templater()->formatAttributes(

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -48,7 +50,7 @@ class UrlVoter implements VoterInterface
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->_url;
     }
@@ -58,7 +60,7 @@ class UrlVoter implements VoterInterface
      *
      * @return string
      */
-    public function getUrlWithoutQuery()
+    public function getUrlWithoutQuery(): string
     {
         return $this->_urlWithoutQuery;
     }
@@ -87,7 +89,7 @@ class UrlVoter implements VoterInterface
     /**
      * {@inheritDoc}
      */
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $routes = $item->getExtra('routes');
         if ($routes === null) {
@@ -123,7 +125,7 @@ class UrlVoter implements VoterInterface
      * @param string $url The URL from which to strip the query string.
      * @return string The URL without query string.
      */
-    protected function _stripQueryString($url)
+    protected function _stripQueryString(string $url): string
     {
         if (strpos($url, '?') !== false) {
             return explode('?', $url, 2)[0];

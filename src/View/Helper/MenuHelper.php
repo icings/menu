@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -35,21 +37,21 @@ class MenuHelper extends Helper
      *
      * @var string
      */
-    const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
+    public const MATCH_FUZZY_ROUTE = 'matchFuzzyRoute';
 
     /**
      * The URL matching mode.
      *
      * @var string
      */
-    const MATCH_URL = 'matchUrl';
+    public const MATCH_URL = 'matchUrl';
 
     /**
      * The URL matching mode that includes query strings.
      *
      * @var string
      */
-    const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
+    public const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
 
     /**
      * Default configuration.
@@ -82,7 +84,7 @@ class MenuHelper extends Helper
      *
      * @var MenuFactoryInterface
      */
-    protected $_factory = null;
+    protected $_factory;
 
     /**
      * Sets the menu factory to use for creating menu items.
@@ -102,7 +104,7 @@ class MenuHelper extends Helper
      *
      * @return MenuFactoryInterface
      */
-    public function getMenuFactory()
+    public function getMenuFactory(): MenuFactoryInterface
     {
         return $this->_factory;
     }
@@ -188,15 +190,8 @@ class MenuHelper extends Helper
      *   description.
      * @return ItemInterface
      */
-    public function create($name, array $options = [])
+    public function create(string $name, array $options = []): ItemInterface
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException(sprintf(
-                'The `$name` argument must be a string, `%s` given.',
-                Debugger::getType($name)
-            ));
-        }
-
         if (strlen(trim($name)) === 0) {
             throw new \InvalidArgumentException('The `$name` argument must not be empty.');
         }
@@ -230,7 +225,7 @@ class MenuHelper extends Helper
      * @throws \InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
      *
-     * @param ItemInterface|string|array $menu Either an `\Knp\Menu\ItemInterface` implementation,
+     * @param ItemInterface|string|array|null $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
      *  `$options` argument. If omitted or an array, the menu that was last created via `create()`
      *  will be used.
@@ -238,7 +233,7 @@ class MenuHelper extends Helper
      *  description.
      * @return string The rendered menu.
      */
-    public function render($menu = null, array $options = [])
+    public function render($menu = null, array $options = []): string
     {
         if (is_array($menu)) {
             $options = $menu;
@@ -246,6 +241,7 @@ class MenuHelper extends Helper
         }
 
         $createOptions = [];
+        /** @psalm-suppress DocblockTypeContradiction */
         if ($menu === null) {
             if (empty($this->_menus)) {
                 throw new \RuntimeException('No menu has been created.');
@@ -274,6 +270,7 @@ class MenuHelper extends Helper
             $createOptions = $this->_menuConfigurations[$menu];
         }
 
+        /** @psalm-suppress TooManyArguments */
         $options = Hash::merge($this->getConfig(), $options, $createOptions);
         $rendererOptions = $this->_extractRendererOptions($options);
 
@@ -348,7 +345,7 @@ class MenuHelper extends Helper
      * @param array $options The options to associate with it.
      * @return void
      */
-    protected function _addMenu(ItemInterface $menu, array $options)
+    protected function _addMenu(ItemInterface $menu, array $options): void
     {
         $this->_menus[$menu->getName()] = $menu;
         $this->_menuConfigurations->attach($menu, $options);
@@ -366,8 +363,9 @@ class MenuHelper extends Helper
      * @param array $options The options array from which to extract (and remove) the menu options.
      * @return array The extracted renderer options.
      */
-    protected function _extractMenuOptions(array &$options)
+    protected function _extractMenuOptions(array &$options): array
     {
+        /** @psalm-suppress PossiblyNullArgument */
         $menuOptions = array_intersect_key(
             $options,
             array_flip([
@@ -397,8 +395,9 @@ class MenuHelper extends Helper
      *   options.
      * @return array The extracted renderer options.
      */
-    protected function _extractRendererOptions(array &$options)
+    protected function _extractRendererOptions(array &$options): array
     {
+        /** @psalm-suppress PossiblyNullArgument */
         $rendererOptions = array_diff_key(
             $options,
             array_flip([
@@ -420,7 +419,7 @@ class MenuHelper extends Helper
      *
      * @return MatcherInterface
      */
-    protected function _createDefaultMatcher()
+    protected function _createDefaultMatcher(): MatcherInterface
     {
         return new Matcher();
     }
@@ -432,7 +431,7 @@ class MenuHelper extends Helper
      * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
      *   types.
      */
-    protected function _createDefaultVoters($type)
+    protected function _createDefaultVoters(string $type)
     {
         switch ($type) {
             case static::MATCH_FUZZY_ROUTE:
@@ -458,9 +457,9 @@ class MenuHelper extends Helper
      * Creates the default renderer.
      *
      * @param MatcherInterface $matcher The matcher to pass to the renderer.
-     * @return StringTemplateRenderer
+     * @return RendererInterface
      */
-    protected function _createDefaultRenderer(MatcherInterface $matcher)
+    protected function _createDefaultRenderer(MatcherInterface $matcher): RendererInterface
     {
         return new StringTemplateRenderer($matcher);
     }

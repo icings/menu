@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -8,41 +10,32 @@
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
 use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Icings\Menu\Matcher\Voter\UrlVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UrlVoterTest extends TestCase
 {
     use RequestFactoryTrait;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            if (method_exists($routes, 'setExtensions')) {
-                $routes->setExtensions(['json']);
-            } else {
-                $routes->extensions(['json']);
-            }
-
-            if (method_exists($routes, 'setRouteClass')) {
-                $routes->setRouteClass(DashedRoute::class);
-            } else {
-                $routes->routeClass(DashedRoute::class);
-            }
-
+            $routes->setExtensions(['json']);
+            $routes->setRouteClass(DashedRoute::class);
             $routes->connect('/:controller/:action');
         });
     }
 
-    public function testBaseUrlCompatibility()
+    public function testBaseUrlCompatibility(): void
     {
         Configure::write('App.baseUrl', '/base');
 
@@ -53,11 +46,11 @@ class UrlVoterTest extends TestCase
         $this->assertEquals('/base/controller/action', $voter->getUrlWithoutQuery());
     }
 
-    public function testIgnoreVoter()
+    public function testIgnoreVoter(): void
     {
         $request = $this->createRequest('/controller/action');
 
-        /** @var UrlVoter|\PHPUnit_Framework_MockObject_MockObject $voter */
+        /** @var UrlVoter|MockObject $voter */
         $voter = $this
             ->getMockBuilder(UrlVoter::class)
             ->setConstructorArgs([$request])
@@ -71,6 +64,7 @@ class UrlVoterTest extends TestCase
             ->getMockBuilder(FactoryInterface::class)
             ->getMock();
 
+        /** @var MenuItem|MockObject $item */
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])
@@ -88,7 +82,7 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function matchingDataProvider()
+    public function matchingDataProvider(): array
     {
         return [
             // ---------------------------------------------------------------------------------------------------------
@@ -198,7 +192,7 @@ class UrlVoterTest extends TestCase
             'Request without query, URL array, matching path, non-matching query' => [
                 '/controller/action',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 [
                     ['voterIgnore' => true, 'itemIgnore' => null, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => true, 'expected' => true],
@@ -211,7 +205,7 @@ class UrlVoterTest extends TestCase
             'Request without query, URL array with query, non-matching path, non-matching query' => [
                 '/controller/action',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'query' => 'value']],
+                [['controller' => 'Other', 'action' => 'action', '?' => ['query' => 'value']]],
                 false,
             ],
             'Request with query, URL array without query, matching path, non-matching query' => [
@@ -236,19 +230,19 @@ class UrlVoterTest extends TestCase
             'Request with query, URL array with query, matching path, matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'query' => 'value']],
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['query' => 'value']]],
                 true,
             ],
             'Request with query, URL array with query, non-matching path, matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'query' => 'value']],
+                [['controller' => 'Other', 'action' => 'action', '?' => ['query' => 'value']]],
                 false,
             ],
             'Request with query, URL array with query, matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Controller', 'action' => 'action', 'other' => 'value']],
+                [['controller' => 'Controller', 'action' => 'action', '?' => ['other' => 'value']]],
                 [
                     ['voterIgnore' => true, 'itemIgnore' => null, 'expected' => true],
                     ['voterIgnore' => true, 'itemIgnore' => true, 'expected' => true],
@@ -261,7 +255,7 @@ class UrlVoterTest extends TestCase
             'Request with query, URL array with query, non-matching path, non-matching query' => [
                 '/controller/action?query=value',
                 '/other/action',
-                [['controller' => 'Other', 'action' => 'action', 'other' => 'value']],
+                [['controller' => 'Other', 'action' => 'action', '?' => ['other' => 'value']]],
                 false,
             ],
 
@@ -272,7 +266,7 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function expandedMatchingDataProvider()
+    public function expandedMatchingDataProvider(): array
     {
         $sets = $this->matchingDataProvider();
         $expanded = [];
@@ -309,11 +303,11 @@ class UrlVoterTest extends TestCase
      * @param string $requestUri The request URI to match against.
      * @param string $uri The menu items main URI.
      * @param array[] $routes An array of URL arrays.
-     * @param boolean $voterIgnore
-     * @param boolean $itemIgnore
-     * @param boolean $expected The expected assertion result.
+     * @param bool $voterIgnore
+     * @param bool $itemIgnore
+     * @param bool $expected The expected assertion result.
      */
-    public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected)
+    public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected): void
     {
         $request = $this->createRequest($requestUri);
 
@@ -325,7 +319,7 @@ class UrlVoterTest extends TestCase
             ->getMockBuilder(FactoryInterface::class)
             ->getMock();
 
-        /** @var MenuItem|\PHPUnit_Framework_MockObject_MockObject $item */
+        /** @var MenuItem|MockObject $item */
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])

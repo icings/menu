@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,35 +9,28 @@
 
 namespace Icings\Menu\Test\TestCase\Matcher\Voter;
 
+use Cake\Core\Configure;
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Hash;
 use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class FuzzyRouteVoterTest extends TestCase
 {
     use RequestFactoryTrait;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         Router::scope('/', function (RouteBuilder $routes) {
-            if (method_exists($routes, 'setExtensions')) {
-                $routes->setExtensions(['json']);
-            } else {
-                $routes->extensions(['json']);
-            }
-
-            if (method_exists($routes, 'setRouteClass')) {
-                $routes->setRouteClass(DashedRoute::class);
-            } else {
-                $routes->routeClass(DashedRoute::class);
-            }
+            $routes->setExtensions(['json']);
+            $routes->setRouteClass(DashedRoute::class);
 
             $routes->connect('/named', [
                 'controller' => 'Named',
@@ -84,7 +79,7 @@ class FuzzyRouteVoterTest extends TestCase
     /**
      * @return array
      */
-    public function paramsDataProvider()
+    public function paramsDataProvider(): array
     {
         $provider = [
             'Controller only request' => [
@@ -116,26 +111,38 @@ class FuzzyRouteVoterTest extends TestCase
                 ['controller' => 'Controller', 'action' => 'action', 'query' => '12.3', '?' => ['query' => '12.3']],
             ],
             'Prefix request' => [
-                '/prefix_name/controller/action',
-                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name'],
+                '/prefix-name/controller/action',
+                ['controller' => 'Controller', 'action' => 'action', 'prefix' => 'PrefixName'],
             ],
             'Plugin request' => [
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 ['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName'],
             ],
             'Request route with custom defaults' => [
                 '/special',
                 ['controller' => 'Special', 'action' => 'index', 'specialKey' => ['foo', 123, 'a' => 'a', 'b' => 'b']],
             ],
-            'Request named route' => [
-                '/named',
-                ['_name' => 'named', 'controller' => 'Named', 'action' => 'index'],
-            ],
-            'Request named route with elements' => [
-                '/named/element',
-                ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element'],
-            ],
         ];
+
+        if (version_compare(Configure::version(), '3.5.11', '>=')) {
+            $provider += [
+                'Request named route' => [
+                    '/named',
+                    ['_name' => 'named', 'controller' => 'Named', 'action' => 'index'],
+                ],
+                'Request named route with elements' => [
+                    '/named/element',
+                    ['_name' => 'namedWithElement', 'controller' => 'Named', 'action' => 'index', 'element' => 'element', 'element'],
+                ],
+            ];
+        } else {
+            $provider += [
+                'Request named route' => [
+                    '/named',
+                    ['controller' => 'Named', 'action' => 'index'],
+                ],
+            ];
+        }
 
         return $provider;
     }
@@ -146,7 +153,7 @@ class FuzzyRouteVoterTest extends TestCase
      * @param string $requestUri
      * @param array $expected
      */
-    public function testGetParams($requestUri, array $expected)
+    public function testGetParams($requestUri, array $expected): void
     {
         $request = static::createRequest($requestUri);
         $voter = new FuzzyRouteVoter($request);
@@ -170,10 +177,34 @@ class FuzzyRouteVoterTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
+    public function testGetParamsWithoutPass(): void
+    {
+        $request = static::createRequest('/controller/action');
+
+        $params = $request->getAttribute('params');
+        unset($params['pass']);
+        $request = $request->withAttribute('params', $params);
+
+        $voter = new FuzzyRouteVoter($request);
+
+        $expected = [
+            '?' => [],
+            '_ext' => null,
+            '_host' => 'localhost',
+            '_method' => 'GET',
+            'action' => 'action',
+            'controller' => 'Controller',
+            'plugin' => null,
+        ];
+        $actual = $voter->getParams();
+
+        $this->assertSame($expected, $actual);
+    }
+
     /**
      * @return array
      */
-    public function matchingDataProvider()
+    public function matchingDataProvider(): array
     {
         $provider = [
             'No URL arrays set' => [
@@ -262,43 +293,43 @@ class FuzzyRouteVoterTest extends TestCase
 
             'Matching without prefix works' => [
                 [['controller' => 'Controller', 'action' => 'action']],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 true,
             ],
             'Exact prefix matching' => [
-                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'prefix_name']],
-                '/prefix_name/controller/action',
+                [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'PrefixName']],
+                '/prefix-name/controller/action',
                 true,
             ],
             'Wrong prefix does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'prefix' => 'other']],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 false,
             ],
             'Null prefix does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'prefix' => null]],
-                '/prefix_name/controller/action',
+                '/prefix-name/controller/action',
                 false,
             ],
 
             'Matching without plugin works' => [
                 [['controller' => 'Controller', 'action' => 'action']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 true,
             ],
             'Exact plugin matching' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'PluginName']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 true,
             ],
             'Wrong plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => 'OtherPlugin']],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 false,
             ],
             'Null plugin does not match' => [
                 [['controller' => 'Controller', 'action' => 'action', 'plugin' => null]],
-                '/plugin_name/controller/action',
+                '/plugin-name/controller/action',
                 false,
             ],
 
@@ -460,23 +491,27 @@ class FuzzyRouteVoterTest extends TestCase
                 '/controller/action?other=value&query=value',
                 true,
             ],
-
-            'Matching named route with route name only works' => [
-                [['_name' => 'named']],
-                '/named',
-                true,
-            ],
-            'Matching named route with elements does work' => [
-                [['_name' => 'namedWithElement', 'element' => 'element']],
-                '/named/element',
-                true,
-            ],
-            'Matching named route with elements partially does work' => [
-                [['_name' => 'namedWithElement']],
-                '/named/element',
-                true,
-            ],
         ];
+
+        if (version_compare(Configure::version(), '3.5.11', '>=')) {
+            $provider += [
+                'Matching named route with route name only works' => [
+                    [['_name' => 'named']],
+                    '/named',
+                    true,
+                ],
+                'Matching named route with elements does work' => [
+                    [['_name' => 'namedWithElement', 'element' => 'element']],
+                    '/named/element',
+                    true,
+                ],
+                'Matching named route with elements partially does work' => [
+                    [['_name' => 'namedWithElement']],
+                    '/named/element',
+                    true,
+                ],
+            ];
+        }
 
         return $provider;
     }
@@ -486,10 +521,11 @@ class FuzzyRouteVoterTest extends TestCase
      *
      * @param array $url The URL array to test.
      * @param string $requestUri The request URI to test against.
-     * @param boolean|null $expected The matching result.
+     * @param bool|null $expected The matching result.
      */
-    public function testMatching($url, $requestUri, $expected)
+    public function testMatching($url, $requestUri, $expected): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();

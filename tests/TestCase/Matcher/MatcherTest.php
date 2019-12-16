@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -13,17 +15,20 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class MatcherTest extends TestCase
 {
-    public function testIsCurrentPerItemVoters()
+    public function testIsCurrentPerItemVoters(): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
 
         $itemVoterInvoked = false;
 
+        /** @var VoterInterface|MockObject $globalVoter */
         $globalVoter = $this
             ->getMockBuilder(VoterInterface::class)
             ->getMock();
@@ -68,8 +73,9 @@ class MatcherTest extends TestCase
         $matcher->isCurrent($item);
     }
 
-    public function testIsCurrentCache()
+    public function testIsCurrentCache(): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -78,6 +84,7 @@ class MatcherTest extends TestCase
             ->method('isCurrent')
             ->willReturn(null);
 
+        /** @var VoterInterface|MockObject $voter1 */
         $voter1 = $this
             ->getMockBuilder(VoterInterface::class)
             ->getMock();
@@ -96,7 +103,7 @@ class MatcherTest extends TestCase
         $matcher->isCurrent($item);
     }
 
-    public function testIsAncestor()
+    public function testIsAncestor(): void
     {
         $factory = $this
             ->getMockBuilder(FactoryInterface::class)
@@ -120,6 +127,7 @@ class MatcherTest extends TestCase
             ->method('getChildren')
             ->willReturn([$grandChild]);
 
+        /** @var MenuItem|MockObject $parent */
         $parent = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['Parent', $factory])
@@ -133,7 +141,7 @@ class MatcherTest extends TestCase
         $matcher->isAncestor($parent);
     }
 
-    public function testIsAncestorDepthLimit()
+    public function testIsAncestorDepthLimit(): void
     {
         $factory = $this
             ->getMockBuilder(FactoryInterface::class)
@@ -147,6 +155,7 @@ class MatcherTest extends TestCase
             ->expects($this->never())
             ->method('getChildren');
 
+        /** @var MenuItem|MockObject $parent */
         $parent = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['Parent', $factory])
@@ -164,7 +173,7 @@ class MatcherTest extends TestCase
     //region Adapted KnpMenu vendor tests
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function currentFlagDataProvider()
+    public function currentFlagDataProvider(): array
     {
         return [
             [true, true],
@@ -175,11 +184,12 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider currentFlagDataProvider
-     * @param boolean|null $flag
-     * @param boolean $expected
+     * @param bool|null $flag
+     * @param bool $expected
      */
-    public function testItemFlag($flag, $expected)
+    public function testItemFlag($flag, $expected): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -193,8 +203,9 @@ class MatcherTest extends TestCase
         $this->assertSame($expected, $matcher->isCurrent($item));
     }
 
-    public function testFlagOverwritesCache()
+    public function testFlagOverwritesCache(): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -209,7 +220,7 @@ class MatcherTest extends TestCase
         $this->assertFalse($matcher->isCurrent($item));
     }
 
-    public function matchingResultDataProvider()
+    public function matchingResultDataProvider(): array
     {
         return [
             [true],
@@ -219,10 +230,11 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider matchingResultDataProvider
-     * @param boolean $value
+     * @param bool $value
      */
-    public function testFlagWinsOverVoter($value)
+    public function testFlagWinsOverVoter($value): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -231,6 +243,7 @@ class MatcherTest extends TestCase
             ->method('isCurrent')
             ->will($this->returnValue($value));
 
+        /** @var VoterInterface|MockObject $voter */
         $voter = $this
             ->getMockBuilder(VoterInterface::class)
             ->getMock();
@@ -246,10 +259,11 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider matchingResultDataProvider
-     * @param boolean $value
+     * @param bool $value
      */
-    public function testFirstVoterWins($value)
+    public function testFirstVoterWins($value): void
     {
+        /** @var ItemInterface|MockObject $item */
         $item = $this
             ->getMockBuilder(ItemInterface::class)
             ->getMock();
@@ -258,6 +272,7 @@ class MatcherTest extends TestCase
             ->method('isCurrent')
             ->will($this->returnValue(null));
 
+        /** @var VoterInterface|MockObject $voter1 */
         $voter1 = $this
             ->getMockBuilder(VoterInterface::class)
             ->getMock();
@@ -267,6 +282,7 @@ class MatcherTest extends TestCase
             ->with($this->identicalTo($item))
             ->will($this->returnValue($value));
 
+        /** @var VoterInterface|MockObject $voter2 */
         $voter2 = $this
             ->getMockBuilder(VoterInterface::class)
             ->getMock();

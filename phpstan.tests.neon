@@ -1,13 +1,22 @@
 parameters:
     autoload_files:
-        - %rootDir%/../../../tests/bootstrap.php
-        - %rootDir%/../../../tests/TestCase/TestSuite/RequestFactoryTraitTest.php
+        - tests/bootstrap.php
+        - tests/TestCase/TestSuite/RequestFactoryTraitTest.php
+    checkMissingIterableValueType: false
     excludes_analyse:
-        - %rootDir%/../../../tests/TestCase/KnpMenuTestCase.php
-        - %rootDir%/../../../tests/TestCase/Renderer/KnpAbstractRendererTest.php
+        - tests/TestCase/KnpMenuTestCase.php
+        - tests/TestCase/Renderer/KnpAbstractRendererTest.php
     ignoreErrors:
-        - '#PHPUnit_Framework_MockObject_MockObject given#'
+        - '#PHPUnit\\Framework\\MockObject\\MockObject given#'
+        - '#PHPUnit\\Framework\\MockObject\\MockObject::expects()#'
+        - '#Call to an undefined method Icings\\Menu\\Matcher\\Voter\\UrlVoter\|PHPUnit\\Framework\\MockObject\\MockObject::matchItem\(\)#'
+        - '#Call to an undefined static method Icings\\Menu\\TestSuite\\RequestFactoryTrait\|PHPUnit\\Framework\\MockObject\\MockObject::createRequest\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit\\Framework\\MockObject\\MockObject::setMenuFactory\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit\\Framework\\MockObject\\MockObject::create\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit\\Framework\\MockObject\\MockObject::render\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit\\Framework\\MockObject\\MockObject::setConfig\(\)#'
         - '#Class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor invoked with 0 parameters, 1-2 required#'
         - '#Parameter \#1 \$matcher of class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor expects Knp\\Menu\\Matcher\\MatcherInterface, string given#'
         - '#Parameter \#2 \$config of class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor expects array, string given#'
         - '#Parameter \#1 \$name of method Icings\\Menu\\View\\Helper\\MenuHelper::create\(\) expects array|Knp\Menu\ItemInterface|string|null, int given#'
+        - '#PHPDoc tag @var for variable \$stub has invalid type Icings\\Menu\\TestSuite\\RequestFactoryTrait#'

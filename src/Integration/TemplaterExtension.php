@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -18,7 +20,7 @@ class TemplaterExtension implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function buildOptions(array $options = [])
+    public function buildOptions(array $options = []): array
     {
         if (!empty($options['templates'])) {
             $options['extras']['templates'] = $options['templates'];
@@ -74,14 +76,22 @@ class TemplaterExtension implements ExtensionInterface
             unset($options['escapeLabel']);
         }
 
+        if (isset($options['inheritItemClasses'])) {
+            $options['extras']['inheritItemClasses'] = $options['inheritItemClasses'];
+            unset($options['inheritItemClasses']);
+        }
+        if (isset($options['consumeItemClasses'])) {
+            $options['extras']['consumeItemClasses'] = $options['consumeItemClasses'];
+            unset($options['consumeItemClasses']);
+        }
+
         return $options;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function buildItem(ItemInterface $item, array $options)
+    public function buildItem(ItemInterface $item, array $options): void
     {
-        return null;
     }
 }

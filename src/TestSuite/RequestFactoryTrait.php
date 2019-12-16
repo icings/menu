@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -22,7 +24,7 @@ trait RequestFactoryTrait
      * @param string $requestUri The request URI for which to create a request object for.
      * @return ServerRequest
      */
-    public static function createRequest($requestUri)
+    public static function createRequest(string $requestUri): ServerRequest
     {
         $query = static::_extractQuery($requestUri);
 
@@ -36,7 +38,7 @@ trait RequestFactoryTrait
             ],
             $query['arguments']
         );
-        Router::setRequestContext($request);
+        Router::setRequest($request);
 
         return $request->withAttribute(
             'params',
@@ -50,7 +52,7 @@ trait RequestFactoryTrait
      * @param string $uri The URI from which to extract the query part.
      * @return array
      */
-    protected static function _extractQuery($uri)
+    protected static function _extractQuery(string $uri): array
     {
         $arguments = [];
         $string = '';

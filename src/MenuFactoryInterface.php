@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -7,8 +9,8 @@
 
 namespace Icings\Menu;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\Factory\ExtensionInterface;
+use Knp\Menu\FactoryInterface;
 
 /**
  * An interface that describes the contract for factories that create menus (top level items).
@@ -22,5 +24,5 @@ interface MenuFactoryInterface extends FactoryInterface
      * @param int $priority The priority to assign to the extension.
      * @return void
      */
-    public function addExtension(ExtensionInterface $extension, $priority = 0);
+    public function addExtension(ExtensionInterface $extension, int $priority = 0): void;
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * A KnpMenu seasoned menu plugin for CakePHP.
  *
@@ -11,6 +13,7 @@ use Cake\TestSuite\TestCase;
 use Icings\Menu\Integration\PerItemVotersExtension;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class PerItemVotersExtensionTest extends TestCase
 {
@@ -21,27 +24,27 @@ class PerItemVotersExtensionTest extends TestCase
      */
     public $PerItemVotersExtension;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->PerItemVotersExtension = new PerItemVotersExtension();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->PerItemVotersExtension);
 
         parent::tearDown();
     }
 
-    public function testBuildOptionsDefaults()
+    public function testBuildOptionsDefaults(): void
     {
         $options = $this->PerItemVotersExtension->buildOptions();
         $expected = [];
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineVoters()
+    public function testBuildOptionsDefineVoters(): void
     {
         $originalOptions = [
             'voters' => [
@@ -58,9 +61,15 @@ class PerItemVotersExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildItem()
+    public function testBuildItem(): void
     {
-        $item = new MenuItem('item', $this->getMockBuilder(FactoryInterface::class)->getMock());
-        $this->assertNull($this->PerItemVotersExtension->buildItem($item, []));
+        /** @var FactoryInterface|MockObject $factory */
+        $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();
+
+        $item = new MenuItem('item', $factory);
+        $clone = clone $item;
+
+        $this->PerItemVotersExtension->buildItem($item, []);
+        $this->assertEquals($item, $clone);
     }
 }
