@@ -37,14 +37,14 @@ class TemplaterExtensionTest extends TestCase
         parent::tearDown();
     }
 
-    public function testBuildOptionsDefaults()
+    public function testBuildOptionsDefaults(): void
     {
         $options = $this->TemplaterExtension->buildOptions();
         $expected = [];
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineTemplatesOnly()
+    public function testBuildOptionsDefineTemplatesOnly(): void
     {
         $originalOptions = [
             'templates' => [
@@ -60,7 +60,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineTemplateVarsOnly()
+    public function testBuildOptionsDefineTemplateVarsOnly(): void
     {
         $originalOptions = [
             'templateVars' => [
@@ -76,7 +76,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineMenuAttributesOnly()
+    public function testBuildOptionsDefineMenuAttributesOnly(): void
     {
         $originalOptions = [
             'menuAttributes' => [
@@ -91,7 +91,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineMenuAttributesOnlyWithExistingChildrenAttributes()
+    public function testBuildOptionsDefineMenuAttributesOnlyWithExistingChildrenAttributes(): void
     {
         $originalOptions = [
             'childrenAttributes' => [
@@ -114,7 +114,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineNestAttributesOnly()
+    public function testBuildOptionsDefineNestAttributesOnly(): void
     {
         $originalOptions = [
             'nestAttributes' => [
@@ -128,7 +128,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineNestAttributesOnlyWithExistingChildrenAttributes()
+    public function testBuildOptionsDefineNestAttributesOnlyWithExistingChildrenAttributes(): void
     {
         $originalOptions = [
             'childrenAttributes' => [
@@ -151,7 +151,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineTextAttributesOnly()
+    public function testBuildOptionsDefineTextAttributesOnly(): void
     {
         $originalOptions = [
             'textAttributes' => [
@@ -165,7 +165,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineTextAttributesOnlyWithExistingChildrenAttributes()
+    public function testBuildOptionsDefineTextAttributesOnlyWithExistingChildrenAttributes(): void
     {
         $originalOptions = [
             'labelAttributes' => [
@@ -188,7 +188,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineEscapeOnly()
+    public function testBuildOptionsDefineEscapeOnly(): void
     {
         $originalOptions = [
             'escape' => true,
@@ -200,7 +200,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineDisableEscapeOnly()
+    public function testBuildOptionsDefineDisableEscapeOnly(): void
     {
         $originalOptions = [
             'escape' => false,
@@ -212,7 +212,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineEscapeLabelOnly()
+    public function testBuildOptionsDefineEscapeLabelOnly(): void
     {
         $originalOptions = [
             'escapeLabel' => true,
@@ -224,7 +224,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineDisableEscapeLabelOnly()
+    public function testBuildOptionsDefineDisableEscapeLabelOnly(): void
     {
         $originalOptions = [
             'escapeLabel' => false,
@@ -236,7 +236,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineInheritItemClassesOnly()
+    public function testBuildOptionsDefineInheritItemClassesOnly(): void
     {
         $originalOptions = [
             'inheritItemClasses' => [
@@ -253,7 +253,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineConsumeItemClassesOnly()
+    public function testBuildOptionsDefineConsumeItemClassesOnly(): void
     {
         $originalOptions = [
             'consumeItemClasses' => [
@@ -270,7 +270,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineAll()
+    public function testBuildOptionsDefineAll(): void
     {
         $originalOptions = [
             'templates' => [
@@ -324,7 +324,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineTemplatesAndTemplateVars()
+    public function testBuildOptionsDefineTemplatesAndTemplateVars(): void
     {
         $originalOptions = [
             'templates' => [
@@ -341,7 +341,7 @@ class TemplaterExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildItem()
+    public function testBuildItem(): void
     {
         /** @var FactoryInterface|MockObject $factory */
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();

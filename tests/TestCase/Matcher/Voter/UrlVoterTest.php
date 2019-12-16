@@ -35,7 +35,7 @@ class UrlVoterTest extends TestCase
         });
     }
 
-    public function testBaseUrlCompatibility()
+    public function testBaseUrlCompatibility(): void
     {
         Configure::write('App.baseUrl', '/base');
 
@@ -46,7 +46,7 @@ class UrlVoterTest extends TestCase
         $this->assertEquals('/base/controller/action', $voter->getUrlWithoutQuery());
     }
 
-    public function testIgnoreVoter()
+    public function testIgnoreVoter(): void
     {
         $request = $this->createRequest('/controller/action');
 
@@ -82,7 +82,7 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function matchingDataProvider()
+    public function matchingDataProvider(): array
     {
         return [
             // ---------------------------------------------------------------------------------------------------------
@@ -266,7 +266,7 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function expandedMatchingDataProvider()
+    public function expandedMatchingDataProvider(): array
     {
         $sets = $this->matchingDataProvider();
         $expanded = [];
@@ -307,7 +307,7 @@ class UrlVoterTest extends TestCase
      * @param bool $itemIgnore
      * @param bool $expected The expected assertion result.
      */
-    public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected)
+    public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected): void
     {
         $request = $this->createRequest($requestUri);
 

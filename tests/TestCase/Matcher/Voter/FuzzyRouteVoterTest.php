@@ -79,7 +79,7 @@ class FuzzyRouteVoterTest extends TestCase
     /**
      * @return array
      */
-    public function paramsDataProvider()
+    public function paramsDataProvider(): array
     {
         $provider = [
             'Controller only request' => [
@@ -153,7 +153,7 @@ class FuzzyRouteVoterTest extends TestCase
      * @param string $requestUri
      * @param array $expected
      */
-    public function testGetParams($requestUri, array $expected)
+    public function testGetParams($requestUri, array $expected): void
     {
         $request = static::createRequest($requestUri);
         $voter = new FuzzyRouteVoter($request);
@@ -177,7 +177,7 @@ class FuzzyRouteVoterTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testGetParamsWithoutPass()
+    public function testGetParamsWithoutPass(): void
     {
         $request = static::createRequest('/controller/action');
 
@@ -204,7 +204,7 @@ class FuzzyRouteVoterTest extends TestCase
     /**
      * @return array
      */
-    public function matchingDataProvider()
+    public function matchingDataProvider(): array
     {
         $provider = [
             'No URL arrays set' => [
@@ -523,7 +523,7 @@ class FuzzyRouteVoterTest extends TestCase
      * @param string $requestUri The request URI to test against.
      * @param bool|null $expected The matching result.
      */
-    public function testMatching($url, $requestUri, $expected)
+    public function testMatching($url, $requestUri, $expected): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this

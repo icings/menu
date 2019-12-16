@@ -37,14 +37,14 @@ class PerItemVotersExtensionTest extends TestCase
         parent::tearDown();
     }
 
-    public function testBuildOptionsDefaults()
+    public function testBuildOptionsDefaults(): void
     {
         $options = $this->PerItemVotersExtension->buildOptions();
         $expected = [];
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineVoters()
+    public function testBuildOptionsDefineVoters(): void
     {
         $originalOptions = [
             'voters' => [
@@ -61,7 +61,7 @@ class PerItemVotersExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildItem()
+    public function testBuildItem(): void
     {
         /** @var FactoryInterface|MockObject $factory */
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();

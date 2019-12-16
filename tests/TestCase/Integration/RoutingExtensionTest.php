@@ -45,14 +45,14 @@ class RoutingExtensionTest extends TestCase
         parent::tearDown();
     }
 
-    public function testBuildOptionsDefaults()
+    public function testBuildOptionsDefaults(): void
     {
         $options = $this->RoutingExtension->buildOptions();
         $expected = [];
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineUriOnly()
+    public function testBuildOptionsDefineUriOnly(): void
     {
         $originalOptions = [
             'uri' => [
@@ -72,7 +72,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineUriAsNamedRoute()
+    public function testBuildOptionsDefineUriAsNamedRoute(): void
     {
         Router::scope('/', function (RouteBuilder $routes) {
             $routes->connect(
@@ -104,7 +104,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineUriAsString()
+    public function testBuildOptionsDefineUriAsString(): void
     {
         $originalOptions = [
             'uri' => '/controller/action',
@@ -121,7 +121,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineRoutesOnly()
+    public function testBuildOptionsDefineRoutesOnly(): void
     {
         $originalOptions = [
             'routes' => [
@@ -136,7 +136,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineUriAndRoutes()
+    public function testBuildOptionsDefineUriAndRoutes(): void
     {
         $originalOptions = [
             'uri' => [
@@ -168,7 +168,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineRoutesAsNamedRoute()
+    public function testBuildOptionsDefineRoutesAsNamedRoute(): void
     {
         Router::scope('/', function (RouteBuilder $routes) {
             $routes->connect(
@@ -205,7 +205,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineRoutesAsStrings()
+    public function testBuildOptionsDefineRoutesAsStrings(): void
     {
         $originalOptions = [
             'uri' => [
@@ -229,7 +229,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDefineNonConnectedRoutes()
+    public function testBuildOptionsDefineNonConnectedRoutes(): void
     {
         Router::reload();
         Router::scope('/', function (RouteBuilder $routes) {
@@ -261,7 +261,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDoNotAddUriToRoutesDefineUriAndRoutes()
+    public function testBuildOptionsDoNotAddUriToRoutesDefineUriAndRoutes(): void
     {
         $originalOptions = [
             'uri' => [
@@ -290,7 +290,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDoNotAddUriToRoutesUriDefineUriOnly()
+    public function testBuildOptionsDoNotAddUriToRoutesUriDefineUriOnly(): void
     {
         $originalOptions = [
             'uri' => [
@@ -306,7 +306,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsExplicitlyDoNotIgnoreQueryString()
+    public function testBuildOptionsExplicitlyDoNotIgnoreQueryString(): void
     {
         $originalOptions = [
             'uri' => [
@@ -331,7 +331,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsExplicitlyDoIgnoreQueryString()
+    public function testBuildOptionsExplicitlyDoIgnoreQueryString(): void
     {
         $originalOptions = [
             'uri' => [
@@ -356,7 +356,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsIgnoreQueryStringOnUriWithoutQueryParameters()
+    public function testBuildOptionsIgnoreQueryStringOnUriWithoutQueryParameters(): void
     {
         $originalOptions = [
             'uri' => [
@@ -378,7 +378,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsIgnoreQueryStringOnUriWithQueryParameters()
+    public function testBuildOptionsIgnoreQueryStringOnUriWithQueryParameters(): void
     {
         $originalOptions = [
             'uri' => [
@@ -403,7 +403,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsIgnoreQueryStringOnUriAndRoutesWithQueryParameters()
+    public function testBuildOptionsIgnoreQueryStringOnUriAndRoutesWithQueryParameters(): void
     {
         $originalOptions = [
             'uri' => [
@@ -446,7 +446,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDoNotIgnoreQueryStringOnUriWithQueryParameters()
+    public function testBuildOptionsDoNotIgnoreQueryStringOnUriWithQueryParameters(): void
     {
         $originalOptions = [
             'uri' => [
@@ -469,7 +469,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildOptionsDoNotIgnoreQueryStringOnUriAndRoutesWithQueryParameters()
+    public function testBuildOptionsDoNotIgnoreQueryStringOnUriAndRoutesWithQueryParameters(): void
     {
         $originalOptions = [
             'uri' => [
@@ -510,7 +510,7 @@ class RoutingExtensionTest extends TestCase
         $this->assertEquals($expected, $options);
     }
 
-    public function testBuildItem()
+    public function testBuildItem(): void
     {
         /** @var FactoryInterface|MockObject $factory */
         $factory = $this->getMockBuilder(FactoryInterface::class)->getMock();

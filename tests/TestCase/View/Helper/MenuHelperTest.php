@@ -57,7 +57,7 @@ class MenuHelperTest extends TestCase
     //region construct()
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testConstructDefaults()
+    public function testConstructDefaults(): void
     {
         $helper = new MenuHelper($this->View);
 
@@ -73,7 +73,7 @@ class MenuHelperTest extends TestCase
         $this->assertEquals($expected, $helper->getConfig());
     }
 
-    public function testConstructConfiguration()
+    public function testConstructConfiguration(): void
     {
         $config = [
             'matching' => MenuHelper::MATCH_FUZZY_ROUTE,
@@ -92,7 +92,7 @@ class MenuHelperTest extends TestCase
     //region create()
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testCreateInvalidNameArgumentType()
+    public function testCreateInvalidNameArgumentType(): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp(
@@ -102,7 +102,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->create(123);
     }
 
-    public function testCreateInvalidNameArgumentContent()
+    public function testCreateInvalidNameArgumentContent(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `$name` argument must not be empty.');
@@ -110,7 +110,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->create('');
     }
 
-    public function testCreateMenuReceivesOnlyMenuOptions()
+    public function testCreateMenuReceivesOnlyMenuOptions(): void
     {
         $menuOptions = [
             'templates' => [],
@@ -141,7 +141,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->create('name', $options);
     }
 
-    public function testCreateNonMenuItemOptionsAreRendererOptions()
+    public function testCreateNonMenuItemOptionsAreRendererOptions(): void
     {
         $menuItemOptions = [
             'templates' => [],
@@ -195,7 +195,7 @@ class MenuHelperTest extends TestCase
     //region render() menu
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testRenderLastCreatedMenu()
+    public function testRenderLastCreatedMenu(): void
     {
         /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
@@ -229,7 +229,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->render();
     }
 
-    public function testRenderLastCreatedMenuNoMenuHasBeenCreated()
+    public function testRenderLastCreatedMenuNoMenuHasBeenCreated(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No menu has been created.');
@@ -237,7 +237,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->render();
     }
 
-    public function testRenderNamedMenu()
+    public function testRenderNamedMenu(): void
     {
         /** @var MenuFactoryInterface|MockObject $factory*/
         $factory = $this
@@ -271,7 +271,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->render('main');
     }
 
-    public function testRenderNamedMenuDoesNotExist()
+    public function testRenderNamedMenuDoesNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The menu with the name `non-existent` does not exist.');
@@ -295,7 +295,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->render('non-existent');
     }
 
-    public function testRenderMenuObject()
+    public function testRenderMenuObject(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -317,7 +317,7 @@ class MenuHelperTest extends TestCase
         $this->Menu->render($menu);
     }
 
-    public function testRenderInvalidType()
+    public function testRenderInvalidType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `integer` given.');
@@ -331,7 +331,7 @@ class MenuHelperTest extends TestCase
     //region render() options
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testRenderDefaultOptions()
+    public function testRenderDefaultOptions(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -387,7 +387,7 @@ class MenuHelperTest extends TestCase
         $helper->render($menu);
     }
 
-    public function testRenderRendererOnlyReceivesRendererOptions()
+    public function testRenderRendererOnlyReceivesRendererOptions(): void
     {
         $voter = $this
             ->getMockBuilder(VoterInterface::class)
@@ -440,7 +440,7 @@ class MenuHelperTest extends TestCase
         $helper->render($menu, $options);
     }
 
-    public function renderMergeWithHelperAndCreateOptionsTestSetup()
+    public function renderMergeWithHelperAndCreateOptionsTestSetup(): array
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -577,31 +577,31 @@ class MenuHelperTest extends TestCase
         return compact('helper', 'menu', 'renderOptions');
     }
 
-    public function testRenderMergeWithHelperAndCreateOptionsNoMenuArgument()
+    public function testRenderMergeWithHelperAndCreateOptionsNoMenuArgument(): void
     {
         $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
         $test['helper']->render(null, $test['renderOptions']);
     }
 
-    public function testRenderMergeWithHelperAndCreateOptionsRenderOptionsViaMenuArgument()
+    public function testRenderMergeWithHelperAndCreateOptionsRenderOptionsViaMenuArgument(): void
     {
         $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
         $test['helper']->render($test['renderOptions']);
     }
 
-    public function testRenderMergeWithHelperAndCreateOptionsNamedMenu()
+    public function testRenderMergeWithHelperAndCreateOptionsNamedMenu(): void
     {
         $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
         $test['helper']->render($test['menu']->getName(), $test['renderOptions']);
     }
 
-    public function testRenderMergeWithHelperAndCreateOptionsMenuInstance()
+    public function testRenderMergeWithHelperAndCreateOptionsMenuInstance(): void
     {
         $test = $this->renderMergeWithHelperAndCreateOptionsTestSetup();
         $test['helper']->render($test['menu'], $test['renderOptions']);
     }
 
-    public function testRenderDefaultMatchingOption()
+    public function testRenderDefaultMatchingOption(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -634,7 +634,7 @@ class MenuHelperTest extends TestCase
         $helper->render($menu);
     }
 
-    public function testRenderUrlWithQueryStringMatchingOption()
+    public function testRenderUrlWithQueryStringMatchingOption(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -669,7 +669,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderFuzzyRouteMatchingOption()
+    public function testRenderFuzzyRouteMatchingOption(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -701,7 +701,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderInvalidMatchingOption()
+    public function testRenderInvalidMatchingOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `\'invalid\'` given.');
@@ -715,7 +715,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderMatcherOption()
+    public function testRenderMatcherOption(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -771,7 +771,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderInvalidMatcherOption()
+    public function testRenderInvalidMatcherOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` implementation, `string` given.');
@@ -785,7 +785,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderVotersOption()
+    public function testRenderVotersOption(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -840,7 +840,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderInvalidVotersOption()
+    public function testRenderInvalidVotersOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `voters` option must be an array, `string` given.');
@@ -854,7 +854,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderInvalidVotersOptionArray()
+    public function testRenderInvalidVotersOptionArray(): void
     {
         $this->skipIf(PHP_MAJOR_VERSION < 7);
 
@@ -872,7 +872,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderRendererOptionWithObject()
+    public function testRenderRendererOptionWithObject(): void
     {
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -912,7 +912,7 @@ class MenuHelperTest extends TestCase
         ]);
     }
 
-    public function testRenderInvalidRendererOption()
+    public function testRenderInvalidRendererOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` implementation, `string` given.');
@@ -932,7 +932,7 @@ class MenuHelperTest extends TestCase
     //region render() output
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testRenderOutput()
+    public function testRenderOutput(): void
     {
         $menu = $this->Menu->create('menu');
         $menu->addChild('Home', ['uri' => '/uri']);

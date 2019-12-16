@@ -86,7 +86,7 @@ abstract class KnpMenuTestCase extends TestCase
     }
 
     // prints a visual representation of our basic testing tree
-    protected function printTestTree()
+    protected function printTestTree(): void
     {
         print('      Menu Structure   '."\n");
         print('               rt      '."\n");

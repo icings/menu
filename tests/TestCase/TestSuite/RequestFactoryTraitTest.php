@@ -31,7 +31,7 @@ class RequestFactoryTraitTest extends TestCase
         });
     }
 
-    public function testCreateServerRequest()
+    public function testCreateServerRequest(): void
     {
         $this->skipIf((float)Configure::version() < 3.4);
 
@@ -42,7 +42,7 @@ class RequestFactoryTraitTest extends TestCase
         $this->assertInstanceOf(ServerRequest::class, $request);
     }
 
-    public function testCreateServerRequestWithQueryString()
+    public function testCreateServerRequestWithQueryString(): void
     {
         $this->skipIf((float)Configure::version() < 3.4);
 

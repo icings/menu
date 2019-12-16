@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class MatcherTest extends TestCase
 {
-    public function testIsCurrentPerItemVoters()
+    public function testIsCurrentPerItemVoters(): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this
@@ -73,7 +73,7 @@ class MatcherTest extends TestCase
         $matcher->isCurrent($item);
     }
 
-    public function testIsCurrentCache()
+    public function testIsCurrentCache(): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this
@@ -103,7 +103,7 @@ class MatcherTest extends TestCase
         $matcher->isCurrent($item);
     }
 
-    public function testIsAncestor()
+    public function testIsAncestor(): void
     {
         $factory = $this
             ->getMockBuilder(FactoryInterface::class)
@@ -141,7 +141,7 @@ class MatcherTest extends TestCase
         $matcher->isAncestor($parent);
     }
 
-    public function testIsAncestorDepthLimit()
+    public function testIsAncestorDepthLimit(): void
     {
         $factory = $this
             ->getMockBuilder(FactoryInterface::class)
@@ -173,7 +173,7 @@ class MatcherTest extends TestCase
     //region Adapted KnpMenu vendor tests
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function currentFlagDataProvider()
+    public function currentFlagDataProvider(): array
     {
         return [
             [true, true],
@@ -187,7 +187,7 @@ class MatcherTest extends TestCase
      * @param bool|null $flag
      * @param bool $expected
      */
-    public function testItemFlag($flag, $expected)
+    public function testItemFlag($flag, $expected): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this
@@ -203,7 +203,7 @@ class MatcherTest extends TestCase
         $this->assertSame($expected, $matcher->isCurrent($item));
     }
 
-    public function testFlagOverwritesCache()
+    public function testFlagOverwritesCache(): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this
@@ -220,7 +220,7 @@ class MatcherTest extends TestCase
         $this->assertFalse($matcher->isCurrent($item));
     }
 
-    public function matchingResultDataProvider()
+    public function matchingResultDataProvider(): array
     {
         return [
             [true],
@@ -232,7 +232,7 @@ class MatcherTest extends TestCase
      * @dataProvider matchingResultDataProvider
      * @param bool $value
      */
-    public function testFlagWinsOverVoter($value)
+    public function testFlagWinsOverVoter($value): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this
@@ -261,7 +261,7 @@ class MatcherTest extends TestCase
      * @dataProvider matchingResultDataProvider
      * @param bool $value
      */
-    public function testFirstVoterWins($value)
+    public function testFirstVoterWins($value): void
     {
         /** @var ItemInterface|MockObject $item */
         $item = $this

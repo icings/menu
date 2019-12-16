@@ -17,11 +17,12 @@ use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
+use Knp\Menu\Renderer\RendererInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class StringTemplateRendererTest extends KnpAbstractRendererTest
 {
-    public function assertTrimmedHtml($expected, $actual, $message = '')
+    public function assertTrimmedHtml(string $expected, string $actual, string $message = ''): void
     {
         $expected = preg_split('/$\R?/m', $expected);
         array_walk($expected, function (&$value) {
@@ -37,7 +38,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
     //region construct()
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testConstructMissingRequiredArguments()
+    public function testConstructMissingRequiredArguments(): void
     {
         if (PHP_MAJOR_VERSION < 7) {
             $this->markTestSkipped();
@@ -51,7 +52,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         new StringTemplateRenderer();
     }
 
-    public function testConstructInvalidMatcherArgumentType()
+    public function testConstructInvalidMatcherArgumentType(): void
     {
         if (PHP_MAJOR_VERSION < 7) {
             $this->markTestSkipped();
@@ -65,7 +66,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         new StringTemplateRenderer('invalid');
     }
 
-    public function testConstructInvalidConfigArgumentType()
+    public function testConstructInvalidConfigArgumentType(): void
     {
         if (PHP_MAJOR_VERSION < 7) {
             $this->markTestSkipped();
@@ -79,7 +80,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         new StringTemplateRenderer(new Matcher(), 'invalid');
     }
 
-    public function testConstructWithoutConfig()
+    public function testConstructWithoutConfig(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -110,7 +111,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $renderer->getConfig());
     }
 
-    public function testConstructWithOptions()
+    public function testConstructWithOptions(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'templates' => [
@@ -147,7 +148,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $renderer->getConfig());
     }
 
-    public function testConstructWithTemplatesFile()
+    public function testConstructWithTemplatesFile(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'templates' => 'renderer_templates',
@@ -186,7 +187,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
     //region render()
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testRenderDefaults()
+    public function testRenderDefaults(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -212,7 +213,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderCustomTemplates()
+    public function testRenderCustomTemplates(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'templates' => [
@@ -253,7 +254,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderCustomTemplatesPerRender()
+    public function testRenderCustomTemplatesPerRender(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -297,7 +298,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         ]));
     }
 
-    public function testRenderCustomTemplatesPerItem()
+    public function testRenderCustomTemplatesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -363,7 +364,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderCustomTemplatesPerRenderAndPerItem()
+    public function testRenderCustomTemplatesPerRenderAndPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -413,7 +414,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         ]));
     }
 
-    public function testRenderCustomDefaultTemplatesPerItem()
+    public function testRenderCustomDefaultTemplatesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -499,7 +500,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderCustomDefaultTemplatesPerItemDoNotOverwriteCustomTemplatesPerItem()
+    public function testRenderCustomDefaultTemplatesPerItemDoNotOverwriteCustomTemplatesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -563,7 +564,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAllClassesByDefault()
+    public function testRenderInheritAllClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -590,7 +591,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeAllClassesByDefault()
+    public function testRenderConsumeAllClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -617,7 +618,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeAllClassesByDefault()
+    public function testRenderInheritAndConsumeAllClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -645,7 +646,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritSpecificClassesByDefault()
+    public function testRenderInheritSpecificClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -675,7 +676,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeSpecificClassesByDefault()
+    public function testRenderConsumeSpecificClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -705,7 +706,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeSpecificClassesByDefault()
+    public function testRenderInheritAndConsumeSpecificClassesByDefault(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -739,7 +740,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAllClassesPerItem()
+    public function testRenderInheritAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -773,7 +774,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeAllClassesPerItem()
+    public function testRenderConsumeAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -807,7 +808,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeAllClassesPerItem()
+    public function testRenderInheritAndConsumeAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -842,7 +843,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritSpecificClassesPerItem()
+    public function testRenderInheritSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -879,7 +880,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeSpecificClassesPerItem()
+    public function testRenderConsumeSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -916,7 +917,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeSpecificClassesPerItem()
+    public function testRenderInheritAndConsumeSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -957,7 +958,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAllClassesByDefaultOverrideInheritClassesPerItem()
+    public function testRenderInheritAllClassesByDefaultOverrideInheritClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -995,7 +996,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeAllClassesByDefaultOverrideConsumeClassesPerItem()
+    public function testRenderConsumeAllClassesByDefaultOverrideConsumeClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1033,7 +1034,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeClassesPerItem()
+    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1076,7 +1077,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritSpecificClassesByDefaultOverrideInheritSpecificClassesPerItem()
+    public function testRenderInheritSpecificClassesByDefaultOverrideInheritSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1117,7 +1118,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeSpecificClassesPerItem()
+    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1158,7 +1159,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeSpecificClassesPerItem()
+    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeSpecificClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1203,7 +1204,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritSpecificClassesByDefaultOverrideInheritAllClassesPerItem()
+    public function testRenderInheritSpecificClassesByDefaultOverrideInheritAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1241,7 +1242,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeAllClassesPerItem()
+    public function testRenderConsumeSpecificClassesByDefaultOverrideConsumeAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1279,7 +1280,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeAllClassesPerItem()
+    public function testRenderInheritAndConsumeSpecificClassesByDefaultOverrideInheritAndConsumeAllClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1320,7 +1321,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAllClassesByDefaultOverrideInheritNoClassesPerItem()
+    public function testRenderInheritAllClassesByDefaultOverrideInheritNoClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1355,7 +1356,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderConsumeAllClassesByDefaultOverrideConsumeNoClassesPerItem()
+    public function testRenderConsumeAllClassesByDefaultOverrideConsumeNoClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1390,7 +1391,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeNoClassesPerItem()
+    public function testRenderInheritAndConsumeAllClassesByDefaultOverrideInheritAndConsumeNoClassesPerItem(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'leafClass' => 'leaf',
@@ -1427,7 +1428,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderDoClearMatcher()
+    public function testRenderDoClearMatcher(): void
     {
         /** @var MatcherInterface|MockObject $matcher */
         $matcher = $this
@@ -1442,7 +1443,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $renderer->render($this->menu);
     }
 
-    public function testRenderDoNotClearMatcher()
+    public function testRenderDoNotClearMatcher(): void
     {
         /** @var MatcherInterface|MockObject $matcher */
         $matcher = $this
@@ -1459,7 +1460,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         ]);
     }
 
-    public function testRenderNoAncestorClass()
+    public function testRenderNoAncestorClass(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher(), [
             'ancestorClass' => null,
@@ -1483,7 +1484,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderEscapeLabel()
+    public function testRenderEscapeLabel(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -1512,7 +1513,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertTrimmedHtml($expected, $renderer->render($menu));
     }
 
-    public function testRenderEscapeAttributesAndLabel()
+    public function testRenderEscapeAttributesAndLabel(): void
     {
         $renderer = new StringTemplateRenderer(new Matcher());
 
@@ -1547,7 +1548,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
     //region Adapted KnpMenu vendor tests
     // -----------------------------------------------------------------------------------------------------------------
 
-    protected function createRenderer(MatcherInterface $matcher)
+    protected function createRenderer(MatcherInterface $matcher): RendererInterface
     {
         $renderer = new StringTemplateRenderer($matcher, [
             'currentClass' => 'current',
@@ -1562,7 +1563,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         return $renderer;
     }
 
-    public function testRenderLinkWithSpecialAttributes()
+    public function testRenderLinkWithSpecialAttributes(): void
     {
         $menu = new MenuItem('test', new MenuFactory());
         $menu->addChild('About', ['uri' => '/about', 'linkAttributes' => ['default' => true]]);
@@ -1571,7 +1572,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($menu));
     }
 
-    public function testRenderChildrenWithSpecialAttributes()
+    public function testRenderChildrenWithSpecialAttributes(): void
     {
         $menu = new MenuItem('test', new MenuFactory());
         $about = $menu->addChild('About');
@@ -1582,7 +1583,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($menu));
     }
 
-    public function testRenderLabelWithSpecialAttributes()
+    public function testRenderLabelWithSpecialAttributes(): void
     {
         $menu = new MenuItem('test', new MenuFactory());
         $menu->addChild('About', ['labelAttributes' => ['default' => true]]);
@@ -1591,7 +1592,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($menu));
     }
 
-    public function testRenderSafeLabel()
+    public function testRenderSafeLabel(): void
     {
         $factory = new MenuFactory();
         $factory->addExtension(new PerItemVotersExtension());
@@ -1607,7 +1608,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->assertEquals($expected, $this->renderer->render($menu));
     }
 
-    public function testLeafAndBranchRendering()
+    public function testLeafAndBranchRendering(): void
     {
         $expected = '<ul class="root"><li class="branch first"><span>Parent 1</span><ul class="menu_level_1"><li class="first leaf"><span>Child 1</span></li><li class="leaf"><span>Child 2</span></li><li class="last leaf"><span>Child 3</span></li></ul></li><li class="branch last"><span>Parent 2</span><ul class="menu_level_1"><li class="first last leaf"><span>Child 4</span></li></ul></li></ul>';
 
