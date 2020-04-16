@@ -299,7 +299,6 @@ class UrlVoterTest extends TestCase
 
     /**
      * @dataProvider expandedMatchingDataProvider
-     *
      * @param string $requestUri The request URI to match against.
      * @param string $uri The menu items main URI.
      * @param array[] $routes An array of URL arrays.

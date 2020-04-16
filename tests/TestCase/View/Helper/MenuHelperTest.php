@@ -95,7 +95,7 @@ class MenuHelperTest extends TestCase
     public function testCreateInvalidNameArgumentType(): void
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^Argument 1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::create\(\) must be of the type string, (int|integer) given/'
         );
 
@@ -859,7 +859,7 @@ class MenuHelperTest extends TestCase
         $this->skipIf(PHP_MAJOR_VERSION < 7);
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^Argument 1 .+? must (be an instance of|implement interface) Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/'
         );
 

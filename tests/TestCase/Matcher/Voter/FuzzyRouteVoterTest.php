@@ -149,7 +149,6 @@ class FuzzyRouteVoterTest extends TestCase
 
     /**
      * @dataProvider paramsDataProvider
-     *
      * @param string $requestUri
      * @param array $expected
      */
@@ -518,7 +517,6 @@ class FuzzyRouteVoterTest extends TestCase
 
     /**
      * @dataProvider matchingDataProvider
-     *
      * @param array $url The URL array to test.
      * @param string $requestUri The request URI to test against.
      * @param bool|null $expected The matching result.

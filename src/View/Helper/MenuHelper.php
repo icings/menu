@@ -146,7 +146,6 @@ class MenuHelper extends Helper
      * @see StringTemplateRenderer::__construct()
      * @see create()
      * @see render()
-     *
      * @param View $View The View this helper is being attached to.
      * @param array $config An array of options, see the "Configuration options" section in the
      *   method description.
@@ -181,9 +180,7 @@ class MenuHelper extends Helper
      * passed as options to the renderer.
      *
      * @see __construct()
-     *
      * @throws \InvalidArgumentException In case the `$name` argument is not a string, or is empty.
-     *
      * @param string $name The name of the menu. The name serves as an identifier for retrieving
      *   and rendering specific menus.
      * @param array $options An array of options, see the "Options" section in the method
@@ -210,7 +207,6 @@ class MenuHelper extends Helper
      * This method supports all the options that the constructor supports.
      *
      * @see __construct()
-     *
      * @throws \RuntimeException In case no menu object is passed, and no menu has been created via
      *  the `create()` method yet.
      * @throws \InvalidArgumentException In case the menu with name given in the `$menu` argument
@@ -224,7 +220,6 @@ class MenuHelper extends Helper
      * @throws \InvalidArgumentException In case the `voters` option is not an array.
      * @throws \InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
-     *
      * @param ItemInterface|string|array|null $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
      *  `$options` argument. If omitted or an array, the menu that was last created via `create()`

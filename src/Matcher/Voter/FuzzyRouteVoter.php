@@ -47,7 +47,7 @@ class FuzzyRouteVoter implements VoterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function matchItem(ItemInterface $item): ?bool
     {
@@ -160,7 +160,6 @@ class FuzzyRouteVoter implements VoterInterface
      * - normalization as applied by `_normalizeParams()`
      *
      * @see _normalizeParams()
-     *
      * @param array $route The route (URL array) to normalize.
      * @return void
      */

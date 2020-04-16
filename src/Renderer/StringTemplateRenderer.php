@@ -157,7 +157,6 @@ class StringTemplateRenderer implements RendererInterface
      * This method supports all the options that the constructor supports.
      *
      * @see __construct()
-     *
      * @param ItemInterface $item The menu to render.
      * @param array $options An array of options, see the "Options" section in the method
      *   description.

@@ -18,7 +18,7 @@ use Knp\Menu\ItemInterface;
 class TemplaterExtension implements ExtensionInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function buildOptions(array $options = []): array
     {
@@ -89,7 +89,7 @@ class TemplaterExtension implements ExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function buildItem(ItemInterface $item, array $options): void
     {

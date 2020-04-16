@@ -43,7 +43,7 @@ class Matcher implements MatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function addVoter(VoterInterface $voter): void
     {
@@ -51,7 +51,7 @@ class Matcher implements MatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function isCurrent(ItemInterface $item): bool
     {
@@ -81,7 +81,7 @@ class Matcher implements MatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function isAncestor(ItemInterface $item, ?int $depth = null): bool
     {
@@ -108,7 +108,7 @@ class Matcher implements MatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function clear(): void
     {

@@ -87,7 +87,7 @@ class UrlVoter implements VoterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function matchItem(ItemInterface $item): ?bool
     {

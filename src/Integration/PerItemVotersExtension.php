@@ -18,7 +18,7 @@ use Knp\Menu\ItemInterface;
 class PerItemVotersExtension implements ExtensionInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function buildOptions(array $options = []): array
     {
@@ -31,7 +31,7 @@ class PerItemVotersExtension implements ExtensionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function buildItem(ItemInterface $item, array $options): void
     {

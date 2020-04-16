@@ -45,7 +45,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         }
 
         $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^(Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, none given|Too few arguments .+? at least 1 expected)/'
         );
 
@@ -59,7 +59,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         }
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, string given/'
         );
 
@@ -73,7 +73,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         }
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^Argument 2 .+? must be of the type array, string given/'
         );
 
