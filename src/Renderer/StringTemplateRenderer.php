@@ -505,7 +505,7 @@ class StringTemplateRenderer implements RendererInterface
         if (
             $item->getUri() &&
             (
-                !$item->isCurrent() ||
+                !$this->_matcher->isCurrent($item) ||
                 $options['currentAsLink']
             )
         ) {

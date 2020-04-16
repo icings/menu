@@ -15,6 +15,7 @@ use Icings\Menu\Integration\TemplaterExtension;
 use Icings\Menu\Matcher\Matcher;
 use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\Matcher\MatcherInterface;
+use Knp\Menu\Matcher\Voter\UriVoter;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Renderer\RendererInterface;
@@ -1614,6 +1615,32 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
         $this->pt2->setAttribute('title', 'parent2 title');
         $rendered = '<ul class="root"><li class="first"><span>Parent 1</span><ul class="menu_level_1"><li class="first"><span>Child 1</span></li><li><span>Child 2</span></li><li class="last"><span>Child 3</span></li></ul></li><li class="last parent2_class" title="parent2 title"><span>Parent 2</span><ul class="menu_level_1"><li class="first last"><span>Child 4</span><ul class="menu_level_2"><li class="first last"><span>Grandchild 1</span></li></ul></li></ul></li></ul>';
         $this->assertEquals($rendered, $this->renderer->render($this->menu));
+    }
+
+    public function testRenderWithCurrentItemAsLinkUsingMatcherWithVoters(): void
+    {
+        $matcher = new Matcher();
+        $matcher->addVoter(new UriVoter('/about'));
+        $this->renderer = $this->createRenderer($matcher);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('About', ['uri' => '/about']);
+
+        $rendered = '<ul><li class="current first last"><a href="/about">About</a></li></ul>';
+        $this->assertEquals($rendered, $this->renderer->render($menu));
+    }
+
+    public function testRenderWithCurrentItemNotAsLinkUsingMatcherWithVoters(): void
+    {
+        $matcher = new Matcher();
+        $matcher->addVoter(new UriVoter('/about'));
+        $this->renderer = $this->createRenderer($matcher);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('About', ['uri' => '/about']);
+
+        $rendered = '<ul><li class="current first last"><span>About</span></li></ul>';
+        $this->assertEquals($rendered, $this->renderer->render($menu, ['currentAsLink' => false]));
     }
 
     public function testLeafAndBranchRendering(): void
