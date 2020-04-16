@@ -7,6 +7,8 @@
 
 namespace Icings\Menu\Test\TestCase\Renderer;
 
+use Cake\Core\Configure;
+use Cake\TestSuite\MockBuilder;
 use Icings\Menu\Integration\PerItemVotersExtension;
 use Icings\Menu\Integration\RoutingExtension;
 use Icings\Menu\Integration\TemplaterExtension;
@@ -556,9 +558,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
     public function testRenderDoClearMatcher()
     {
-        $matcher = $this
-            ->getMockBuilder(MatcherInterface::class)
-            ->getMock();
+        if (version_compare(Configure::version(), '3.8.11', '>=')) {
+            $matcher = (new MockBuilder($this, MatcherInterface::class))
+                ->getMock();
+        } else {
+            $matcher = $this
+                ->getMockBuilder(MatcherInterface::class)
+                ->getMock();
+        }
         $matcher
             ->expects($this->once())
             ->method('clear');
@@ -570,9 +577,14 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
     public function testRenderDoNotClearMatcher()
     {
-        $matcher = $this
-            ->getMockBuilder(MatcherInterface::class)
-            ->getMock();
+        if (version_compare(Configure::version(), '3.8.11', '>=')) {
+            $matcher = (new MockBuilder($this, MatcherInterface::class))
+                ->getMock();
+        } else {
+            $matcher = $this
+                ->getMockBuilder(MatcherInterface::class)
+                ->getMock();
+        }
         $matcher
             ->expects($this->never())
             ->method('clear');
