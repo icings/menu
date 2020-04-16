@@ -35,7 +35,7 @@ before_install:
 
 before_script:
   - if [[ $CAKEPHP ]]; then composer require --no-update cakephp/cakephp:~$CAKEPHP; fi
-  - if [[ $PHPSTAN = 1 ]]; then composer require --no-update phpstan/phpstan:^0.10.6; fi
+  - if [[ $PHPSTAN = 1 ]]; then composer require --no-update phpstan/phpstan:^0.11; fi
   - composer install --prefer-dist --no-interaction
 
 script:

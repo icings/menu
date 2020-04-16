@@ -7,6 +7,12 @@ parameters:
         - %rootDir%/../../../tests/TestCase/Renderer/KnpAbstractRendererTest.php
     ignoreErrors:
         - '#PHPUnit_Framework_MockObject_MockObject given#'
+        - '#PHPUnit_Framework_MockObject_MockObject::expects()#'
+        - '#Call to an undefined method Icings\\Menu\\Matcher\\Voter\\UrlVoter\|PHPUnit_Framework_MockObject_MockObject::matchItem\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit_Framework_MockObject_MockObject::setMenuFactory\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit_Framework_MockObject_MockObject::create\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit_Framework_MockObject_MockObject::render\(\)#'
+        - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit_Framework_MockObject_MockObject::setConfig\(\)#'
         - '#Class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor invoked with 0 parameters, 1-2 required#'
         - '#Parameter \#1 \$matcher of class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor expects Knp\\Menu\\Matcher\\MatcherInterface, string given#'
         - '#Parameter \#2 \$config of class Icings\\Menu\\Renderer\\StringTemplateRenderer constructor expects array, string given#'
