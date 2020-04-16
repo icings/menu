@@ -15,6 +15,7 @@ use Icings\Menu\Integration\TemplaterExtension;
 use Icings\Menu\Matcher\Matcher;
 use Icings\Menu\Renderer\StringTemplateRenderer;
 use Knp\Menu\Matcher\MatcherInterface;
+use Knp\Menu\Matcher\Voter\UriVoter;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 
@@ -742,6 +743,32 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
         $expected = '<ul><li class="first"><span>Encode &quot; me</span></li><li><span>Encode " me again</span></li><li class="last"><span>Encode &quot; me too</span></li></ul>';
         $this->assertEquals($expected, $this->renderer->render($menu));
+    }
+
+    public function testRenderWithCurrentItemAsLinkUsingMatcherWithVoters()
+    {
+        $matcher = new Matcher();
+        $matcher->addVoter(new UriVoter('/about'));
+        $this->renderer = $this->createRenderer($matcher);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('About', ['uri' => '/about']);
+
+        $rendered = '<ul><li class="current first last"><a href="/about">About</a></li></ul>';
+        $this->assertEquals($rendered, $this->renderer->render($menu));
+    }
+
+    public function testRenderWithCurrentItemNotAsLinkUsingMatcherWithVoters()
+    {
+        $matcher = new Matcher();
+        $matcher->addVoter(new UriVoter('/about'));
+        $this->renderer = $this->createRenderer($matcher);
+
+        $menu = new MenuItem('test', new MenuFactory());
+        $menu->addChild('About', ['uri' => '/about']);
+
+        $rendered = '<ul><li class="current first last"><span>About</span></li></ul>';
+        $this->assertEquals($rendered, $this->renderer->render($menu, ['currentAsLink' => false]));
     }
 
     public function testLeafAndBranchRendering()
