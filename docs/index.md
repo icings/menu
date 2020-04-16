@@ -792,7 +792,7 @@ $routes->plugin('PluginName', function(RouteBuilder $routes) {
 #### Specifying a prefix:
 
 ```php
-['prefix' => 'prefix_name', 'controller' => 'Articles']
+['prefix' => 'PrefixName', 'controller' => 'Articles']
 ```
 
 From the above routes examples, now only the prefix routes will be matched:
@@ -876,7 +876,7 @@ information):
 use Icings\Menu\View\Helper\MenuHelper;
 
 $this->Menu->setConfig([
-    'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
+    'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING,
 ]);
 ```
 
@@ -1041,14 +1041,14 @@ echo $renderer->render($menu);
 ```php
 $menu = $this->Menu->create('main', [
     'menuAttributes' => [
-        'class' => 'side-nav'
-    ]
+        'class' => 'side-nav',
+    ],
 ]);
 $menu->addChild('Articles', ['uri' => ['controller' => 'Articles']]);
 $menu->addChild('Comments', ['uri' => ['controller' => 'Comments']]);
 $menu->addChild('Divider', [
     'templates' => ['text' => ''],
-    'attributes' => ['class' => 'divider']
+    'attributes' => ['class' => 'divider'],
 ]);
 $menu->addChild('Tags', ['uri' => ['controller' => 'Tags']]);
 $menu->addChild('News', ['uri' => ['controller' => 'News']]);
@@ -1078,17 +1078,17 @@ $menu->addChild('News', ['uri' => ['controller' => 'News']]);
 use Icings\Menu\View\Helper\MenuHelper;
 
 $this->Menu->setConfig([
-    'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING
+    'matching' => MenuHelper::MATCH_URL_WITH_QUERY_STRING,
 ]);
 
 $menu = $this->Menu->create('main', [
     'templates' => [
         'menu' => '<dl{{attrs}}><dt>Filter:</dt>{{items}}</dl>',
-        'item' => '<dd{{attrs}}>{{link}}</dd>'
+        'item' => '<dd{{attrs}}>{{link}}</dd>',
     ],
     'menuAttributes' => [
-        'class' => 'sub-nav'
-    ]
+        'class' => 'sub-nav',
+    ],
 ]);
 $menu->addChild('All', ['uri' => ['controller' => 'Articles', 'action' => 'index', 'filter' => 'all']]);
 $menu->addChild('Active', ['uri' => ['controller' => 'Articles', 'action' => 'index', 'filter' => 'active']]);
@@ -1120,10 +1120,10 @@ $menu->addChild('Suspended', ['uri' => ['controller' => 'Articles', 'action' => 
 $menu = $this->Menu->create('main', [
     'menuAttributes' => [
         'class' => 'dropdown menu',
-        'data-dropdown-menu'
+        'data-dropdown-menu',
     ], 
     'nestedMenuClass' => 'menu',
-    'branchClass' => 'is-dropdown-submenu-parent'
+    'branchClass' => 'is-dropdown-submenu-parent',
 ]);
 $menu->addChild('Articles', ['uri' => ['controller' => 'Articles']]);
 $menu['Articles']->addChild('Comments', ['uri' => ['controller' => 'Comments']]);
@@ -1159,33 +1159,33 @@ $menu->addChild('Status', ['uri' => ['controller' => 'Pages', 'action' => 'displ
 ```php
 $menu = $this->Menu->create('main', [
     'templates' => [
-        'link' => '<a href="{{url}}"{{attrs}}><i class="{{icon}}"></i> <span>{{label}}</span></a>'
+        'link' => '<a href="{{url}}"{{attrs}}><i class="{{icon}}"></i> <span>{{label}}</span></a>',
     ],
     'menuAttributes' => [
-        'class' => 'vertical menu'
+        'class' => 'vertical menu',
     ], 
     'nestedMenuClass' => 'nested vertical menu',
-    'branchClass' => null
+    'branchClass' => null,
 ]);
 $menu->addChild('Articles', [
     'uri' => ['controller' => 'Articles'],
-    'templateVars' => ['icon' => 'fi-book']
+    'templateVars' => ['icon' => 'fi-book'],
 ]);
 $menu['Articles']->addChild('Comments', [
     'uri' => ['controller' => 'Comments'],
-    'templateVars' => ['icon' => 'fi-comments']
+    'templateVars' => ['icon' => 'fi-comments'],
 ]);
 $menu['Articles']->addChild('Tags', [
     'uri' => ['controller' => 'Tags'],
-    'templateVars' => ['icon' => 'fi-pricetag-multiple']
+    'templateVars' => ['icon' => 'fi-pricetag-multiple'],
 ]);
 $menu->addChild('News', [
     'uri' => ['controller' => 'News'],
-    'templateVars' => ['icon' => 'fi-rss']
+    'templateVars' => ['icon' => 'fi-rss'],
 ]);
 $menu->addChild('Status', [
-'uri' => ['controller' => 'Pages', 'action' => 'display', 'status'],
-    'templateVars' => ['icon' => 'fi-shield']
+    'uri' => ['controller' => 'Pages', 'action' => 'display', 'status'],
+    'templateVars' => ['icon' => 'fi-shield'],
 ]);
 ```
 
@@ -1216,10 +1216,10 @@ $menu->addChild('Status', [
 ```php
 $menu = $this->Menu->create('main', [
     'menuAttributes' => [
-        'class' => 'nav navbar-nav'
+        'class' => 'nav navbar-nav',
     ],
     'nestedMenuClass' => 'dropdown-menu',
-    'branchClass' => 'dropdown'
+    'branchClass' => 'dropdown',
 ]);
 $menu->addChild('Page A', [
     'uri' => ['controller' => 'Pages', 'action' => 'display', 'page-a'],
@@ -1227,14 +1227,14 @@ $menu->addChild('Page A', [
 $menu->addChild('Dropdown', [
     'uri' => '#',
     'templates' => [
-        'link' => '<a href="{{url}}"{{attrs}}>{{label}} <span class="caret"></span></a>'
+        'link' => '<a href="{{url}}"{{attrs}}>{{label}} <span class="caret"></span></a>',
     ],
     'linkAttributes' => [
         'class' => 'dropdown-toggle',
         'data-toggle' => 'dropdown',
         'role' => 'button',
         'aria-haspopup' => 'true',
-        'aria-expanded' => 'false'
+        'aria-expanded' => 'false',
     ]
 ]);
 $menu['Dropdown']->addChild('Page B', [
@@ -1242,7 +1242,7 @@ $menu['Dropdown']->addChild('Page B', [
 ]);
 $menu['Dropdown']->addChild('Divider', [
     'templates' => ['text' => ''],
-    'attributes' => ['role' => 'separator', 'class' => 'divider']
+    'attributes' => ['role' => 'separator', 'class' => 'divider'],
 ]);
 $menu['Dropdown']->addChild('Page C', [
     'uri' => ['controller' => 'Pages', 'action' => 'display', 'page-c'],
