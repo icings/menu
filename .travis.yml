@@ -5,6 +5,8 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4
 
 dist: trusty
 
@@ -16,16 +18,16 @@ matrix:
   fast_finish: true
 
   include:
-    - php: 7.2
+    - php: 7.3
       env: CAKEPHP=3.7.0
 
-    - php: 7.2
+    - php: 7.3
       env: PHPCS=1 PHPUNIT=0
 
-    - php: 7.2
+    - php: 7.3
       env: PHPSTAN=1 PHPUNIT=0
 
-    - php: 7.2
+    - php: 7.3
       env: COVERAGE=1 PHPUNIT=0
 
 before_install:
