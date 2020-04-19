@@ -235,7 +235,151 @@ class MenuHelper extends Helper
             $menu = null;
         }
 
+        $menu = $this->_getMenu($menu);
+
         $createOptions = [];
+        if (isset($this->_menuConfigurations[$menu])) {
+            $createOptions = $this->_menuConfigurations[$menu];
+        }
+
+        /** @psalm-suppress TooManyArguments */
+        $options = Hash::merge($this->getConfig(), $options, $createOptions);
+        $rendererOptions = $this->_extractRendererOptions($options);
+
+        $renderer = $this->_getRenderer($options);
+
+        return $renderer->render($menu, $rendererOptions);
+    }
+
+    /**
+     * Extracts a path of items, from the root up to and including the given item.
+     *
+     * The extracted items will be clones of the original items, with their respective parent and
+     * child items removed. The original item is attached as an extra with the key `original`, so
+     * it can be retrieved via `$item->getExtra('original')`.
+     *
+     * ## Options
+     *
+     * The `$options` argument supports the following keys:
+     *
+     * - `includeRoot` (`bool`, defaults to `false`)
+     *   Defines whether to include the root element in the returned path. The root element, ie
+     *   the top most element in a menu is usually the menu itself, not an actual menu item that
+     *   is being rendered and has a URL assigned for matching, hence it is by default excluded.
+     *
+     * @param ItemInterface $item The item from which to extract the path from.
+     * @param array $options An array of options, see the "Options" section in the method description.
+     * @return ItemInterface[] A set of items representing the path from the root item.
+     */
+    public function extractPath(ItemInterface $item, array $options = []): array
+    {
+        $options += [
+            'includeRoot' => false,
+        ];
+
+        $path = [$item];
+        while ($item = $item->getParent()) {
+            $path[] = $item;
+        }
+
+        if (!$options['includeRoot']) {
+            \array_pop($path);
+        }
+
+        foreach ($path as $key => $item) {
+            $clone = clone $item;
+            $clone->setParent(null);
+            $clone->setChildren([]);
+            $clone->setExtra('original', $item);
+
+            $path[$key] = $clone;
+        }
+
+        return \array_reverse($path);
+    }
+
+    /**
+     * Returns the first item which matches as current.
+     *
+     * ## Options
+     *
+     * The `$options` argument supports the following keys:
+     *
+     * - `matching` (`string`, defaults to
+     *   `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)
+     *   Defines the mode to use for matching the menu items against the current request in order
+     *   to determine the active items. This is shorthand for passing a constructed matcher object
+     *   via the `matcher` option.
+     *
+     * - `matcher` (`Icings\Menu\Matcher\MatcherInterface`, defaults to
+     *   `Icings\Menu\Matcher\Matcher`)
+     *   The matcher object to use.
+     *
+     * - `voters` (`Knp\Menu\Matcher\Voter\VoterInterface[]`, defaults to
+     *   `[Icings\Menu\Matcher\Voter\FuzzyRouteVoter]`)
+     *   The voter objects to use.
+     *
+     * - `clearMatcher` (`boolean`, defaults to `true`)
+     *   Defines whether the matcher cache should be cleared after searching through the menu.
+     *
+     * Similar to the `render()` method, this method will use the helper defaults for the
+     * options if not specified.
+     *
+     * @param ItemInterface|string|array|null $menu The menu (item) to search through. Either an
+     * `\Knp\Menu\ItemInterface` implementation, the name of a menu created via `create()`, or
+     *  an array of options to use instead of the `$options` argument. If omitted or an array,
+     *  the menu that was last created via `create()` will be used.
+     * @param array $options An array of options, see the "Options" section in the method
+     *  description.
+     * @return ItemInterface|null The first current item or `null` if no current item could be found.
+     */
+    public function getCurrentItem($menu = null, array $options = []): ?ItemInterface
+    {
+        if (is_array($menu)) {
+            $options = $menu;
+            $menu = null;
+        }
+
+        $menu = $this->_getMenu($menu);
+
+        /** @psalm-suppress TooManyArguments */
+        $options = Hash::merge($this->getConfig(), $options);
+        $options += [
+            'clearMatcher' => true,
+        ];
+
+        $matcher = $this->_getMatcher($options);
+        $voters = $this->_getVoters($options);
+
+        foreach ($voters as $voter) {
+            $matcher->addVoter($voter);
+        }
+
+        $currentItem = $this->_findCurrentItem($menu, $matcher);
+
+        if ($options['clearMatcher']) {
+            $matcher->clear();
+        }
+
+        return $currentItem;
+    }
+
+    /**
+     * Returns a menu instance based on the given parameters.
+     *
+     * @throws \RuntimeException In case no menu object is passed, and no menu has been created via
+     *  the `create()` method yet.
+     * @throws \InvalidArgumentException In case the menu with name given in the `$menu` argument
+     *  does not exist.
+     * @throws \InvalidArgumentException In case the `$menu` argument is neither a
+     *   `Knp\Menu\ItemInterface` implementation, the name of a menu, nor an array.
+     * @param ItemInterface|string|null $menu Either an `\Knp\Menu\ItemInterface` implementation, or
+     *  the name of a menu created via `create()`. If omitted, the menu that was last created via
+     * `create()` will be obtained.
+     * @return ItemInterface
+     */
+    protected function _getMenu($menu = null): ItemInterface
+    {
         /** @psalm-suppress DocblockTypeContradiction */
         if ($menu === null) {
             if (empty($this->_menus)) {
@@ -261,54 +405,123 @@ class MenuHelper extends Helper
                 )
             );
         }
-        if (isset($this->_menuConfigurations[$menu])) {
-            $createOptions = $this->_menuConfigurations[$menu];
+
+        return $menu;
+    }
+
+    /**
+     * Returns a matcher instance based on the given options.
+     *
+     * ## Options
+     *
+     * The `$options` argument supports the following keys:
+     *
+     * - `matcher` (`Icings\Menu\Matcher\MatcherInterface`, defaults to
+     *   `Icings\Menu\Matcher\Matcher`)
+     *   The matcher object to use.
+     *
+     * @throws \InvalidArgumentException In case the `matcher` option is not a
+     *  `Icings\Menu\Matcher\MatcherInterface` implementation.
+     * @param array $options An array of options, see the "Options" section in the method
+     *  description.
+     * @return MatcherInterface
+     */
+    protected function _getMatcher(array $options): MatcherInterface
+    {
+        if (!isset($options['matcher'])) {
+            $matcher = $this->_createDefaultMatcher();
+        } else {
+            if (!($options['matcher'] instanceof MatcherInterface)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` ' .
+                        'implementation, `%s` given.',
+                        Debugger::getType($options['matcher'])
+                    )
+                );
+            }
+
+            $matcher = $options['matcher'];
         }
 
-        /** @psalm-suppress TooManyArguments */
-        $options = Hash::merge($this->getConfig(), $options, $createOptions);
-        $rendererOptions = $this->_extractRendererOptions($options);
+        return $matcher;
+    }
 
+    /**
+     * Returns an array of voter instances based on the given options.
+     *
+     * ## Options
+     *
+     * The `$options` argument supports the following keys:
+     *
+     * - `matching` (`string`, defaults to
+     *   `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)
+     *   Defines the mode to use for matching the menu items against the current request in order
+     *   to determine the active items. This is shorthand for passing a constructed matcher object
+     *   via the `matcher` option.
+     *
+     * - `voters` (`Knp\Menu\Matcher\Voter\VoterInterface[]`, defaults to
+     *   `[Icings\Menu\Matcher\Voter\FuzzyRouteVoter]`)
+     *   The voter objects to use.
+     *
+     * @throws \InvalidArgumentException In case the `matching` option is not one of
+     *  `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant vales.
+     * @throws \InvalidArgumentException In case the `voters` option is not an array.
+     * @param array $options An array of options, see the "Options" section in the method
+     *  description.
+     * @return VoterInterface[]
+     */
+    protected function _getVoters(array $options): array
+    {
+        if (!isset($options['voters'])) {
+            $voters = $this->_createDefaultVoters($options['matching']);
+            if (!is_array($voters)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` ' .
+                        'constant values, `%s` given.',
+                        Debugger::exportVar($options['matching'])
+                    )
+                );
+            }
+        } else {
+            if (!is_array($options['voters'])) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The `voters` option must be an array, `%s` given.',
+                        Debugger::getType($options['voters'])
+                    )
+                );
+            }
+
+            $voters = $options['voters'];
+        }
+
+        return $voters;
+    }
+
+    /**
+     * Returns a renderer instance based on the given options.
+     *
+     * ## Configuration options
+     *
+     * The `$options` argument supports the following keys:
+     *
+     * - `renderer` (`Knp\Menu\Renderer\RendererInterface`, defaults to
+     *   `Icings\Menu\Renderer\StringTemplateRenderer`)
+     *    The renderer object to use.
+     *
+     * @throws \InvalidArgumentException In case the `renderer` option is not a
+     *  `Knp\Menu\Renderer\RendererInterface` implementation.
+     * @param array $options An array of options, see the "Options" section in the method
+     *  description.
+     * @return RendererInterface
+     */
+    protected function _getRenderer(array $options): RendererInterface
+    {
         if ($options['renderer'] === null) {
-            if (!isset($options['matcher'])) {
-                $matcher = $this->_createDefaultMatcher();
-            } else {
-                if (!($options['matcher'] instanceof MatcherInterface)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` ' .
-                            'implementation, `%s` given.',
-                            Debugger::getType($options['matcher'])
-                        )
-                    );
-                }
-
-                $matcher = $options['matcher'];
-            }
-
-            if (!isset($options['voters'])) {
-                $voters = $this->_createDefaultVoters($options['matching']);
-                if (!is_array($voters)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` ' .
-                            'constant values, `%s` given.',
-                            Debugger::exportVar($options['matching'])
-                        )
-                    );
-                }
-            } else {
-                if (!is_array($options['voters'])) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'The `voters` option must be an array, `%s` given.',
-                            Debugger::getType($options['voters'])
-                        )
-                    );
-                }
-
-                $voters = $options['voters'];
-            }
+            $matcher = $this->_getMatcher($options);
+            $voters = $this->_getVoters($options);
 
             foreach ($voters as $voter) {
                 $matcher->addVoter($voter);
@@ -329,7 +542,32 @@ class MenuHelper extends Helper
             $renderer = $options['renderer'];
         }
 
-        return $renderer->render($menu, $rendererOptions);
+        return $renderer;
+    }
+
+    /**
+     * Searches for and returns the first item which matches as current.
+     *
+     * @param ItemInterface $item The menu (item) to search through.
+     * @param MatcherInterface $matcher The matcher to use for matching the current item.
+     * @return ItemInterface|null The current item, or `null` if no item matches are current.
+     */
+    protected function _findCurrentItem(ItemInterface $item, MatcherInterface $matcher): ?ItemInterface
+    {
+        if ($matcher->isCurrent($item)) {
+            return $item;
+        }
+
+        if ($item->hasChildren()) {
+            foreach ($item->getChildren() as $child) {
+                $current = $this->_findCurrentItem($child, $matcher);
+                if ($current) {
+                    return $current;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
