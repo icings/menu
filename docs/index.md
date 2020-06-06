@@ -19,6 +19,8 @@
   - [Do not match against the URL that generates the link](#do-not-match-against-the-url-that-generates-the-link)
   - [Using fuzzy route matching](#using-fuzzy-route-matching)
   - [Matching and query strings](#matching-and-query-strings)
+- [Retrieving the active menu item](#retrieving-the-active-menu-item)
+- [Extracting a path of menu items](#extracting-a-path-of-menu-items)
 - [Advanced usage](#advanced-usage)
   - [Defining a matcher](#defining-a-matcher)
   - [Defining voters](#defining-voters)
@@ -932,6 +934,154 @@ And when won't it match? It won't match when the keys/values are different. The 
 ['controller' => 'Articles', 'action' => 'index', 'filter' => 'all', 'other' => 'value']
 ```
 
+
+## Retrieving the active menu item
+
+You can retrieve the current active item using the menu helper's `MenuHelper::getCurrentItem()` method, it takes an
+optional menu instance/name (from which to retrieve the active item) as the first argument, and options as the second
+argument. The method will return the first active item in the menu, or `null` if no active item was found.
+
+The following options are available for retrieving the active item:
+
+- `matching` (`string`, defaults to
+  `\Icings\Menu\View\Helper\MenuHelper::MATCH_URL`)
+  Defines the mode to use for matching the menu items against the current request in order
+  to determine the active items. This is shorthand for passing a constructed matcher object
+  via the `matcher` option.
+
+- `matcher` (`Icings\Menu\Matcher\MatcherInterface`, defaults to
+  `Icings\Menu\Matcher\Matcher`)
+  The matcher object to use.
+
+- `voters` (`Knp\Menu\Matcher\Voter\VoterInterface[]`, defaults to
+  `[Icings\Menu\Matcher\Voter\FuzzyRouteVoter]`)
+  The voter objects to use.
+
+- `clearMatcher` (`boolean`, defaults to `true`)
+  Defines whether the matcher cache should be cleared after searching through the menu.
+
+It should be noted that unless you are using the same matcher for retrieving the current item and for rendering (with
+`clearMatcher` disabled), the process for determining/matching the active item will run twice, once when using this
+method, and again when rendering the menu!
+
+Also note that similar to the `MenuHelper::render()` method, this method will use the helper defaults for the options if
+not specified.
+
+Retrieve the active item from the menu with the name `main`:
+
+```php
+$currentItem = $this->Menu->getCurrentItem('main');
+```
+
+Retrieve the active item from the given menu instance:
+
+```php
+$currentItem = $this->Menu->getCurrentItem($menu);
+```
+
+Retrieve the active item from the last created menu:
+
+```php
+$currentItem = $this->Menu->getCurrentItem();
+```
+
+
+## Extracting a path of menu items
+
+There are situations where you need to create new menus from existing menus, for example a breadcrumb navigation based
+on the main menu, this is where the ability to extract paths from a menu is useful.
+
+Paths can be extracted using the menu helper's `MenuHelper::extractPath()` method, it takes a menu item instance (for
+which to extract the path) as the first argument, and options as the second argument. The method will return an array of
+menu item instances, starting at the root, up to and including the given item.
+
+The extracted items will be clones of the original items, with their respective parent and child items removed, so that
+they represent a flat list of menu items. The original item (which will include the references to its parent and child
+items) is attached as an extra with the key `original`, so it can be retrieved via `$item->getExtra('original')`.
+
+The following options are available for extracting paths:
+
+- `includeRoot` (`bool`, defaults to `false`)
+  Defines whether to include the root element in the returned path. The root element, ie
+  the top most element in a menu is usually the menu itself, not an actual menu item that
+  is being rendered and has a URL assigned for matching, hence it is by default excluded.
+
+Here's an example for extracting a path and creating a breadcrumb navigation from it:
+
+```php
+// create main menu
+$mainMenu = $this->Menu->create('main');
+$mainMenu->addChild('Library', ['uri' => ['controller' => 'Library', 'action' => 'index']]);
+$mainMenu['Library']->addChild('Web', ['uri' => ['controller' => 'Web', 'action' => 'index']]);
+$mainMenu['Library']['Web']->addChild('Data', ['uri' => ['controller' => 'Data', 'action' => 'index']]);
+$mainMenu->addChild('Projects', ['uri' => ['controller' => 'Projects', 'action' => 'index']]);
+$mainMenu->addChild('Settings', ['uri' => ['controller' => 'Settings', 'action' => 'index']]);
+
+// extract path based on the current/active item
+$crumbs = [];
+$currentItem = $this->Menu->getCurrentItem('main');
+if ($currentItem) {
+    $crumbs = $this->Menu->extractPath($currentItem);
+}
+
+// create new menu
+$crumbsMenu = $this->Menu->create('breadcrumbs', [
+    'templates' => [
+        'menu' => '<ol class="breadcrumb"{{attrs}}>{{items}}</ol>',
+    ],
+    'currentAsLink' => false,
+]);
+
+$crumbsMenu->addChild('Home', ['uri' => ['controller' => 'Pages', 'action' => 'display', 'home']]);
+// add extracted items to the new menu
+foreach ($crumbs as $crumb) {
+    $crumbsMenu->addChild($crumb);
+}
+```
+
+Assuming the `Data` item is the current item, the above example would render the following HTML for the main menu and
+the breadcrumbs menu:
+
+```html
+<ul>
+    <li class="active-ancestor has-dropdown">
+        <a href="/library">Library</a>
+        <ul class="dropdown">
+            <li class="active-ancestor has-dropdown">
+                <a href="/web">Web</a>
+                <ul class="dropdown">
+                    <li class="active">
+                        <a href="/data">Data</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="/projects">Projects</a>
+    </li>
+    <li>
+        <a href="/settings">Settings</a>
+    </li>
+</ul>
+```
+
+```html
+<ol class="breadcrumb">
+    <li>
+        <a href="/">Home</a>
+    </li>
+    <li>
+        <a href="/library">Library</a>
+    </li>
+    <li>
+        <a href="/web">Web</a>
+    </li>
+    <li class="active">
+        <span>Data</span>
+    </li>
+</ol>
+```
 
 ## Advanced usage
 
