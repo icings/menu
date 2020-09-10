@@ -1,7 +1,4 @@
 parameters:
-    autoload_files:
-        - tests/bootstrap.php
-        - tests/TestCase/TestSuite/RequestFactoryTraitTest.php
     checkMissingIterableValueType: false
     excludes_analyse:
         - tests/TestCase/KnpMenuTestCase.php
