@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Icings\Menu\Test\TestCase\View\Helper;
 
+use Cake\Error\Debugger;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use Icings\Menu\Matcher\Matcher;
@@ -705,7 +706,10 @@ class MenuHelperTest extends TestCase
     public function testRenderInvalidMatchingOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `\'invalid\'` given.');
+        $this->expectExceptionMessage(sprintf(
+            'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `%s` given.',
+            Debugger::exportVar('invalid')
+        ));
 
         $menu = $this
             ->getMockBuilder(ItemInterface::class)
@@ -1429,7 +1433,10 @@ class MenuHelperTest extends TestCase
     public function testGetCurrentItemInvalidMatchingOption(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `\'invalid\'` given.');
+        $this->expectExceptionMessage(sprintf(
+            'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant values, `%s` given.',
+            Debugger::exportVar('invalid')
+        ));
 
         $menu = $this
             ->getMockBuilder(ItemInterface::class)

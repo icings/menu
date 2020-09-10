@@ -1,14 +1,11 @@
 parameters:
-    autoload_files:
-        - tests/bootstrap.php
-        - tests/TestCase/TestSuite/RequestFactoryTraitTest.php
     checkMissingIterableValueType: false
     excludes_analyse:
         - tests/TestCase/KnpMenuTestCase.php
         - tests/TestCase/Renderer/KnpAbstractRendererTest.php
     ignoreErrors:
         - '#PHPUnit\\Framework\\MockObject\\MockObject given#'
-        - '#PHPUnit\\Framework\\MockObject\\MockObject::expects()#'
+        - '#PHPUnit\\Framework\\MockObject\\MockObject::expects\(\)#'
         - '#Call to an undefined method Icings\\Menu\\Matcher\\Voter\\UrlVoter\|PHPUnit\\Framework\\MockObject\\MockObject::matchItem\(\)#'
         - '#Call to static method createRequest\(\) on an unknown class Icings\\Menu\\TestSuite\\RequestFactoryTrait#'
         - '#Call to an undefined method Icings\\Menu\\View\\Helper\\MenuHelper\|PHPUnit\\Framework\\MockObject\\MockObject::setMenuFactory\(\)#'
