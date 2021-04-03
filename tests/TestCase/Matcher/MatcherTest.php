@@ -41,6 +41,7 @@ class MatcherTest extends TestCase
                     $this->fail('Expected the item voter to be invoked first.');
                 }
 
+                /* @phpstan-ignore-next-line */
                 return null;
             });
 

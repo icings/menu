@@ -213,7 +213,7 @@ class StringTemplateRenderer implements RendererInterface
         $options['defaultTemplateVars'] = $templateVars;
         unset($options['templateVars']);
 
-        $rendered = (string)$templater->format('menu', [
+        $rendered = $templater->format('menu', [
             'attrs' => $this->_formatAttributes($item->getChildrenAttributes(), $item),
             'templateVars' => $templateVars,
             'items' => $this->_renderChildren($item, $options),
@@ -271,7 +271,7 @@ class StringTemplateRenderer implements RendererInterface
             $templater->pop();
         }
 
-        return (string)$templater->format('nest', [
+        return $templater->format('nest', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'items' => $items,
@@ -474,7 +474,7 @@ class StringTemplateRenderer implements RendererInterface
             $nested = '';
         }
 
-        $rendered = (string)$templater->format('item', [
+        $rendered = $templater->format('item', [
             'attrs' => $attributes,
             'templateVars' => $templateVars,
             'link' => $link,
@@ -536,7 +536,7 @@ class StringTemplateRenderer implements RendererInterface
             $item->setLinkAttribute('class', implode(' ', $class));
         }
 
-        return (string)$this->templater()->format('link', [
+        return $this->templater()->format('link', [
             'attrs' => $this->_formatAttributes($item->getLinkAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'url' => h($item->getUri()),
@@ -565,7 +565,7 @@ class StringTemplateRenderer implements RendererInterface
             $item->setLabelAttribute('class', implode(' ', $class));
         }
 
-        return (string)$this->templater()->format('text', [
+        return $this->templater()->format('text', [
             'attrs' => $this->_formatAttributes($item->getLabelAttributes(), $item),
             'templateVars' => $options['templateVars'],
             'label' => $this->_renderLabel($item),
