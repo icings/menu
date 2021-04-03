@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['7.2', '7.3', '7.4']
+        cakephp-version: ['4.0.0', '4.1.0', '4.2.0']
+        coverage: [none]
+        include:
+          - php-version: '8.0'
+            cakephp-version: '4.2.0'
+            coverage: none
+
+          - php-version: '7.4'
+            cakephp-version: '4.2.0'
+            coverage: pcov
+
+    name: PHP ${{ matrix.php-version }} - CakePHP ${{ matrix.cakephp-version }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl
+          coverage: ${{ matrix.coverage }}
+
+      - name: Setup problem matchers for PHPUnit
+        if: matrix.coverage == 'none'
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Composer install
+        run: |
+          composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}
+          composer install --optimize-autoloader
+
+      - name: Run PHPUnit
+        run: |
+          if [[ ${{ matrix.coverage }} != 'none' ]]; then
+            composer test-coverage
+          else
+            composer test
+          fi
+
+      - name: Code Coverage Report
+        if: success() && matrix.coverage != 'none'
+        uses: codecov/codecov-action@v1
+
+  cs-stan:
+    name: Coding Standards & Static Analysis
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl
+          coverage: none
+          tools: cs2pr
+
+      - name: Composer Install
+        run: composer stan-setup
+
+      - name: Run phpcs
+        run: composer cs-check -- --parallel=1 --report=checkstyle | cs2pr
+
+      - name: Run psalm
+        run: composer psalm -- --output-format=github
+
+      - name: Run phpstan (src)
+        run: composer phpstan-src -- --error-format=github
+
+      - name: Run phpstan (tests)
+        run: composer phpstan-tests -- --error-format=github

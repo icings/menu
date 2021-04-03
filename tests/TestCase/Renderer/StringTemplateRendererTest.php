@@ -61,7 +61,9 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, string given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, string given/' :
+                '/^Icings\\\\Menu\\\\Renderer\\\\StringTemplateRenderer::__construct\(\): Argument #1 .+? must be of type Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, string given/'
         );
 
         new StringTemplateRenderer('invalid');
@@ -75,7 +77,9 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 2 .+? must be of the type array, string given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 2 .+? must be of the type array, string given/' :
+                '/^Icings\\\\Menu\\\\Renderer\\\\StringTemplateRenderer::__construct\(\): Argument #2 .+? must be of type array, string given/'
         );
 
         new StringTemplateRenderer(new Matcher(), 'invalid');
