@@ -98,7 +98,9 @@ class MenuHelperTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::create\(\) must be of the type string, (int|integer) given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::create\(\) must be of the type string, (int|integer) given/' :
+                '/^Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::create\(\): Argument #1 .+? must be of type string, int given/'
         );
 
         $this->Menu->create(123);
@@ -865,7 +867,9 @@ class MenuHelperTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 .+? must (be an instance of|implement interface) Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 1 .+? must (be an instance of|implement interface) Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/' :
+                '/^Icings\\\\Menu\\\\Matcher\\\\Matcher::addVoter\(\): Argument #1 .+? must be of type Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/'
         );
 
         $menu = $this
@@ -1046,7 +1050,9 @@ class MenuHelperTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\) must (be an instance of|implement interface) Knp\\\\Menu\\\\ItemInterface, (int|integer) given/'
+            PHP_VERSION < 8 ?
+                '/^Argument #?1 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\) must (be an instance of|implement interface) Knp\\\\Menu\\\\ItemInterface, (int|integer) given/' :
+                '/^Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\): Argument #1 \(\$item\) must be of type Knp\\\\Menu\\\\ItemInterface, int given/'
         );
 
         $this->Menu->extractPath(123);
@@ -1102,7 +1108,9 @@ class MenuHelperTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 2 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\) must be of the type array, (int|integer) given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 2 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\) must be of the type array, (int|integer) given/' :
+                '/^Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::extractPath\(\): Argument #2 .+? must be of type array, int given/'
         );
 
         $this->Menu->extractPath($this->Menu->create('menu'), 123);
@@ -1560,7 +1568,9 @@ class MenuHelperTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 .+? must (be an instance of|implement interface) Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 1 .+? must (be an instance of|implement interface) Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/' :
+                '/^Icings\\\\Menu\\\\Matcher\\\\Matcher::addVoter\(\): Argument #1 .+? must be of type Knp\\\\Menu\\\\Matcher\\\\Voter\\\\VoterInterface, string given/'
         );
 
         $menu = $this
@@ -1646,7 +1656,9 @@ class MenuHelperTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 2 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::getCurrentItem\(\) must be of the type array, (int|integer) given/'
+            PHP_VERSION < 8 ?
+                '/^Argument 2 passed to Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::getCurrentItem\(\) must be of the type array, (int|integer) given/' :
+                '/^Icings\\\\Menu\\\\View\\\\Helper\\\\MenuHelper::getCurrentItem\(\): Argument #2 .+? must be of type array, int given/'
         );
 
         $this->Menu->getCurrentItem($this->Menu->create('menu'), 123);
