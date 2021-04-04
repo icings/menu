@@ -2,5 +2,6 @@
 /composer.lock
 /phpunit.xml
 /phpcs.xml
+/psalm.xml
 /tests/TestApp/tmp
 /vendor
