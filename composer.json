@@ -28,9 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Icings\\Menu\\Test\\": "tests",
-            "Icings\\Menu\\Test\\TestApp\\": "tests/TestApp/src",
-            "Knp\\Menu\\Tests\\": "vendor/knplabs/knp-menu/tests/Knp/Menu/Tests"
+            "Icings\\Menu\\Test\\": "tests"
         }
     },
     "scripts": {
