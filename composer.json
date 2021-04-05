@@ -28,22 +28,24 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Icings\\Menu\\Test\\": "tests",
-            "Icings\\Menu\\Test\\TestApp\\": "tests/TestApp/src",
-            "Knp\\Menu\\Tests\\": "vendor/knplabs/knp-menu/tests/Knp/Menu/Tests"
+            "Icings\\Menu\\Test\\": "tests"
         }
     },
     "scripts": {
         "check": [
-            "@cs",
-            "@stan-src",
-            "@stan-tests",
+            "@cs-check -- -p",
             "@test"
         ],
-        "coverage": "phpunit --coverage-clover=./clover.xml",
-        "cs": "phpcs -p ./src ./tests",
-        "stan-src": "phpstan analyse -l 7 -c ./phpstan.src.neon ./src",
-        "stan-tests": "phpstan analyse -l 7 -c ./phpstan.tests.neon ./tests",
-        "test": "phpunit"
+        "cs-check": "phpcs --parallel=16 ./src ./tests",
+        "cs-fix": "phpcbf --parallel=16 -p ./src ./tests",
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-clover=coverage.xml",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev \"phpstan/phpstan-shim:^0.11.0\" && mv composer.backup composer.json",
+        "stan": [
+            "@phpstan-src",
+            "@phpstan-tests"
+        ],
+        "phpstan-src": "php ./vendor/phpstan/phpstan-shim/phpstan.phar analyse -l 7 -c ./phpstan.src.neon ./src",
+        "phpstan-tests": "php ./vendor/phpstan/phpstan-shim/phpstan.phar analyse -l 7 -c ./phpstan.tests.neon ./tests"
     }
 }
