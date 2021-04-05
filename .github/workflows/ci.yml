@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '*'
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
+        cakephp-version: ['3.x']
+        coverage: [none]
+        include:
+          - php-version: '7.2'
+            cakephp-version: '3.7'
+            coverage: none
+
+          - php-version: '7.2'
+            cakephp-version: '3.8'
+            coverage: none
+
+          - php-version: '7.4'
+            cakephp-version: '3.x'
+            coverage: pcov
+
+    name: |
+      ${{
+        fromJSON(format('["PHP {0} - CakePHP {1}", "Code Coverage"]', matrix.php-version, matrix.cakephp-version))
+        [ matrix.coverage != 'none' ]
+      }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, intl
+          coverage: ${{ matrix.coverage }}
+
+      - name: Setup problem matchers for PHPUnit
+        if: matrix.coverage == 'none'
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Composer install
+        run: |
+          if [[ ${{ matrix.cakephp-version }} == '3.x' ]]; then
+            composer require --no-update cakephp/cakephp:${{ matrix.cakephp-version }}
+          else
+            composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}.0
+          fi
+          if [[ ${{ matrix.coverage }} != 'none' ]]; then
+            composer require --no-update --dev pcov/clobber
+          fi
+          composer install --optimize-autoloader
+
+      - name: Run PHPUnit
+        run: |
+          if [[ ${{ matrix.coverage }} != 'none' ]]; then
+            vendor/bin/pcov clobber; composer test-coverage
+          else
+            composer test
+          fi
+
+      - name: Code Coverage Report
+        if: success() && matrix.coverage != 'none'
+        uses: codecov/codecov-action@v1
+
+  cs-stan:
+    name: Coding Standards & Static Analysis
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, intl
+          coverage: none
+          tools: cs2pr
+
+      - name: Composer Install
+        run: composer stan-setup
+
+      - name: Run phpcs
+        run: composer cs-check -- --parallel=1 --report=checkstyle | cs2pr
+
+      - name: Run phpstan (src)
+        run: composer phpstan-src
+
+      - name: Run phpstan (tests)
+        run: composer phpstan-tests
