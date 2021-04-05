@@ -17,20 +17,28 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['7.2', '7.3', '7.4']
-        cakephp-version: ['4.0.0', '4.1.0', '4.2.0']
+        cakephp-version: ['4.x']
         coverage: [none]
         include:
-          - php-version: '8.0'
-            cakephp-version: '4.2.0'
+          - php-version: '7.4'
+            cakephp-version: '4.0'
             coverage: none
 
           - php-version: '7.4'
-            cakephp-version: '4.2.0'
+            cakephp-version: '4.1'
+            coverage: none
+
+          - php-version: '8.0'
+            cakephp-version: '4.x'
+            coverage: none
+
+          - php-version: '7.4'
+            cakephp-version: '4.2'
             coverage: pcov
 
     name: |
       ${{
-        fromJSON(format('["{0} - CakePHP {1}", "Code Coverage"]', matrix.php-version, matrix.cakephp-version))
+        fromJSON(format('["PHP {0} - CakePHP {1}", "Code Coverage"]', matrix.php-version, matrix.cakephp-version))
         [ matrix.coverage != 'none' ]
       }}
 
@@ -50,7 +58,11 @@ jobs:
 
       - name: Composer install
         run: |
-          composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}
+          if [[ ${{ matrix.cakephp-version }} == '4.x' ]]; then
+            composer require --no-update cakephp/cakephp:${{ matrix.cakephp-version }}
+          else
+            composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}.0
+          fi
           composer install --optimize-autoloader
 
       - name: Run PHPUnit
