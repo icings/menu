@@ -25,3 +25,8 @@ parameters:
         - '#Parameter \#2 \$options of method Icings\\Menu\\View\\Helper\\MenuHelper::extractPath\(\) expects array, int given#'
         - '#Parameter \#1 \$menu of method Icings\\Menu\\View\\Helper\\MenuHelper::getCurrentItem\(\) expects array\|Knp\\Menu\\ItemInterface\|string\|null, int given#'
         - '#Parameter \#2 \$options of method Icings\\Menu\\View\\Helper\\MenuHelper::getCurrentItem\(\) expects array, int given#'
+        - '#Cannot call method addChild\(\) on Knp\\Menu\\ItemInterface\|string#'
+        - '#Cannot call method getLabel\(\) on Knp\\Menu\\ItemInterface\|string#'
+        - '#Offset ''Child'' does not exist on Knp\\Menu\\ItemInterface\|string#'
+        - '#Offset ''Nested'' does not exist on Knp\\Menu\\ItemInterface\|string#'
+        - '#Parameter \#1 \$item of method Icings\\Menu\\View\\Helper\\MenuHelper::extractPath\(\) expects Knp\\Menu\\ItemInterface, Knp\\Menu\\ItemInterface\|string\|null given#'
