@@ -19,7 +19,7 @@ parameters:
         - '#Parameter \#1 \$name of method Icings\\Menu\\View\\Helper\\MenuHelper::create\(\) expects string, int given#'
         - '#Parameter \#1 \$menu of method Icings\\Menu\\View\\Helper\\MenuHelper::render\(\) expects array\|Knp\\Menu\\ItemInterface\|string\|null, int given#'
         - '#PHPDoc tag @var for variable \$stub has invalid type Icings\\Menu\\TestSuite\\RequestFactoryTrait#'
-        - '#Parameter \#1 \$input of function array_walk expects array, array\<int, string\>\|false given#'
+        - '#Parameter \#1 \$input of function array_walk expects array\|object, array\<int, string\>\|false given#'
         - '#Parameter \#1 \$input of function array_filter expects array, array\<int, string\>\|false given#'
         - '#Parameter \#1 \$item of method Icings\\Menu\\View\\Helper\\MenuHelper::extractPath\(\) expects Knp\\Menu\\ItemInterface, int given#'
         - '#Parameter \#2 \$options of method Icings\\Menu\\View\\Helper\\MenuHelper::extractPath\(\) expects array, int given#'
