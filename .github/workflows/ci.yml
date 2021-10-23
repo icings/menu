@@ -37,7 +37,7 @@ jobs:
             coverage: none
 
           - php-version: '7.4'
-            cakephp-version: '4.2'
+            cakephp-version: '4.x'
             coverage: pcov
 
     name: |
