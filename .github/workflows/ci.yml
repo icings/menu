@@ -28,6 +28,10 @@ jobs:
             cakephp-version: '4.1'
             coverage: none
 
+          - php-version: '7.4'
+            cakephp-version: '4.2'
+            coverage: none
+
           - php-version: '8.0'
             cakephp-version: '4.x'
             coverage: none
