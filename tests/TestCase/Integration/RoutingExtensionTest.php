@@ -32,10 +32,11 @@ class RoutingExtensionTest extends TestCase
         parent::setUp();
         $this->RoutingExtension = new RoutingExtension();
 
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setRouteClass(DashedRoute::class);
-            $routes->connect('/:controller/:action');
-        });
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->setRouteClass(DashedRoute::class);
+                $routes->connect('/{controller}/{action}');
+            });
     }
 
     public function tearDown(): void
@@ -74,18 +75,19 @@ class RoutingExtensionTest extends TestCase
 
     public function testBuildOptionsDefineUriAsNamedRoute(): void
     {
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->connect(
-                '/named/route',
-                [
-                    'controller' => 'Named',
-                    'action' => 'route',
-                ],
-                [
-                    '_name' => 'RouteName',
-                ]
-            );
-        });
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->connect(
+                    '/named/route',
+                    [
+                        'controller' => 'Named',
+                        'action' => 'route',
+                    ],
+                    [
+                        '_name' => 'RouteName',
+                    ]
+                );
+            });
 
         $originalOptions = [
             'uri' => [
@@ -170,18 +172,19 @@ class RoutingExtensionTest extends TestCase
 
     public function testBuildOptionsDefineRoutesAsNamedRoute(): void
     {
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->connect(
-                '/named/route',
-                [
-                    'controller' => 'Named',
-                    'action' => 'route',
-                ],
-                [
-                    '_name' => 'RouteName',
-                ]
-            );
-        });
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->connect(
+                    '/named/route',
+                    [
+                        'controller' => 'Named',
+                        'action' => 'route',
+                    ],
+                    [
+                        '_name' => 'RouteName',
+                    ]
+                );
+            });
 
         $originalOptions = [
             'uri' => [
@@ -232,10 +235,11 @@ class RoutingExtensionTest extends TestCase
     public function testBuildOptionsDefineNonConnectedRoutes(): void
     {
         Router::reload();
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setRouteClass(DashedRoute::class);
-            $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
-        });
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->setRouteClass(DashedRoute::class);
+                $routes->connect('/members/about', ['controller' => 'Members', 'action' => 'about']);
+            });
 
         $originalOptions = [
             'uri' => [

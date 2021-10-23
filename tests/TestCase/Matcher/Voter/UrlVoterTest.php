@@ -28,11 +28,12 @@ class UrlVoterTest extends TestCase
     {
         parent::setUp();
 
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setExtensions(['json']);
-            $routes->setRouteClass(DashedRoute::class);
-            $routes->connect('/:controller/:action');
-        });
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->setExtensions(['json']);
+                $routes->setRouteClass(DashedRoute::class);
+                $routes->connect('/{controller}/{action}');
+            });
     }
 
     public function testBaseUrlCompatibility(): void
