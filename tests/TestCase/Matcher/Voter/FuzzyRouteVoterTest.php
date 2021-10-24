@@ -28,52 +28,53 @@ class FuzzyRouteVoterTest extends TestCase
     {
         parent::setUp();
 
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setExtensions(['json']);
-            $routes->setRouteClass(DashedRoute::class);
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->setExtensions(['json']);
+                $routes->setRouteClass(DashedRoute::class);
 
-            $routes->connect('/named', [
-                'controller' => 'Named',
-                'action' => 'index',
-            ], [
-                '_name' => 'named',
-            ]);
+                $routes->connect('/named', [
+                    'controller' => 'Named',
+                    'action' => 'index',
+                ], [
+                    '_name' => 'named',
+                ]);
 
-            $routes->connect('/named/:element', [
-                'controller' => 'Named',
-                'action' => 'index',
-            ], [
-                'pass' => ['element'],
-                '_name' => 'namedWithElement',
-            ]);
+                $routes->connect('/named/{element}', [
+                    'controller' => 'Named',
+                    'action' => 'index',
+                ], [
+                    'pass' => ['element'],
+                    '_name' => 'namedWithElement',
+                ]);
 
-            $routes->connect('/:controller');
-            $routes->connect('/:controller/:action');
-            $routes->connect('/:controller/:action/:id', [], [
-                'id' => Router::ID,
-                'pass' => ['id'],
-            ]);
-            $routes->connect('/:controller/:action/:id/:slug', [], [
-                'id' => Router::ID,
-                'pass' => ['id', 'slug'],
-            ]);
+                $routes->connect('/{controller}');
+                $routes->connect('/{controller}/{action}');
+                $routes->connect('/{controller}/{action}/{id}', [], [
+                    'id' => Router::ID,
+                    'pass' => ['id'],
+                ]);
+                $routes->connect('/{controller}/{action}/{id}/{slug}', [], [
+                    'id' => Router::ID,
+                    'pass' => ['id', 'slug'],
+                ]);
 
-            $routes->connect('/special', [
-                'controller' => 'Special',
-                'action' => 'index',
-                'specialKey' => [
-                    'foo', 123, 'a' => 'a', 'b' => 'b',
-                ],
-            ]);
+                $routes->connect('/special', [
+                    'controller' => 'Special',
+                    'action' => 'index',
+                    'specialKey' => [
+                        'foo', 123, 'a' => 'a', 'b' => 'b',
+                    ],
+                ]);
 
-            $routes->prefix('PrefixName', function (RouteBuilder $routes) {
-                $routes->connect('/:controller/:action');
+                $routes->prefix('PrefixName', function (RouteBuilder $routes) {
+                    $routes->connect('/{controller}/{action}');
+                });
+
+                $routes->plugin('PluginName', function (RouteBuilder $routes) {
+                    $routes->connect('/{controller}/{action}');
+                });
             });
-
-            $routes->plugin('PluginName', function (RouteBuilder $routes) {
-                $routes->connect('/:controller/:action');
-            });
-        });
     }
 
     /**

@@ -24,11 +24,12 @@ class RequestFactoryTraitTest extends TestCase
     {
         parent::setUp();
 
-        Router::scope('/', function (RouteBuilder $routes) {
-            $routes->setRouteClass(DashedRoute::class);
+        Router::createRouteBuilder('/')
+            ->scope('/', function (RouteBuilder $routes) {
+                $routes->setRouteClass(DashedRoute::class);
 
-            $routes->connect('/:controller/:action');
-        });
+                $routes->connect('/{controller}/{action}');
+            });
     }
 
     public function testCreateServerRequest(): void
