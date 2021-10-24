@@ -54,9 +54,7 @@ class MenuHelper extends Helper
     public const MATCH_URL_WITH_QUERY_STRING = 'matchUrlWithQueryString';
 
     /**
-     * Default configuration.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected $_defaultConfig = [
         'matching' => null,
