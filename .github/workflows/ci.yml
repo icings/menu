@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.2', '7.3', '7.4']
+        php-version: ['7.2', '7.3', '7.4', '8.0', '8.1']
         cakephp-version: ['4.x']
         coverage: [none]
         include:
@@ -30,10 +30,6 @@ jobs:
 
           - php-version: '7.4'
             cakephp-version: '4.2'
-            coverage: none
-
-          - php-version: '8.0'
-            cakephp-version: '4.x'
             coverage: none
 
           - php-version: '7.4'
