@@ -110,7 +110,8 @@ class FuzzyRouteVoter implements VoterInterface
             $params['isAjax'],
             $params['_Token'],
             $params['_csrfToken'],
-            $params['_matchedRoute']
+            $params['_matchedRoute'],
+            $params['_route']
         );
         $params = array_merge($params, $pass);
         $params += $params['?'];
