@@ -1,6 +1,6 @@
 parameters:
     checkMissingIterableValueType: false
-    excludes_analyse:
+    excludePaths:
         - tests/TestCase/KnpMenuTestCase.php
         - tests/TestCase/Renderer/KnpAbstractRendererTest.php
     ignoreErrors:
