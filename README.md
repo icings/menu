@@ -5,7 +5,7 @@
 [![Latest Version][ico-version]][link-version]
 [![Software License][ico-license]][link-license]
 
-[ico-build]: https://img.shields.io/github/workflow/status/icings/menu/CI/master?style=flat-square
+[ico-build]: https://img.shields.io/github/actions/workflow/status/icings/menu/ci.yml?branch=master&style=flat-square
 [ico-coverage]: https://img.shields.io/codecov/c/github/icings/menu.svg?style=flat-square
 [ico-version]: https://img.shields.io/packagist/v/icings/menu.svg?style=flat-square&label=latest
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
