@@ -127,7 +127,7 @@ class UrlVoter implements VoterInterface
      */
     protected function _stripQueryString(string $url): string
     {
-        if (strpos($url, '?') !== false) {
+        if (str_contains($url, '?')) {
             return explode('?', $url, 2)[0];
         }
 

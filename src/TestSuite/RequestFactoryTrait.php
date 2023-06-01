@@ -56,7 +56,7 @@ trait RequestFactoryTrait
     {
         $arguments = [];
         $string = '';
-        if (strpos($uri, '?') !== false) {
+        if (str_contains($uri, '?')) {
             $string = explode('?', $uri, 2)[1];
             parse_str($string, $arguments);
             $string = '?' . $string;

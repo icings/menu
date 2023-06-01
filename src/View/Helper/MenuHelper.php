@@ -56,7 +56,7 @@ class MenuHelper extends Helper
     /**
      * @inheritDoc
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'matching' => null,
         'matcher' => null,
         'voters' => null,
@@ -68,21 +68,21 @@ class MenuHelper extends Helper
      *
      * @var ItemInterface[]
      */
-    protected $_menus = [];
+    protected array $_menus = [];
 
     /**
      * Storage for menu configurations assigned to menus via `create()`.
      *
      * @var \SplObjectStorage
      */
-    protected $_menuConfigurations;
+    protected \SplObjectStorage $_menuConfigurations;
 
     /**
      * The factory to use for creating menu items.
      *
      * @var MenuFactoryInterface
      */
-    protected $_factory;
+    protected MenuFactoryInterface $_factory;
 
     /**
      * Sets the menu factory to use for creating menu items.
@@ -90,7 +90,7 @@ class MenuHelper extends Helper
      * @param MenuFactoryInterface $factory The factory to assign.
      * @return $this
      */
-    public function setMenuFactory(MenuFactoryInterface $factory)
+    public function setMenuFactory(MenuFactoryInterface $factory): static
     {
         $this->_factory = $factory;
 
@@ -286,7 +286,7 @@ class MenuHelper extends Helper
 
         foreach ($path as $key => $item) {
             $clone = clone $item;
-            $clone->setParent(null);
+            $clone->setParent();
             $clone->setChildren([]);
             $clone->setExtra('original', $item);
 
@@ -662,26 +662,22 @@ class MenuHelper extends Helper
      * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
      *   types.
      */
-    protected function _createDefaultVoters(string $type)
+    protected function _createDefaultVoters(string $type): array|bool
     {
-        switch ($type) {
-            case static::MATCH_FUZZY_ROUTE:
-                return [
-                    new FuzzyRouteVoter($this->getView()->getRequest()),
-                ];
-            case static::MATCH_URL:
-                return [
-                    new UrlVoter($this->getView()->getRequest()),
-                ];
-            case static::MATCH_URL_WITH_QUERY_STRING:
-                return [
-                    new UrlVoter($this->getView()->getRequest(), [
-                        'ignoreQueryString' => false,
-                    ]),
-                ];
-        }
-
-        return false;
+        return match ($type) {
+            static::MATCH_FUZZY_ROUTE => [
+                new FuzzyRouteVoter($this->getView()->getRequest()),
+            ],
+            static::MATCH_URL => [
+                new UrlVoter($this->getView()->getRequest()),
+            ],
+            static::MATCH_URL_WITH_QUERY_STRING => [
+                new UrlVoter($this->getView()->getRequest(), [
+                    'ignoreQueryString' => false,
+                ]),
+            ],
+            default => false,
+        };
     }
 
     /**

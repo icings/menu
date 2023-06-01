@@ -38,7 +38,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'templates' => [
             'menu' => '<ul{{attrs}}>{{items}}</ul>',
             'nest' => '<ul{{attrs}}>{{items}}</ul>',

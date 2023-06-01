@@ -92,11 +92,7 @@ class FuzzyRouteVoter implements VoterInterface
             $params['_ext'] = null;
         }
 
-        if (isset($params['pass'])) {
-            $pass = $params['pass'];
-        } else {
-            $pass = [];
-        }
+        $pass = $params['pass'] ?? [];
 
         unset(
             $params['pass'],
