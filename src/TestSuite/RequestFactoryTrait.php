@@ -35,6 +35,7 @@ trait RequestFactoryTrait
                 'HTTP_HOST' => 'localhost',
                 'REQUEST_URI' => $requestUri,
                 'QUERY_STRING' => $query['string'],
+                'DOCUMENT_ROOT' => '/',
             ],
             $query['arguments']
         );
@@ -52,11 +53,11 @@ trait RequestFactoryTrait
      * @param string $uri The URI from which to extract the query part.
      * @return array
      */
-    protected static function _extractQuery(string $uri): array
+    protected static function _extractQuery(?string $uri): array
     {
         $arguments = [];
         $string = '';
-        if (str_contains($uri, '?')) {
+        if (str_contains($uri ?? '', '?')) {
             $string = explode('?', $uri, 2)[1];
             parse_str($string, $arguments);
             $string = '?' . $string;
