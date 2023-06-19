@@ -15,6 +15,7 @@ use Cake\View\StringTemplateTrait;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\RendererInterface;
+use function Cake\Core\h;
 
 /**
  * A renderer that renders menus using string templates.

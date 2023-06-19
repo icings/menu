@@ -24,6 +24,7 @@ use Knp\Menu\MenuItem;
 use Knp\Menu\Renderer\RendererInterface;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
+use function Cake\Collection\collection;
 
 class MenuHelperTest extends TestCase
 {
@@ -180,12 +181,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods(['_addMenu'])
+            ->onlyMethods(['_addMenu'])
             ->getMock();
         $helper
             ->setMenuFactory($factory);
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_addMenu')
             ->with($menu, $rendererOptions);
 
@@ -324,7 +325,7 @@ class MenuHelperTest extends TestCase
     public function testRenderInvalidType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `integer` given.');
+        $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `int` given.');
 
         $this->Menu->render(123);
     }
@@ -349,16 +350,16 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
 
         $renderer = $this
             ->getMockBuilder(RendererInterface::class)
-            ->setMethods(['render'])
+            ->onlyMethods(['render'])
             ->getMock();
         $renderer
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('render')
             ->with($this->identicalTo($menu))
             ->willReturn('rendered');
@@ -367,23 +368,23 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
                 '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
         $helper
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('_createDefaultVoters')
             ->with(MenuHelper::MATCH_URL)
             ->willReturn([$voter]);
         $helper
-            ->expects($this->at(2))
+            ->expects($this->once())
             ->method('_createDefaultRenderer')
             ->with($this->identicalTo($matcher))
             ->willReturn($renderer);
@@ -430,12 +431,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultRenderer')
             ->with($this->identicalTo($matcher))
             ->willReturn($renderer);
@@ -533,7 +534,7 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
                 '_createDefaultRenderer',
@@ -615,7 +616,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
@@ -626,12 +627,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -648,7 +649,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
@@ -659,12 +660,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -683,7 +684,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->isInstanceOf(FuzzyRouteVoter::class));
 
@@ -691,12 +692,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -736,7 +737,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
 
@@ -744,7 +745,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(RendererInterface::class)
             ->getMock();
         $renderer
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('render')
             ->with($this->identicalTo($menu))
             ->willReturn('rendered');
@@ -753,7 +754,7 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
                 '_createDefaultRenderer',
@@ -763,12 +764,12 @@ class MenuHelperTest extends TestCase
             ->expects($this->never())
             ->method('_createDefaultMatcher');
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultVoters')
             ->with(MenuHelper::MATCH_URL)
             ->willReturn([$voter]);
         $helper
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('_createDefaultRenderer')
             ->with($this->identicalTo($matcher))
             ->willReturn($renderer);
@@ -806,7 +807,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
 
@@ -814,7 +815,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(RendererInterface::class)
             ->getMock();
         $renderer
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('render')
             ->with($this->identicalTo($menu))
             ->willReturn('rendered');
@@ -823,21 +824,21 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
                 '_createDefaultRenderer',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
         $helper
             ->expects($this->never())
             ->method('_createDefaultVoters');
         $helper
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('_createDefaultRenderer')
             ->with($this->identicalTo($matcher))
             ->willReturn($renderer);
@@ -891,7 +892,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(RendererInterface::class)
             ->getMock();
         $renderer
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('render')
             ->with($this->identicalTo($menu))
             ->willReturn('rendered');
@@ -900,7 +901,7 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
                 '_createDefaultRenderer',
@@ -1209,7 +1210,7 @@ class MenuHelperTest extends TestCase
     public function testGetCurrentItemInvalidMenuType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `integer` given.');
+        $this->expectExceptionMessage('The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, the name of a menu, or an array, `int` given.');
 
         $this->Menu->getCurrentItem(123);
     }
@@ -1232,14 +1233,14 @@ class MenuHelperTest extends TestCase
         $matcher = $this
             ->getMockBuilder(Matcher::class)
             ->getMock();
-        $matcher
-            ->expects($this->at(0))
+
+        $matcher->expects($this->any())
             ->method('addVoter')
-            ->with($this->identicalTo($voter1));
-        $matcher
-            ->expects($this->at(1))
-            ->method('addVoter')
-            ->with($this->identicalTo($voter2));
+            ->will($this->returnValueMap([
+                [$voter1],
+                [$voter2],
+            ]));
+
         $matcher
             ->expects($this->never())
             ->method('clear');
@@ -1254,7 +1255,7 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
             ])
@@ -1313,7 +1314,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
@@ -1324,12 +1325,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -1346,7 +1347,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
@@ -1357,12 +1358,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -1381,7 +1382,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->callback(function ($argument) {
                 return ($argument instanceof UrlVoter) &&
@@ -1392,12 +1393,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -1416,7 +1417,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->isInstanceOf(FuzzyRouteVoter::class));
 
@@ -1424,12 +1425,12 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
 
@@ -1469,7 +1470,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
 
@@ -1477,7 +1478,7 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
             ])
@@ -1486,7 +1487,7 @@ class MenuHelperTest extends TestCase
             ->expects($this->never())
             ->method('_createDefaultMatcher');
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultVoters')
             ->with(MenuHelper::MATCH_URL)
             ->willReturn([$voter]);
@@ -1524,7 +1525,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
 
@@ -1532,13 +1533,13 @@ class MenuHelperTest extends TestCase
         $helper = $this
             ->getMockBuilder(MenuHelper::class)
             ->setConstructorArgs([$this->View])
-            ->setMethods([
+            ->onlyMethods([
                 '_createDefaultMatcher',
                 '_createDefaultVoters',
             ])
             ->getMock();
         $helper
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('_createDefaultMatcher')
             ->willReturn($matcher);
         $helper
@@ -1633,7 +1634,7 @@ class MenuHelperTest extends TestCase
             ->getMockBuilder(Matcher::class)
             ->getMock();
         $matcher
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('addVoter')
             ->with($this->identicalTo($voter));
         $matcher

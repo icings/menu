@@ -55,7 +55,7 @@ $config = [
     ],
 ];
 Configure::write($config);
-
+Configure::write('debug', true);
 date_default_timezone_set('UTC');
 mb_internal_encoding(Configure::read('App.encoding'));
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));

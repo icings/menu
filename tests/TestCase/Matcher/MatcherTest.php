@@ -59,11 +59,11 @@ class MatcherTest extends TestCase
             });
 
         $item
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('isCurrent')
             ->will($this->returnValue(null));
         $item
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('getExtra')
             ->with('voters')
             ->willReturn([$itemVoter]);

@@ -55,7 +55,7 @@ class UrlVoterTest extends TestCase
         $voter = $this
             ->getMockBuilder(UrlVoter::class)
             ->setConstructorArgs([$request])
-            ->setMethods(['config'])
+            ->addMethods(['config'])
             ->getMock();
         $voter
             ->expects($this->never())
@@ -69,10 +69,10 @@ class UrlVoterTest extends TestCase
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])
-            ->setMethods(['getExtra'])
+            ->onlyMethods(['getExtra'])
             ->getMock();
         $item
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('getExtra')
             ->with('routes')
             ->willReturn(null);
@@ -323,23 +323,19 @@ class UrlVoterTest extends TestCase
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])
-            ->setMethods(['getExtra'])
+            ->onlyMethods(['getExtra'])
             ->getMock();
 
         if (empty($routes)) {
             $routes = [$uri];
         }
-        $item
-            ->expects($this->at(0))
-            ->method('getExtra')
-            ->with('routes')
-            ->willReturn($routes);
 
-        $item
-            ->expects($this->at(1))
+        $item->expects($this->exactly(2))
             ->method('getExtra')
-            ->with('ignoreQueryString')
-            ->willReturn($itemIgnore);
+            ->will($this->returnValueMap([
+                ['routes', null, $routes],
+                ['ignoreQueryString', null, $itemIgnore],
+            ]));
 
         $this->assertEquals($expected, $voter->matchItem($item));
     }
