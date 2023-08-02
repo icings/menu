@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Icings\Menu\Plugin as MenuPlugin;
+use Icings\Menu\MenuPlugin;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);

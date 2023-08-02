@@ -55,11 +55,11 @@ class UrlVoterTest extends TestCase
         $voter = $this
             ->getMockBuilder(UrlVoter::class)
             ->setConstructorArgs([$request])
-            ->setMethods(['config'])
+            ->onlyMethods(['getConfig'])
             ->getMock();
         $voter
             ->expects($this->never())
-            ->method('config');
+            ->method('getConfig');
 
         $factory = $this
             ->getMockBuilder(FactoryInterface::class)
@@ -69,13 +69,19 @@ class UrlVoterTest extends TestCase
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])
-            ->setMethods(['getExtra'])
+            ->onlyMethods(['getExtra'])
             ->getMock();
         $item
-            ->expects($this->at(0))
+            ->expects($this->atLeastOnce())
             ->method('getExtra')
-            ->with('routes')
-            ->willReturn(null);
+            ->willReturnCallback(function (string $name, $default = null) {
+                if ($name !== 'routes') {
+                    $default = get_debug_type($default);
+                    $this->fail("Knp\Menu\MenuItem::getExtra('$name', $default) was not expected to be called.");
+                }
+
+                return null;
+            });
 
         $this->assertNull($voter->matchItem($item));
     }
@@ -83,7 +89,7 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function matchingDataProvider(): array
+    public static function matchingDataProvider(): array
     {
         return [
             // ---------------------------------------------------------------------------------------------------------
@@ -267,9 +273,9 @@ class UrlVoterTest extends TestCase
     /**
      * @return array
      */
-    public function expandedMatchingDataProvider(): array
+    public static function expandedMatchingDataProvider(): array
     {
-        $sets = $this->matchingDataProvider();
+        $sets = static::matchingDataProvider();
         $expanded = [];
         foreach ($sets as $name => $set) {
             if (is_bool($set[3])) {
@@ -304,11 +310,17 @@ class UrlVoterTest extends TestCase
      * @param string $uri The menu items main URI.
      * @param array[] $routes An array of URL arrays.
      * @param bool $voterIgnore
-     * @param bool $itemIgnore
+     * @param bool|null $itemIgnore
      * @param bool $expected The expected assertion result.
      */
-    public function testMatching($requestUri, $uri, $routes, $voterIgnore, $itemIgnore, $expected): void
-    {
+    public function testMatching(
+        string $requestUri,
+        string $uri,
+        array $routes,
+        bool $voterIgnore,
+        ?bool $itemIgnore,
+        bool $expected
+    ): void {
         $request = $this->createRequest($requestUri);
 
         $voter = new UrlVoter($request, [
@@ -323,23 +335,20 @@ class UrlVoterTest extends TestCase
         $item = $this
             ->getMockBuilder(MenuItem::class)
             ->setConstructorArgs(['item', $factory])
-            ->setMethods(['getExtra'])
+            ->onlyMethods(['getExtra'])
             ->getMock();
 
         if (empty($routes)) {
             $routes = [$uri];
         }
-        $item
-            ->expects($this->at(0))
-            ->method('getExtra')
-            ->with('routes')
-            ->willReturn($routes);
 
         $item
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('getExtra')
-            ->with('ignoreQueryString')
-            ->willReturn($itemIgnore);
+            ->willReturnMap([
+                ['routes', null, $routes],
+                ['ignoreQueryString', null, $itemIgnore],
+            ]);
 
         $this->assertEquals($expected, $voter->matchItem($item));
     }

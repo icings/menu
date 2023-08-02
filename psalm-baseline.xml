@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.7.0@d4377c0baf3ffbf0b1ec6998e8d1be2a40971005"/>
+<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
+  <file src="src/View/Helper/MenuHelper.php">
+    <NonInvariantDocblockPropertyType>
+      <code>$_defaultConfig</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
+</files>

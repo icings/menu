@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace Icings\Menu;
 
+use Knp\Menu\MenuFactory as KnpMenuFactory;
+
 /**
  * A factory implementation for creating menus (top level items).
  */
-class MenuFactory extends \Knp\Menu\MenuFactory implements MenuFactoryInterface
+class MenuFactory extends KnpMenuFactory implements MenuFactoryInterface
 {
 }

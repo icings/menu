@@ -27,7 +27,7 @@ class UrlVoter implements VoterInterface
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'ignoreQueryString' => true,
     ];
 
@@ -36,14 +36,14 @@ class UrlVoter implements VoterInterface
      *
      * @var string
      */
-    protected $_url;
+    protected string $_url;
 
     /**
      * The request target URL to match against without query string.
      *
      * @var string
      */
-    protected $_urlWithoutQuery;
+    protected string $_urlWithoutQuery;
 
     /**
      * Returns the request target URL to match against.
@@ -127,7 +127,7 @@ class UrlVoter implements VoterInterface
      */
     protected function _stripQueryString(string $url): string
     {
-        if (strpos($url, '?') !== false) {
+        if (str_contains($url, '?')) {
             return explode('?', $url, 2)[0];
         }
 

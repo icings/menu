@@ -59,11 +59,11 @@ class MatcherTest extends TestCase
             });
 
         $item
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('isCurrent')
             ->will($this->returnValue(null));
         $item
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('getExtra')
             ->with('voters')
             ->willReturn([$itemVoter]);
@@ -174,7 +174,7 @@ class MatcherTest extends TestCase
     //region Adapted KnpMenu vendor tests
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function currentFlagDataProvider(): array
+    public static function currentFlagDataProvider(): array
     {
         return [
             [true, true],
@@ -221,7 +221,7 @@ class MatcherTest extends TestCase
         $this->assertFalse($matcher->isCurrent($item));
     }
 
-    public function matchingResultDataProvider(): array
+    public static function matchingResultDataProvider(): array
     {
         return [
             [true],

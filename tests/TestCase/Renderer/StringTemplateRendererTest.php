@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Icings\Menu\Test\TestCase\Renderer;
 
+use Error;
 use Icings\Menu\Integration\PerItemVotersExtension;
 use Icings\Menu\Integration\RoutingExtension;
 use Icings\Menu\Integration\TemplaterExtension;
@@ -20,8 +21,9 @@ use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Renderer\RendererInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use TypeError;
 
-class StringTemplateRendererTest extends KnpAbstractRendererTest
+class StringTemplateRendererTest extends KnpAbstractRendererTestCase
 {
     public function assertTrimmedHtml(string $expected, string $actual, string $message = ''): void
     {
@@ -45,7 +47,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             $this->markTestSkipped();
         }
 
-        $this->expectException(\Error::class);
+        $this->expectException(Error::class);
         $this->expectExceptionMessageMatches(
             '/^(Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, none given|Too few arguments .+? at least 1 expected)/'
         );
@@ -59,7 +61,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             $this->markTestSkipped();
         }
 
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         $this->expectExceptionMessageMatches(
             PHP_VERSION < 8 ?
                 '/^Argument 1 .+? must implement interface Knp\\\\Menu\\\\Matcher\\\\MatcherInterface, string given/' :
@@ -75,7 +77,7 @@ class StringTemplateRendererTest extends KnpAbstractRendererTest
             $this->markTestSkipped();
         }
 
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         $this->expectExceptionMessageMatches(
             PHP_VERSION < 8 ?
                 '/^Argument 2 .+? must be of the type array, string given/' :

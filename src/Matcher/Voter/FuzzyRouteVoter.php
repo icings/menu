@@ -12,6 +12,7 @@ namespace Icings\Menu\Matcher\Voter;
 use Cake\Http\ServerRequest;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
+use const SORT_STRING;
 
 /**
  * A voter that compares URL arrays against routing parameters in a fuzzy manner.
@@ -23,7 +24,7 @@ class FuzzyRouteVoter implements VoterInterface
      *
      * @var array
      */
-    protected $_params;
+    protected array $_params;
 
     /**
      * Returns the routing parameters to match against.
@@ -134,13 +135,13 @@ class FuzzyRouteVoter implements VoterInterface
      */
     protected function _normalizeParams(array &$params): void
     {
-        ksort($params, \SORT_STRING);
+        ksort($params, SORT_STRING);
         array_walk(
             $params,
             /**
              * @param mixed $value
              */
-            function (&$value) {
+            function (mixed &$value): void {
                 if (is_numeric($value)) {
                     $value = (string)$value;
                 }
