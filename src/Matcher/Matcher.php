@@ -11,6 +11,7 @@ namespace Icings\Menu\Matcher;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
+use SplObjectStorage;
 
 /**
  * A voter pattern matcher that supports per item voters.
@@ -23,23 +24,23 @@ class Matcher implements MatcherInterface
     /**
      * A cache that maps menu items and matching results.
      *
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
-    protected $_cache;
+    protected SplObjectStorage $_cache;
 
     /**
      * Collection of voters added `addVoter()`.
      *
-     * @var VoterInterface[]
+     * @var array<VoterInterface>
      */
-    protected $_voters = [];
+    protected array $_voters = [];
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->_cache = new \SplObjectStorage();
+        $this->_cache = new SplObjectStorage();
     }
 
     /**
@@ -112,6 +113,6 @@ class Matcher implements MatcherInterface
      */
     public function clear(): void
     {
-        $this->_cache = new \SplObjectStorage();
+        $this->_cache = new SplObjectStorage();
     }
 }

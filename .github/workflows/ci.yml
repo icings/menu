@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - cake5
   pull_request:
     branches:
       - '*'
@@ -16,30 +17,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['7.2', '7.3', '7.4', '8.0', '8.1']
-        cakephp-version: ['4.x']
-        coverage: [none]
-        include:
-          - php-version: '7.4'
-            cakephp-version: '4.0'
-            coverage: none
+        php-version: ['8.1', '8.2']
+        cakephp-version: ['latest']
 
-          - php-version: '7.4'
-            cakephp-version: '4.1'
-            coverage: none
-
-          - php-version: '7.4'
-            cakephp-version: '4.2'
-            coverage: none
-
-          - php-version: '7.4'
-            cakephp-version: '4.x'
-            coverage: pcov
+    env:
+      coverage: ${{ matrix.php-version == '8.2' && matrix.cakephp-version == 'latest' }}
 
     name: |
       ${{
-        fromJSON(format('["PHP {0} - CakePHP {1}", "Code Coverage"]', matrix.php-version, matrix.cakephp-version))
-        [ matrix.coverage != 'none' ]
+        format(
+          '{0}PHP {1} - CakePHP {2}',
+          fromJSON('["", "Coverage - "]')[matrix.php-version == '8.2' && matrix.cakephp-version == 'latest'],
+          matrix.php-version,
+          matrix.cakephp-version
+        )
       }}
 
     steps:
@@ -50,31 +41,29 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, intl
-          coverage: ${{ matrix.coverage }}
-
-      - name: Setup problem matchers for PHPUnit
-        if: matrix.coverage == 'none'
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+          coverage: pcov
 
       - name: Composer install
         run: |
-          if [[ ${{ matrix.cakephp-version }} == '4.x' ]]; then
-            composer require --no-update cakephp/cakephp:${{ matrix.cakephp-version }}
-          else
-            composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}.0
+          if [[ ${{ matrix.cakephp-version }} != 'latest' ]]; then
+            composer require --no-update cakephp/cakephp:~${{ matrix.cakephp-version }}
           fi
           composer install --optimize-autoloader
 
+      - name: Setup problem matchers for PHPUnit
+        if: matrix.php-version != '8.2' && matrix.cakephp-version != 'latest'
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
       - name: Run PHPUnit
         run: |
-          if [[ ${{ matrix.coverage }} != 'none' ]]; then
+          if [[ ${{ matrix.php-version }} == '8.2' && ${{ matrix.cakephp-version }} == 'latest' ]]; then
             composer test-coverage
           else
             composer test
           fi
 
       - name: Code Coverage Report
-        if: success() && matrix.coverage != 'none'
+        if: success() && matrix.php-version == '8.2' && matrix.cakephp-version == 'latest'
         uses: codecov/codecov-action@v3
 
   cs-stan:
@@ -87,7 +76,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           extensions: mbstring, intl
           coverage: none
           tools: cs2pr

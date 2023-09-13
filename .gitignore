@@ -1,7 +1,7 @@
-/.phpunit.result.cache
 /composer.lock
 /phpunit.xml
 /phpcs.xml
 /psalm.xml
 /tests/TestApp/tmp
+/.phpunit.cache
 /vendor

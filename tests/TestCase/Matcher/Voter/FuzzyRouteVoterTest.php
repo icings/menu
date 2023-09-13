@@ -19,6 +19,7 @@ use Icings\Menu\Matcher\Voter\FuzzyRouteVoter;
 use Icings\Menu\TestSuite\RequestFactoryTrait;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use const SORT_STRING;
 
 class FuzzyRouteVoterTest extends TestCase
 {
@@ -80,7 +81,7 @@ class FuzzyRouteVoterTest extends TestCase
     /**
      * @return array
      */
-    public function paramsDataProvider(): array
+    public static function paramsDataProvider(): array
     {
         $provider = [
             'Controller only request' => [
@@ -169,10 +170,10 @@ class FuzzyRouteVoterTest extends TestCase
         ];
 
         $expected = Hash::merge($defaults, $expected);
-        ksort($expected, \SORT_STRING);
+        ksort($expected, SORT_STRING);
 
         $actual = $voter->getParams();
-        ksort($actual, \SORT_STRING);
+        ksort($actual, SORT_STRING);
 
         $this->assertSame($expected, $actual);
     }
@@ -204,7 +205,7 @@ class FuzzyRouteVoterTest extends TestCase
     /**
      * @return array
      */
-    public function matchingDataProvider(): array
+    public static function matchingDataProvider(): array
     {
         $provider = [
             'No URL arrays set' => [

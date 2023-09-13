@@ -11,6 +11,6 @@ namespace Icings\Menu;
 
 use Cake\Core\BasePlugin;
 
-class Plugin extends BasePlugin
+class MenuPlugin extends BasePlugin
 {
 }

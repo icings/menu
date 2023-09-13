@@ -15,6 +15,7 @@ use Cake\View\StringTemplateTrait;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\RendererInterface;
+use function Cake\Core\h;
 
 /**
  * A renderer that renders menus using string templates.
@@ -31,14 +32,14 @@ class StringTemplateRenderer implements RendererInterface
      *
      * @var MatcherInterface
      */
-    protected $_matcher;
+    protected MatcherInterface $_matcher;
 
     /**
      * The default configuration.
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'templates' => [
             'menu' => '<ul{{attrs}}>{{items}}</ul>',
             'nest' => '<ul{{attrs}}>{{items}}</ul>',
@@ -283,7 +284,7 @@ class StringTemplateRenderer implements RendererInterface
      *
      * @param ItemInterface $item The item whose children to render.
      * @param array $options The rendering options.
-     * @return string[] The rendered children.
+     * @return array<string> The rendered children.
      */
     protected function _renderChildren(ItemInterface $item, array $options): array
     {

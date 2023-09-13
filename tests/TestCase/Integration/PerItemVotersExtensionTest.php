@@ -22,7 +22,7 @@ class PerItemVotersExtensionTest extends TestCase
      *
      * @var \Icings\Menu\Integration\PerItemVotersExtension
      */
-    public $PerItemVotersExtension;
+    public PerItemVotersExtension $PerItemVotersExtension;
 
     public function setUp(): void
     {

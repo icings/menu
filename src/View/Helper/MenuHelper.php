@@ -23,9 +23,14 @@ use Icings\Menu\Matcher\Voter\UrlVoter;
 use Icings\Menu\MenuFactory;
 use Icings\Menu\MenuFactoryInterface;
 use Icings\Menu\Renderer\StringTemplateRenderer;
+use InvalidArgumentException;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Knp\Menu\Renderer\RendererInterface;
+use RuntimeException;
+use SplObjectStorage;
+use function array_pop;
+use function array_reverse;
 
 /**
  * Menu helper
@@ -56,7 +61,7 @@ class MenuHelper extends Helper
     /**
      * @inheritDoc
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'matching' => null,
         'matcher' => null,
         'voters' => null,
@@ -66,23 +71,23 @@ class MenuHelper extends Helper
     /**
      * Collection of menu items created via `create()`.
      *
-     * @var ItemInterface[]
+     * @var array<ItemInterface>
      */
-    protected $_menus = [];
+    protected array $_menus = [];
 
     /**
      * Storage for menu configurations assigned to menus via `create()`.
      *
-     * @var \SplObjectStorage
+     * @var SplObjectStorage
      */
-    protected $_menuConfigurations;
+    protected SplObjectStorage $_menuConfigurations;
 
     /**
      * The factory to use for creating menu items.
      *
      * @var MenuFactoryInterface
      */
-    protected $_factory;
+    protected MenuFactoryInterface $_factory;
 
     /**
      * Sets the menu factory to use for creating menu items.
@@ -155,7 +160,7 @@ class MenuHelper extends Helper
         ];
         parent::__construct($View, $config);
 
-        $this->_menuConfigurations = new \SplObjectStorage();
+        $this->_menuConfigurations = new SplObjectStorage();
 
         $factory = new MenuFactory();
         $factory->addExtension(new PerItemVotersExtension());
@@ -178,7 +183,7 @@ class MenuHelper extends Helper
      * passed as options to the renderer.
      *
      * @see __construct()
-     * @throws \InvalidArgumentException In case the `$name` argument is not a string, or is empty.
+     * @throws InvalidArgumentException In case the `$name` argument is not a string, or is empty.
      * @param string $name The name of the menu. The name serves as an identifier for retrieving
      *   and rendering specific menus.
      * @param array $options An array of options, see the "Options" section in the method
@@ -188,7 +193,7 @@ class MenuHelper extends Helper
     public function create(string $name, array $options = []): ItemInterface
     {
         if (strlen(trim($name)) === 0) {
-            throw new \InvalidArgumentException('The `$name` argument must not be empty.');
+            throw new InvalidArgumentException('The `$name` argument must not be empty.');
         }
 
         $menu = $this->getMenuFactory()->createItem($name, $this->_extractMenuOptions($options));
@@ -205,20 +210,20 @@ class MenuHelper extends Helper
      * This method supports all the options that the constructor supports.
      *
      * @see __construct()
-     * @throws \RuntimeException In case no menu object is passed, and no menu has been created via
+     * @throws RuntimeException In case no menu object is passed, and no menu has been created via
      *  the `create()` method yet.
-     * @throws \InvalidArgumentException In case the menu with name given in the `$menu` argument
+     * @throws InvalidArgumentException In case the menu with name given in the `$menu` argument
      *  does not exist.
-     * @throws \InvalidArgumentException In case the `$menu` argument is neither a
+     * @throws InvalidArgumentException In case the `$menu` argument is neither a
      *   `Knp\Menu\ItemInterface` implementation, the name of a menu, nor an array.
-     * @throws \InvalidArgumentException In case the `matcher` option is not a
+     * @throws InvalidArgumentException In case the `matcher` option is not a
      *  `Icings\Menu\Matcher\MatcherInterface` implementation.
-     * @throws \InvalidArgumentException In case the `matching` option is not one of
+     * @throws InvalidArgumentException In case the `matching` option is not one of
      *  `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant vales.
-     * @throws \InvalidArgumentException In case the `voters` option is not an array.
-     * @throws \InvalidArgumentException In case the `renderer` option is not a
+     * @throws InvalidArgumentException In case the `voters` option is not an array.
+     * @throws InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
-     * @param ItemInterface|string|array|null $menu Either an `\Knp\Menu\ItemInterface` implementation,
+     * @param ItemInterface|array|string|null $menu Either an `\Knp\Menu\ItemInterface` implementation,
      *  the name of a menu created via `create()`, or an array of options to use instead of the
      *  `$options` argument. If omitted or an array, the menu that was last created via `create()`
      *  will be used.
@@ -226,7 +231,7 @@ class MenuHelper extends Helper
      *  description.
      * @return string The rendered menu.
      */
-    public function render($menu = null, array $options = []): string
+    public function render(ItemInterface|array|string|null $menu = null, array $options = []): string
     {
         if (is_array($menu)) {
             $options = $menu;
@@ -267,7 +272,7 @@ class MenuHelper extends Helper
      *
      * @param ItemInterface $item The item from which to extract the path from.
      * @param array $options An array of options, see the "Options" section in the method description.
-     * @return ItemInterface[] A set of items representing the path from the root item.
+     * @return array<ItemInterface> A set of items representing the path from the root item.
      */
     public function extractPath(ItemInterface $item, array $options = []): array
     {
@@ -281,7 +286,7 @@ class MenuHelper extends Helper
         }
 
         if (!$options['includeRoot']) {
-            \array_pop($path);
+            array_pop($path);
         }
 
         foreach ($path as $key => $item) {
@@ -293,7 +298,7 @@ class MenuHelper extends Helper
             $path[$key] = $clone;
         }
 
-        return \array_reverse($path);
+        return array_reverse($path);
     }
 
     /**
@@ -323,7 +328,7 @@ class MenuHelper extends Helper
      * Similar to the `render()` method, this method will use the helper defaults for the
      * options if not specified.
      *
-     * @param ItemInterface|string|array|null $menu The menu (item) to search through. Either an
+     * @param ItemInterface|array|string|null $menu The menu (item) to search through. Either an
      * `\Knp\Menu\ItemInterface` implementation, the name of a menu created via `create()`, or
      *  an array of options to use instead of the `$options` argument. If omitted or an array,
      *  the menu that was last created via `create()` will be used.
@@ -331,7 +336,7 @@ class MenuHelper extends Helper
      *  description.
      * @return ItemInterface|null The first current item or `null` if no current item could be found.
      */
-    public function getCurrentItem($menu = null, array $options = []): ?ItemInterface
+    public function getCurrentItem(ItemInterface|array|string|null $menu = null, array $options = []): ?ItemInterface
     {
         if (is_array($menu)) {
             $options = $menu;
@@ -340,7 +345,6 @@ class MenuHelper extends Helper
 
         $menu = $this->_getMenu($menu);
 
-        /** @psalm-suppress TooManyArguments */
         $options = Hash::merge($this->getConfig(), $options);
         $options += [
             'clearMatcher' => true,
@@ -365,43 +369,32 @@ class MenuHelper extends Helper
     /**
      * Returns a menu instance based on the given parameters.
      *
-     * @throws \RuntimeException In case no menu object is passed, and no menu has been created via
+     * @throws RuntimeException In case no menu object is passed, and no menu has been created via
      *  the `create()` method yet.
-     * @throws \InvalidArgumentException In case the menu with name given in the `$menu` argument
+     * @throws InvalidArgumentException In case the menu with name given in the `$menu` argument
      *  does not exist.
-     * @throws \InvalidArgumentException In case the `$menu` argument is neither a
-     *   `Knp\Menu\ItemInterface` implementation, the name of a menu, nor an array.
      * @param ItemInterface|string|null $menu Either an `\Knp\Menu\ItemInterface` implementation, or
      *  the name of a menu created via `create()`. If omitted, the menu that was last created via
      * `create()` will be obtained.
      * @return ItemInterface
      */
-    protected function _getMenu($menu = null): ItemInterface
+    protected function _getMenu(ItemInterface|string|null $menu = null): ItemInterface
     {
-        /** @psalm-suppress DocblockTypeContradiction */
         if ($menu === null) {
             if (empty($this->_menus)) {
-                throw new \RuntimeException('No menu has been created.');
+                throw new RuntimeException('No menu has been created.');
             }
 
             /** @var ItemInterface $menu */
             $menu = end($this->_menus);
         } elseif (is_string($menu)) {
             if (!isset($this->_menus[$menu])) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf('The menu with the name `%s` does not exist.', $menu)
                 );
             }
 
             $menu = $this->_menus[$menu];
-        } elseif (!($menu instanceof ItemInterface)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The `$menu` argument must be either a `Knp\Menu\ItemInterface` implementation, ' .
-                    'the name of a menu, or an array, `%s` given.',
-                    Debugger::getType($menu)
-                )
-            );
         }
 
         return $menu;
@@ -418,7 +411,7 @@ class MenuHelper extends Helper
      *   `Icings\Menu\Matcher\Matcher`)
      *   The matcher object to use.
      *
-     * @throws \InvalidArgumentException In case the `matcher` option is not a
+     * @throws InvalidArgumentException In case the `matcher` option is not a
      *  `Icings\Menu\Matcher\MatcherInterface` implementation.
      * @param array $options An array of options, see the "Options" section in the method
      *  description.
@@ -430,7 +423,7 @@ class MenuHelper extends Helper
             $matcher = $this->_createDefaultMatcher();
         } else {
             if (!($options['matcher'] instanceof MatcherInterface)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf(
                         'The `matcher` option must be a `Icings\Menu\Matcher\MatcherInterface` ' .
                         'implementation, `%s` given.',
@@ -462,19 +455,19 @@ class MenuHelper extends Helper
      *   `[Icings\Menu\Matcher\Voter\FuzzyRouteVoter]`)
      *   The voter objects to use.
      *
-     * @throws \InvalidArgumentException In case the `matching` option is not one of
+     * @throws InvalidArgumentException In case the `matching` option is not one of
      *  `Icings\Menu\View\Helper\MenuHelper::MATCH_*` constant vales.
-     * @throws \InvalidArgumentException In case the `voters` option is not an array.
+     * @throws InvalidArgumentException In case the `voters` option is not an array.
      * @param array $options An array of options, see the "Options" section in the method
      *  description.
-     * @return VoterInterface[]
+     * @return array<VoterInterface>
      */
     protected function _getVoters(array $options): array
     {
         if (!isset($options['voters'])) {
             $voters = $this->_createDefaultVoters($options['matching']);
             if (!is_array($voters)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf(
                         'The `matching` option must be one of the `Icings\Menu\View\Helper\MenuHelper::MATCH_*` ' .
                         'constant values, `%s` given.',
@@ -484,7 +477,7 @@ class MenuHelper extends Helper
             }
         } else {
             if (!is_array($options['voters'])) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf(
                         'The `voters` option must be an array, `%s` given.',
                         Debugger::getType($options['voters'])
@@ -509,7 +502,7 @@ class MenuHelper extends Helper
      *   `Icings\Menu\Renderer\StringTemplateRenderer`)
      *    The renderer object to use.
      *
-     * @throws \InvalidArgumentException In case the `renderer` option is not a
+     * @throws InvalidArgumentException In case the `renderer` option is not a
      *  `Knp\Menu\Renderer\RendererInterface` implementation.
      * @param array $options An array of options, see the "Options" section in the method
      *  description.
@@ -528,7 +521,7 @@ class MenuHelper extends Helper
             $renderer = $this->_createDefaultRenderer($matcher);
         } else {
             if (!($options['renderer'] instanceof RendererInterface)) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf(
                         'The `renderer` option must be a `Knp\Menu\Renderer\RendererInterface` ' .
                         'implementation, `%s` given.',
@@ -596,7 +589,6 @@ class MenuHelper extends Helper
      */
     protected function _extractMenuOptions(array &$options): array
     {
-        /** @psalm-suppress PossiblyNullArgument */
         $menuOptions = array_intersect_key(
             $options,
             array_flip([
@@ -628,7 +620,6 @@ class MenuHelper extends Helper
      */
     protected function _extractRendererOptions(array &$options): array
     {
-        /** @psalm-suppress PossiblyNullArgument */
         $rendererOptions = array_diff_key(
             $options,
             array_flip([
@@ -659,29 +650,25 @@ class MenuHelper extends Helper
      * Creates default voters for the given type.
      *
      * @param string $type The type of the voters to create.
-     * @return VoterInterface[]|bool An array holding the created voters, or `false` for unsupported
+     * @return array<VoterInterface>|bool An array holding the created voters, or `false` for unsupported
      *   types.
      */
-    protected function _createDefaultVoters(string $type)
+    protected function _createDefaultVoters(string $type): array|bool
     {
-        switch ($type) {
-            case static::MATCH_FUZZY_ROUTE:
-                return [
-                    new FuzzyRouteVoter($this->getView()->getRequest()),
-                ];
-            case static::MATCH_URL:
-                return [
-                    new UrlVoter($this->getView()->getRequest()),
-                ];
-            case static::MATCH_URL_WITH_QUERY_STRING:
-                return [
-                    new UrlVoter($this->getView()->getRequest(), [
-                        'ignoreQueryString' => false,
-                    ]),
-                ];
-        }
-
-        return false;
+        return match ($type) {
+            static::MATCH_FUZZY_ROUTE => [
+                new FuzzyRouteVoter($this->getView()->getRequest()),
+            ],
+            static::MATCH_URL => [
+                new UrlVoter($this->getView()->getRequest()),
+            ],
+            static::MATCH_URL_WITH_QUERY_STRING => [
+                new UrlVoter($this->getView()->getRequest(), [
+                    'ignoreQueryString' => false,
+                ]),
+            ],
+            default => false,
+        };
     }
 
     /**
