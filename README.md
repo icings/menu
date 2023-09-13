@@ -5,13 +5,13 @@
 [![Latest Version][ico-version]][link-version]
 [![Software License][ico-license]][link-license]
 
-[ico-build]: https://img.shields.io/github/actions/workflow/status/icings/menu/ci.yml?branch=master&style=flat-square
-[ico-coverage]: https://img.shields.io/codecov/c/github/icings/menu/master.svg?style=flat-square
+[ico-build]: https://img.shields.io/github/actions/workflow/status/icings/menu/ci.yml?branch=5.x&style=flat-square
+[ico-coverage]: https://img.shields.io/codecov/c/github/icings/menu/5.x.svg?style=flat-square
 [ico-version]: https://img.shields.io/packagist/v/icings/menu.svg?style=flat-square&label=latest
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 
-[link-build]: https://github.com/icings/menu/actions/workflows/ci.yml?query=branch%3Amaster
-[link-coverage]: https://codecov.io/github/icings/menu/tree/master
+[link-build]: https://github.com/icings/menu/actions/workflows/ci.yml?query=branch%3A5.x
+[link-coverage]: https://codecov.io/github/icings/menu/tree/5.x
 [link-version]: https://packagist.org/packages/icings/menu
 [link-license]: LICENSE.txt
 
