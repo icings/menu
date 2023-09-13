@@ -5,13 +5,13 @@
 [![Latest Version][ico-version]][link-version]
 [![Software License][ico-license]][link-license]
 
-[ico-build]: https://img.shields.io/github/actions/workflow/status/icings/menu/ci.yml?branch=cake5&style=flat-square
-[ico-coverage]: https://img.shields.io/codecov/c/github/icings/menu/cake5.svg?style=flat-square
+[ico-build]: https://img.shields.io/github/actions/workflow/status/icings/menu/ci.yml?branch=master&style=flat-square
+[ico-coverage]: https://img.shields.io/codecov/c/github/icings/menu/master.svg?style=flat-square
 [ico-version]: https://img.shields.io/packagist/v/icings/menu.svg?style=flat-square&label=latest
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 
-[link-build]: https://github.com/icings/menu/actions/workflows/ci.yml?query=branch%3Acake5
-[link-coverage]: https://codecov.io/github/icings/menu/tree/cake5
+[link-build]: https://github.com/icings/menu/actions/workflows/ci.yml?query=branch%3Amaster
+[link-coverage]: https://codecov.io/github/icings/menu/tree/master
 [link-version]: https://packagist.org/packages/icings/menu
 [link-license]: LICENSE.txt
 
@@ -31,7 +31,7 @@ A [KnpMenu](https://github.com/KnpLabs/KnpMenu) seasoned plugin that assists wit
 1. Use [Composer](http://getcomposer.org) to add the menu plugin to your project:
 
    ```bash
-   $ composer require icings/menu:cake5-dev
+   $ composer require icings/menu
    ```
 
 2. Make sure that you are loading the plugin in your bootstrap, either run:
